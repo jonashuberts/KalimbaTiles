@@ -237,7 +237,7 @@ var We_Wish_Merry_Christma = 'data:audio/midi;base64,TVRoZAAAAAYAAQACAHhNVHJrAAA
 
 // Tastenkombination Strg + Umschalt + N zum Ein- und Ausblenden der Nav Bar
 document.addEventListener('keydown', function(event) {
-	if (event.ctrlKey && event.shiftKey && event.key === 'N') {
+	if (event.shiftKey && event.key === 'N') {
 	  var navBar = document.querySelector('.navbar');
 	  if (navBar.style.display === 'none') {
 		navBar.style.display = 'block';
