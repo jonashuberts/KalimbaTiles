@@ -38,7 +38,7 @@ kalimba_body {
 .key {
   margin-top: 20px;
   width: 12px;
-  height: 100px;
+  height: 130px;
   border-radius: 5px;
   background-color: #ADA097;
   box-shadow: 5px 5px 20px #000;
@@ -124,7 +124,7 @@ kalimba_body {
 }
 
 .key-[data-note=C6] {
-  height: 162px;
+  height: 132px;
 }
 
 .key[data-note=D6] {
