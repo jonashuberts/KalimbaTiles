@@ -186,6 +186,7 @@ animation_body {
 
 key-note-animation {
   position: relative;
+  margin-top: 200px; /* Abstand von 50px zum darüber liegenden Element */
   margin-bottom: 200px;
   right: 143px;
   right: 150px;
