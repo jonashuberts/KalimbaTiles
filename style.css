@@ -199,6 +199,7 @@ key-note-animation {
   margin: 1px;
   background-color: #42a1f5;
   font-size: 14px;
+  text-align: center;
   position: absolute;
   animation-name: key-note-animation;
   animation-duration: 2s;
