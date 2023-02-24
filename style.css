@@ -206,10 +206,10 @@ key-note-animation {
   animation-fill-mode: forwards;
   animation-timing-function: linear;
   border-radius: 8px;
-  display: flex; / Flexbox-Container machen /
-  justify-content: center; / Horizontal zentrieren /
-  align-items: center; / Vertikal zentrieren /
-  text-align: center; / Text horizontal zentrieren */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 [data-key-note=D6] {
