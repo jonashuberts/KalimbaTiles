@@ -205,7 +205,7 @@ key-note-animation {
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-timing-function: linear;
-  border-radius: 2px;
+  border-radius: 8px;
 }
 
 [data-key-note=D6] {
