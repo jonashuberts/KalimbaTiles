@@ -210,7 +210,7 @@ key-note-animation {
   justify-content: center;
   align-items: center;
   text-align: center;
-  color: white;
+  color: white !important;
 }
 
 [data-key-note=D6] {
