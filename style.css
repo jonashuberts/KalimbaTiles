@@ -241,6 +241,10 @@ key-note-animation {
 
 [data-key-note=C4] {
   left: 142px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 [data-key-note=E4] {
