@@ -188,10 +188,6 @@ key-note-animation {
   right: 150px;
   top: 80px;
   z-index: 20;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
 }
 
 [data-key-note] {
