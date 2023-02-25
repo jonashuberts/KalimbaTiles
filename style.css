@@ -131,7 +131,7 @@ kalimba_body {
 
 top-pad {
   position: absolute;
-  width: 280px;
+  width: 290px;
   background-color: #c26f43;
   background-color: #ADA097;
   display: flex;
@@ -146,7 +146,7 @@ top-pad {
 
 bottom-pad {
   position: absolute;
-  width: 300px;
+  width: 280px;
   background-color: #c26f43;
   top: 30px;
   height: 15px;
