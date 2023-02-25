@@ -72,11 +72,11 @@ kalimba_body {
 
 .key[data-note=C4] {
   height: 230px;
+  background-color: #d94251; 
 }
 
 .key[data-note=D4] {
   height: 220px;
-  background-color: red; /* ändert die Hintergrundfarbe auf rot */
 }
 
 .key[data-note=E4] {
@@ -93,10 +93,12 @@ kalimba_body {
 
 .key[data-note=A4] {
   height: 185px;
+  background-color: #d94251; 
 }
 
 .key[data-note=B4] {
   height: 177px;
+  background-color: #d94251; 
 }
 
 .key[data-note=C5] {
@@ -117,10 +119,12 @@ kalimba_body {
 
 .key[data-note=G5] {
   height: 145px;
+  background-color: #d94251; 
 }
 
 .key[data-note=A5] {
   height: 140px;
+  background-color: #d94251; 
 }
 
 .key[data-note=B5] {
