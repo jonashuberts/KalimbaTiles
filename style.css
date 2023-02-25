@@ -76,6 +76,7 @@ kalimba_body {
 
 .key[data-note=D4] {
   height: 220px;
+  background-color: red; /* ändert die Hintergrundfarbe auf rot */
 }
 
 .key[data-note=E4] {
