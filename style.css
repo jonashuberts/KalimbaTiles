@@ -188,6 +188,8 @@ animation_body {
   display: flex;
   justify-content: center;
   align-items: center;
+  display: flex; /* hinzufügen */
+  align-items: center; /* hinzufügen */
 }
 
 key-note-animation {
@@ -198,8 +200,6 @@ key-note-animation {
   right: 150px;
   top: 80px;
   z-index: 20;
-  display: flex; /* hinzufügen */
-  align-items: center; /* hinzufügen */
 }
 
 [data-key-note] {
