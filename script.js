@@ -184,7 +184,7 @@ var lesson_mode = function(event) {
 }
 
 keydivs.forEach((key) => {
-	key.innerHTML = '<span class="key-text">' + key.getAttribute("data-note").substring(0, 1)+ '<br id="line1>' + key.getAttribute("data-oktave") + '<br id="line2>' + key.getAttribute("data-key") + '</span>';
+	key.innerHTML = '<span class="key-text">' + key.getAttribute("data-note").substring(0, 1)+ '<br>' + '<br>'+ key.getAttribute("data-oktave") + '<br>' + key.getAttribute("data-key") + '</span>';
 });
 
 Soundfont.instrument(ac, 'kalimba').then(function(instrumentnow) {

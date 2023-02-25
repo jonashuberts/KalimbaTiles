@@ -58,22 +58,7 @@ kalimba_body {
   color: #222222;
   text-shadow: 2px 2px 3px rgba(255, 255, 255, 0.2);
   z-index: 30;
-}
-
-#line1 {
-  line-height: 1.2;
-}
-
-#line2 {
-  line-height: 1.5;
-}
-
-.key:first-child {
-  margin-left: 15px;
-}
-
-.key.last-key {
-  margin-right: 15px;
+  line-height: 0.2;
 }
 
 .key[data-note=C4] {
