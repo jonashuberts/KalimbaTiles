@@ -62,6 +62,14 @@ kalimba_body {
   font-size: 80%;
 }
 
+.key:first-child {	
+  margin-left: 15px;	
+}	
+
+.key.last-key {	
+  margin-right: 15px;
+}
+
 .key[data-note=C4] {
   height: 230px;
 }
@@ -200,12 +208,11 @@ key-note-animation {
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-timing-function: linear;
-  border-radius: 8px;
+  border-radius: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  width: 18%;
 }
 
 [data-key-note=D6] {
