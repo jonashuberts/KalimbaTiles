@@ -58,7 +58,7 @@ kalimba_body {
   color: #222222;
   text-shadow: 2px 2px 3px rgba(255, 255, 255, 0.2);
   z-index: 30;
-  line-height: 0.2;
+  line-height: 0.6;
 }
 
 .key[data-note=C4] {
@@ -146,7 +146,7 @@ top-pad {
 
 bottom-pad {
   position: absolute;
-  width: 280px;
+  width: 300px;
   background-color: #c26f43;
   top: 30px;
   height: 15px;
