@@ -258,7 +258,8 @@ key-note-animation {
 
 [data-key-note=E4] {
   left: 158px;
-  text-align: center; /* hinzufügen */
+  display: flex; /* hinzufügen */
+  align-items: center; /* hinzufügen */
 }
 
 [data-key-note=G4] {
