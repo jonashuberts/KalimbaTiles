@@ -198,6 +198,8 @@ key-note-animation {
   right: 150px;
   top: 80px;
   z-index: 20;
+  display: flex; /* hinzufügen */
+  align-items: center; /* hinzufügen */
 }
 
 [data-key-note] {
@@ -258,8 +260,6 @@ key-note-animation {
 
 [data-key-note=E4] {
   left: 158px;
-  display: flex; /* hinzufügen */
-  align-items: center; /* hinzufügen */
 }
 
 [data-key-note=G4] {
