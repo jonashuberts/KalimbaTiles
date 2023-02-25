@@ -258,6 +258,7 @@ key-note-animation {
 
 [data-key-note=E4] {
   left: 158px;
+  text-align: center; /* hinzufügen */
 }
 
 [data-key-note=G4] {
