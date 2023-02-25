@@ -61,6 +61,14 @@ kalimba_body {
   line-height: 0.8;
 }
 
+.line1 {
+  line-height: 1.2;
+}
+
+.line2 {
+  line-height: 1.5;
+}
+
 .key:first-child {
   margin-left: 15px;
 }
