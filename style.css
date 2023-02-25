@@ -188,8 +188,6 @@ animation_body {
   display: flex;
   justify-content: center;
   align-items: center;
-  display: flex; /* hinzufügen */
-  align-items: center; /* hinzufügen */
 }
 
 key-note-animation {
@@ -216,11 +214,12 @@ key-note-animation {
   animation-fill-mode: forwards;
   animation-timing-function: linear;
   border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
 }
+
 
 [data-key-note=D6] {
   left: 15px;
