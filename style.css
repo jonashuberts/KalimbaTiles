@@ -201,22 +201,24 @@ key-note-animation {
 }
 
 [data-key-note] {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  pointer-events: none;
   width: 12px;
   height: 30px;
   margin: 1px;
   background-color: #42a1f5;
   font-size: 14px;
+  position: absolute;
+  animation-name: key-note-animation;
+  animation-duration: 2s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
   border-radius: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
 }
-
 
 [data-key-note=D6] {
   left: 15px;
