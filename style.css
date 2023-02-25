@@ -60,8 +60,7 @@ kalimba_body {
   z-index: 30;
   line-height: 0.6;
   font-size: 80%;
-  justify-content: center;
-  align-items: center;
+
 }
 
 .key[data-note=C4] {
