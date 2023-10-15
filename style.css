@@ -1,5 +1,7 @@
 :root {
   --ppi: 460;
+  --width_pixel: 2532;
+  --height_pixel: 1170;
 }
 
 html,
@@ -22,7 +24,7 @@ kalimba_body {
   display: flex;
   justify-content: space-around;
   height: 200px;
-  width: calc(110% / (2532 / var(--ppi) * 2.54 * 10) * 100);
+  width: calc(110% / (var(--width_pixel) / var(--ppi) * 2.54 * 10) * 100);
   background-color: #c26f43;
   border-radius: 20px;
   position: relative;
@@ -31,10 +33,10 @@ kalimba_body {
 }
 
 .key {
-  margin-top: calc((var(--ppi) / 2.54 / 10) * 10px);
-  width: calc((var(--ppi) / 2.54 / 10) * 4px);
-  height: calc((var(--ppi) / 2.54 / 10) * 40px);
-  border-radius: calc((var(--ppi) / 2.54 / 10) * 1px);
+  margin-top: calc(10% / (var(--height_pixel) / var(--ppi) * 2.54 * 10) * 100);
+  width: calc(4% / (var(--width_pixel) / var(--ppi) * 2.54 * 10) * 100);
+  height: calc(40% / (var(--height_pixel) / var(--ppi) * 2.54 * 10) * 100);
+  border-radius: calc(1% / (var(--width_pixel) / var(--ppi) * 2.54 * 10) * 100);
   background-color: #ada097;
   box-shadow: 5px 5px 20px #000;
   z-index: 10;
@@ -43,11 +45,11 @@ kalimba_body {
 }
 
 .key:first-child {
-  margin-left: calc((var(--ppi) / 2.54 / 10) * 2px);
+  margin-left: calc(10% / (var(--width_pixel) / var(--ppi) * 2.54 * 10) * 100);
 }
 
 .key.last-key {
-  margin-right: calc((var(--ppi) / 2.54 / 10) * 2px);
+  margin-right: calc(10% / (var(--width_pixel) / var(--ppi) * 2.54 * 10) * 100);
 }
 
 .key[data-note="C4"] {
@@ -72,15 +74,15 @@ kalimba_body {
 
 top-pad {
   position: absolute;
-  width: calc((var(--ppi) / 2.54 / 10) * 104px);
+  width: calc(104% / (var(--width_pixel) / var(--ppi) * 2.54 * 10) * 100);
   background-color: #c26f43;
   background-color: #ada097;
   display: flex;
   align-items: center;
   justify-content: space-around;
-  top: calc((var(--ppi) / 2.54 / 10) * 30px);
-  border-radius: calc((var(--ppi) / 2.54 / 10) * 01px);
-  height: calc((var(--ppi) / 2.54 / 10) * 3px);
+  top: calc(30% / (var(--height_pixel) / var(--ppi) * 2.54 * 10) * 100);
+  border-radius: calc(1% / (var(--width_pixel) / var(--ppi) * 2.54 * 10) * 100);
+  height: calc(3% / (var(--height_pixel) / var(--ppi) * 2.54 * 10) * 100);
   box-shadow: 5px 5px 25px #000, inset 5px 5px 25px rgba(255, 255, 255, 0.5),
     inset -5px -5px 25px rgba(0, 0, 0, 0.5);
   z-index: 20;
@@ -88,17 +90,17 @@ top-pad {
 
 bottom-pad {
   position: absolute;
-  width: calc((var(--ppi) / 2.54 / 10) * 102px);
+  width: calc(102% / (var(--width_pixel) / var(--ppi) * 2.54 * 10) * 100);
   background-color: #c26f43;
-  top: calc((var(--ppi) / 2.54 / 10) * 10px);
-  height: calc((var(--ppi) / 2.54 / 10) * 10px);
-  border-radius: calc((var(--ppi) / 2.54 / 10) * 1px);
+  top: calc(10% / (var(--height_pixel) / var(--ppi) * 2.54 * 10) * 100);
+  height: calc(10% / (var(--height_pixel) / var(--ppi) * 2.54 * 10) * 100);
+  border-radius: calc(1% / (var(--width_pixel) / var(--ppi) * 2.54 * 10) * 100);
   box-shadow: 2px 2px 5px #000, inset 5px 5px 15px rgba(255, 255, 255, 0.3),
     inset -5px -5px 15px rgba(0, 0, 0, 0.3);
 }
 
 bottom-pad.last-pad {
-  top: calc((var(--ppi) / 2.54 / 10) * 50px);
+  top: calc(50% / (var(--height_pixel) / var(--ppi) * 2.54 * 10) * 100);
 }
 
 .key:hover {
