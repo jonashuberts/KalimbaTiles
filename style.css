@@ -1,3 +1,7 @@
+:root {
+  --ppi: 475;
+}
+
 html,
 body {
   height: 100%;
@@ -16,20 +20,20 @@ kalimba_body {
 #kalimba {
   display: flex;
   justify-content: space-around;
-  height: 200px;
-  width: 11cm;
+  height: 60%;
+  width: calc((var(--ppi) / 2.54 / 10) * 110px);
   background-color: #c26f43;
-  border-radius: 20px;
+  border-radius: calc((var(--ppi) / 2.54 / 10) * 2.5px);
   position: relative;
   box-shadow: 10px 10px 25px #000, inset 5px 5px 10px rgba(255, 255, 255, 0.4),
     inset -5px -5px 10px rgba(0, 0, 0, 0.4);
 }
 
 .key {
-  margin-top: 20px;
-  width: 12px;
-  height: 130px;
-  border-radius: 5px;
+  margin-top: calc((var(--ppi) / 2.54 / 10) * 10px);
+  width: calc((var(--ppi) / 2.54 / 10) * 4px);
+  height: calc((var(--ppi) / 2.54 / 10) * 40px);
+  border-radius: calc((var(--ppi) / 2.54 / 10) * 1px);
   background-color: #ada097;
   box-shadow: 5px 5px 20px #000;
   z-index: 10;
@@ -38,11 +42,11 @@ kalimba_body {
 }
 
 .key:first-child {
-  margin-left: 15px;
+  margin-left: calc((var(--ppi) / 2.54 / 10) * 2px);
 }
 
 .key.last-key {
-  margin-right: 15px;
+  margin-right: calc((var(--ppi) / 2.54 / 10) * 2px);
 }
 
 .key[data-note="C4"] {
@@ -67,15 +71,15 @@ kalimba_body {
 
 top-pad {
   position: absolute;
-  width: 290px;
+  width: calc((var(--ppi) / 2.54 / 10) * 104px);
   background-color: #c26f43;
   background-color: #ada097;
   display: flex;
   align-items: center;
   justify-content: space-around;
-  top: 60px;
-  border-radius: 7px;
-  height: 15px;
+  top: calc((var(--ppi) / 2.54 / 10) * 30px);
+  border-radius: calc((var(--ppi) / 2.54 / 10) * 01px);
+  height: calc((var(--ppi) / 2.54 / 10) * 3px);
   box-shadow: 5px 5px 25px #000, inset 5px 5px 25px rgba(255, 255, 255, 0.5),
     inset -5px -5px 25px rgba(0, 0, 0, 0.5);
   z-index: 20;
@@ -83,17 +87,17 @@ top-pad {
 
 bottom-pad {
   position: absolute;
-  width: 280px;
+  width: calc((var(--ppi) / 2.54 / 10) * 102px);
   background-color: #c26f43;
-  top: 30px;
-  height: 15px;
-  border-radius: 5px;
+  top: calc((var(--ppi) / 2.54 / 10) * 10px);
+  height: calc((var(--ppi) / 2.54 / 10) * 10px);
+  border-radius: calc((var(--ppi) / 2.54 / 10) * 1px);
   box-shadow: 2px 2px 5px #000, inset 5px 5px 15px rgba(255, 255, 255, 0.3),
     inset -5px -5px 15px rgba(0, 0, 0, 0.3);
 }
 
 bottom-pad.last-pad {
-  top: 90px;
+  top: calc((var(--ppi) / 2.54 / 10) * 50px);
 }
 
 .key:hover {
