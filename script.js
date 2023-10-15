@@ -127,18 +127,7 @@ var playmidi = function(event) {
 		bool1 = 1;
 	}
 	Player.setTempo(tempodiv.value);
-	if (event.name == 'Note on' && event.velocity > 0) {
-		//$('key-note-animation').append('<div data-key-note="' + event.noteName + '"></div>');
-		if (shownumbersbuttondiv.checked) {
-			keynoteanimationdiv.insertAdjacentHTML("afterbegin", `
-		<div data-key-note="` + event.noteName + `"><span class="key-text">` + notetonumber(event.noteName) + `</span></div>
-		`);
-		} else {
-			keynoteanimationdiv.insertAdjacentHTML("afterbegin", `
-		<div data-key-note="` + event.noteName + `"></div>
-		`);
-		}
-	}
+
 	setTimeout(function() {
 		if (event.name == 'Note on') {
 			instrument.play(event.noteName, ac.currentTime, {
