@@ -1,10 +1,11 @@
 :root {
-  --ppi: 475;
+  --ppi: 460;
 }
 
 html,
 body {
   height: 100%;
+  width: 100%;
   padding: 0;
   background-color: #000;
   margin: 0;
@@ -20,10 +21,10 @@ kalimba_body {
 #kalimba {
   display: flex;
   justify-content: space-around;
-  height: 60%;
-  width: calc((var(--ppi) / 2.54 / 10) * 110px);
+  height: 200px;
+  width: calc(110% / (2532 / var(--ppi) * 2.54 * 10) * 100);
   background-color: #c26f43;
-  border-radius: calc((var(--ppi) / 2.54 / 10) * 2.5px);
+  border-radius: 20px;
   position: relative;
   box-shadow: 10px 10px 25px #000, inset 5px 5px 10px rgba(255, 255, 255, 0.4),
     inset -5px -5px 10px rgba(0, 0, 0, 0.4);
