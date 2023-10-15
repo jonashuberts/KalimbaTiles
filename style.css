@@ -23,7 +23,7 @@ kalimba_body {
 #kalimba {
   display: flex;
   justify-content: space-around;
-  height: 200px;
+  height: 11cm;
   width: calc(110% / (var(--width_pixel) / var(--ppi) * 2.54 * 10) * 100);
   background-color: #c26f43;
   border-radius: 20px;
