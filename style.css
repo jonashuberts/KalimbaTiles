@@ -23,19 +23,6 @@ kalimba_body {
   box-shadow: 10px 10px 25px #000, inset 5px 5px 10px rgba(255, 255, 255, 0.4), inset -5px -5px 10px rgba(0, 0, 0, 0.4);
 }
 
-.logo {
-  position: absolute;
-  bottom: 100px;
-  text-align: center;
-  text-align: center;
-  text-transform: uppercase;
-  /*font-family: "Arial Black", sans-serif;*/
-  font-size: 90%;
-  font-weight: bold;
-  color: #222222;
-  text-shadow: 2px 2px 3px rgba(255, 255, 255, 0.2);
-}
-
 .key {
   margin-top: 20px;
   width: 12px;
