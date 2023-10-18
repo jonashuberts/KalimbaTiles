@@ -10,6 +10,8 @@ body {
   background-color: #000;
   margin: 0;
   position: relative;
+  overflow: hidden;
+  font-size: 12px;
 }
 
 kalimba_body {
@@ -121,7 +123,7 @@ animation_body {
 
 key-note-animation {
   position: relative;
-  margin-bottom: 100px;
+  margin-bottom: 0px;
   margin-top: 50px;
   right: 143px;
   right: 150px;
