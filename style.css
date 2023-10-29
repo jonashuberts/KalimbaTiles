@@ -25,10 +25,10 @@ kalimba_body {
   justify-content: space-around;
   height: calc((var(--ppi) / 25.4) * 70px);
   width: calc((var(--ppi) / 25.4) * 110px);
-  background-color: #c26f43;
+  background-color: #5c2315;
   border-radius: 20px;
   position: relative;
-  box-shadow: 10px 10px 25px #000, inset 5px 5px 10px rgba(255, 255, 255, 0.4),
+  box-shadow: 10px 10px 25px #000, inset 5px 5px 10px rgba(107, 107, 107, 0.4),
     inset -5px -5px 10px rgba(0, 0, 0, 0.4);
 }
 
@@ -37,7 +37,7 @@ kalimba_body {
   width: calc((var(--ppi) / 25.4) * 4px);
   height: calc((var(--ppi) / 25.4) * 60px);
   border-radius: calc((var(--ppi) / 25.4) * 1px);
-  background-color: #ada097;
+  background-color: #dbd4ca;
   box-shadow: 5px 5px 20px #000;
   z-index: 10;
   font-size: 100%;
@@ -76,7 +76,7 @@ top-pad {
   position: absolute;
   width: calc((var(--ppi) / 25.4) * 104px);
   background-color: #c26f43;
-  background-color: #ada097;
+  background-color: #dbd4ca;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -91,7 +91,7 @@ top-pad {
 bottom-pad {
   position: absolute;
   width: calc((var(--ppi) / 25.4) * 106px);
-  background-color: #c26f43;
+  background-color: #291e1b;
   top: calc((var(--ppi) / 25.4) * 10px);
   height: calc((var(--ppi) / 25.4) * 8px);
   border-radius: calc((var(--ppi) / 25.4) * 1px);
@@ -123,18 +123,16 @@ animation_body {
 
 key-note-animation {
   position: relative;
-  margin-bottom: 0px;
-  margin-top: 50px;
-  right: 143px;
-  right: 150px;
+  margin-bottom: calc((var(--ppi) / 25.4) * 0px);
+  margin-top: calc((var(--ppi) / 25.4) * -34px);
   top: 0px;
   z-index: 20;
 }
 
 [data-key-note] {
   pointer-events: none;
-  width: 12px;
-  height: 30px;
+  width: calc((var(--ppi) / 25.4) * 4px);
+  height: calc((var(--ppi) / 25.4) * 6px);
   margin: 1px;
   background-color: #42a1f5;
   font-size: 14px;
@@ -144,7 +142,7 @@ key-note-animation {
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-timing-function: linear;
-  border-radius: 5px;
+  border-radius: calc((var(--ppi) / 25.4) * 2px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -152,71 +150,71 @@ key-note-animation {
 }
 
 [data-key-note="D6"] {
-  left: 15px;
+  left: calc((var(--ppi) / 25.4) * -50px);
 }
 
 [data-key-note="B5"] {
-  left: 31px;
+  left: calc((var(--ppi) / 25.4) * -44px);
 }
 
 [data-key-note="G5"] {
-  left: 47px;
+  left: calc((var(--ppi) / 25.4) * -38px);
 }
 
 [data-key-note="E5"] {
-  left: 63px;
+  left: calc((var(--ppi) / 25.4) * -32px);
 }
 
 [data-key-note="C5"] {
-  left: 79px;
+  left: calc((var(--ppi) / 25.4) * -26px);
 }
 
 [data-key-note="A4"] {
-  left: 95px;
+  left: calc((var(--ppi) / 25.4) * -20px);
 }
 
 [data-key-note="F4"] {
-  left: 111px;
+  left: calc((var(--ppi) / 25.4) * -14px);
 }
 
 [data-key-note="D4"] {
-  left: 127px;
+  left: calc((var(--ppi) / 25.4) * -8px);
 }
 
 [data-key-note="C4"] {
-  left: 142px;
+  left: calc((var(--ppi) / 25.4) * -2px);
 }
 
 [data-key-note="E4"] {
-  left: 158px;
+  left: calc((var(--ppi) / 25.4) * 4px);
 }
 
 [data-key-note="G4"] {
-  left: 174px;
+  left: calc((var(--ppi) / 25.4) * 10px);
 }
 
 [data-key-note="B4"] {
-  left: 190px;
+  left: calc((var(--ppi) / 25.4) * 16px);
 }
 
 [data-key-note="D5"] {
-  left: 206px;
+  left: calc((var(--ppi) / 25.4) * 22px);
 }
 
 [data-key-note="F5"] {
-  left: 222px;
+  left: calc((var(--ppi) / 25.4) * 28px);
 }
 
 [data-key-note="A5"] {
-  left: 238px;
+  left: calc((var(--ppi) / 25.4) * 34px);
 }
 
 [data-key-note="C6"] {
-  left: 254px;
+  left: calc((var(--ppi) / 25.4) * 40px);
 }
 
 [data-key-note="E6"] {
-  left: 269px;
+  left: calc((var(--ppi) / 25.4) * 46px);
 }
 
 [data-key-note="C-1"] {

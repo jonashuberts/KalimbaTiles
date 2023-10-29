@@ -405,7 +405,7 @@ var We_Wish_Merry_Christma =
 // Event Listener für den Hintergrund
 document.addEventListener("click", function (event) {
   var navBar = document.querySelector(".navbar");
-  var kalimba = document.querySelector(".kalimba_body");
+  var kalimba = document.querySelector("kalimba_body");
   var clickedElement = event.target;
 
   // Überprüfen, ob das geklickte Element nicht die Nav Bar oder ein Kindelement davon ist
