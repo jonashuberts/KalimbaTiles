@@ -23,6 +23,7 @@ kalimba_body {
 #kalimba {
   display: flex;
   justify-content: space-around;
+  margin-top: calc((var(--ppi) / 25.4) * 15px);
   height: calc((var(--ppi) / 25.4) * 70px);
   width: calc((var(--ppi) / 25.4) * 110px);
   background-color: #5c2315;
@@ -123,9 +124,7 @@ animation_body {
 
 key-note-animation {
   position: relative;
-  margin-bottom: calc((var(--ppi) / 25.4) * 0px);
-  margin-top: calc((var(--ppi) / 25.4) * -34px);
-  top: 0px;
+  margin-top: calc((var(--ppi) / 25.4) * -2px);
   z-index: 20;
 }
 
