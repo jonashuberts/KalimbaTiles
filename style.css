@@ -23,7 +23,8 @@ kalimba_body {
 #kalimba {
   display: flex;
   justify-content: space-around;
-  margin-top: calc((var(--ppi) / 25.4) * 15px);
+  margin-top: calc((var(--ppi) / 25.4) * 20px);
+  /*margin-top: calc((var(--ppi) / 25.4) * 0px);*/
   height: calc((var(--ppi) / 25.4) * 70px);
   width: calc((var(--ppi) / 25.4) * 110px);
   background-color: #5c2315;
@@ -34,7 +35,8 @@ kalimba_body {
 }
 
 .key {
-  margin-top: calc((var(--ppi) / 25.4) * 6px);
+  /*margin-top: calc((var(--ppi) / 25.4) * 2px);*/
+  margin-top: calc((var(--ppi) / 25.4) * 2px);
   width: calc((var(--ppi) / 25.4) * 4px);
   height: calc((var(--ppi) / 25.4) * 60px);
   border-radius: calc((var(--ppi) / 25.4) * 1px);
@@ -124,7 +126,8 @@ animation_body {
 
 key-note-animation {
   position: relative;
-  margin-top: calc((var(--ppi) / 25.4) * -2px);
+  margin-top: calc((var(--ppi) / 25.4) * 12px);
+  /*margin-top: calc((var(--ppi) / 25.4) * 18px);*/
   z-index: 20;
 }
 
