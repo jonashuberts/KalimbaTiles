@@ -109,7 +109,7 @@ bottom-pad.last-pad {
 .key:hover {
   background-color: #e6e3e3;
 }
-
+/*
 .key:active {
   background-color: #42a1f5;
 }
@@ -117,6 +117,7 @@ bottom-pad.last-pad {
 .key_active {
   background-color: #42a1f5 !important;
 }
+*/
 
 animation_body {
   display: flex;
