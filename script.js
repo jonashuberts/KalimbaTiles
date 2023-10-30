@@ -217,8 +217,11 @@ var changeTempo = function (tempo) {
 };
 
 var play = function () {
-  Player.play();
-  playbuttondiv.innerHTML = "Pause";
+  // Warte 4 Sekunden, bevor der Player gestartet wird
+  setTimeout(function () {
+    Player.play();
+    playbuttondiv.innerHTML = "Pause";
+  }, 4000); // 4000 Millisekunden entsprechen 4 Sekunden
 };
 
 var pause = function () {
