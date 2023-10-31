@@ -11,7 +11,6 @@ var bool1 = 0;
 var tempo = 50;
 
 var tempodiv = document.querySelector(".tempo");
-var tempodisplaydiv = document.querySelector("#tempo-input");
 var tempoInput = document.getElementById("tempo-input");
 var lesson_modediv = document.querySelector("#lesson_mode");
 var keydivs = document.querySelectorAll(".key");
@@ -213,15 +212,11 @@ var notetonote = function (note) {
   return notes1[notes.indexOf(note)];
 };
 
-var changeTempo = function (tempo) {
-  Player.tempo = tempo;
-};
-
 var play = function () {
+  playbuttondiv.innerHTML = "Pause";
   // Warte 4 Sekunden, bevor der Player gestartet wird
   setTimeout(function () {
     Player.play();
-    playbuttondiv.innerHTML = "Pause";
   }, 4000); // 4000 Millisekunden entsprechen 4 Sekunden
 };
 
@@ -251,8 +246,7 @@ var reset = function () {
   keydivs.forEach((key) => {
     key.classList.remove("key_active");
   });
-  tempodisplaydiv.innerHTML = tempo;
-  tempodiv.value = tempo;
+  tempoInput.innerHTML = tempo;
 };
 
 playbuttondiv.addEventListener("click", function (e) {
@@ -269,12 +263,10 @@ resetbuttondiv.addEventListener("click", function (e) {
 
 tempobuttondiv.addEventListener("change", function (e) {
   Player.setTempo(this.value);
-  document.getElementById("tempo-input").innerHTML = this.value;
 });
 
 var updateTempoDisplay = function () {
   tempoInput.value = Player.tempo;
-  document.getElementById("tempo-input").innerHTML = Player.tempo;
 };
 
 // Nach dem Laden eines neuen Stücks oder Klicken auf Play-Button
@@ -304,9 +296,11 @@ var onLoadFile = function () {
 
       Player.loadArrayBuffer(reader.result);
 
-      playbuttondiv.removeAttribute("disabled");
+      // Aktualisiere das Tempo-Eingabefeld basierend auf dem Tempo der neuen Datei
+      tempoInput.value = Player.tempo;
+      document.getElementById("tempo-input").innerHTML = Player.tempo;
 
-      play();
+      playbuttondiv.removeAttribute("disabled");
     },
     false
   );
@@ -371,7 +365,7 @@ var playmidi = function (event) {
       );
     }
   }, 1800);
-  tempodisplaydiv.innerHTML = Player.tempo;
+  tempoInput.innerHTML = Player.tempo;
 };
 
 var lesson_mode = function (event) {
