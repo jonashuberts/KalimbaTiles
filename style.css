@@ -127,7 +127,7 @@ animation_body {
 
 key-note-animation {
   position: relative;
-  margin-top: calc((var(--ppi) / 25.4) * 22px);
+  margin-top: calc((var(--ppi) / 25.4) * 18px);
   /*margin-top: calc((var(--ppi) / 25.4) * 18px);*/
   z-index: 20;
 }
