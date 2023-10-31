@@ -62,9 +62,8 @@
 						</ul>
 					</li>
 				</ul>
-				Tempo: <span id="tempo-display"></span> bpm<br />
-				<input type="range" class="tempo" min="10" max="200"><!-- form-range onchange="Player.setTempo(this.value);document.getElementById('tempo-display').innerHTML = this.value;" -->
-			</div>
+				Tempo: <span id="tempo-display"></span><br />
+        <input type="number" class="tempo" min="10" max="200" id="tempo-input"><!-- Änderung des input-Typs auf "number" und Hinzufügen einer ID für das Eingabefeld -->
 		</div>
 	</nav>
 	<p id="loading">Loading soundfont...</p>

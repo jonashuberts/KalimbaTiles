@@ -11,7 +11,8 @@ var bool1 = 0;
 var tempo = 50;
 
 var tempodiv = document.querySelector(".tempo");
-var tempodisplaydiv = document.querySelector("#tempo-display");
+var tempodisplaydiv = document.querySelector("#tempo-input");
+var tempoInput = document.getElementById("tempo-input");
 var lesson_modediv = document.querySelector("#lesson_mode");
 var keydivs = document.querySelectorAll(".key");
 var keynoteanimationdiv = document.querySelector("key-note-animation");
@@ -268,8 +269,54 @@ resetbuttondiv.addEventListener("click", function (e) {
 
 tempobuttondiv.addEventListener("change", function (e) {
   Player.setTempo(this.value);
-  document.getElementById("tempo-display").innerHTML = this.value;
+  document.getElementById("tempo-input").innerHTML = this.value;
 });
+
+var updateTempoDisplay = function () {
+  tempoInput.value = Player.tempo;
+  document.getElementById("tempo-input").innerHTML = Player.tempo;
+};
+
+// Nach dem Laden eines neuen Stücks oder Klicken auf Play-Button
+var onPlayButtonClick = function () {
+  if (Player.isPlaying()) {
+    pause();
+  } else {
+    play();
+  }
+  updateTempoDisplay();
+};
+
+var onLoadFile = function () {
+  Player.stop();
+  var file = document.querySelector("input[type=file]").files[0];
+  var reader = new FileReader();
+  if (file) reader.readAsArrayBuffer(file);
+  reader.addEventListener(
+    "load",
+    function () {
+      bool1 = 0;
+      Player = new MidiPlayer.Player(function (event) {
+        playmidi(event);
+        lesson_mode(event);
+        updateTempoDisplay(); // Aktualisiere das Tempo-Eingabefeld während des Abspielens
+      });
+
+      Player.loadArrayBuffer(reader.result);
+
+      playbuttondiv.removeAttribute("disabled");
+
+      play();
+    },
+    false
+  );
+};
+
+// Eventlistener für Play-Button und Dateiauswahl
+playbuttondiv.addEventListener("click", onPlayButtonClick);
+document
+  .querySelector("input[type=file]")
+  .addEventListener("change", onLoadFile);
 
 var playmidi = function (event) {
   if (bool1 == 0) {
@@ -336,12 +383,6 @@ var lesson_mode = function (event) {
     timeoutId1 = setTimeout(function () {
       playmidi(event);
     }, 3000);
-    // setTimeout(function() {
-    // 	playmidi(event);
-    // }, 9000);
-    // setTimeout(function() {
-    // 	playmidi(event);
-    // }, 12000);
     timeoutId2 = setTimeout(function () {
       play();
     }, 7500);
@@ -364,32 +405,8 @@ Soundfont.instrument(ac, "kalimba").then(function (instrumentnow) {
     });
   });
 
-  loadFile = function () {
-    Player.stop();
-    var file = document.querySelector("input[type=file]").files[0];
-    var reader = new FileReader();
-    if (file) reader.readAsArrayBuffer(file);
-    reader.addEventListener(
-      "load",
-      function () {
-        bool1 = 0;
-        Player = new MidiPlayer.Player(function (event) {
-          playmidi(event);
-          lesson_mode(event);
-        });
-
-        Player.loadArrayBuffer(reader.result);
-
-        playbuttondiv.removeAttribute("disabled");
-
-        play();
-      },
-      false
-    );
-  };
-
   // Definiere die URL zur externen MIDI-Datei
-  var midiFileUrl = "songs/Tetris__Kalimba.mid";
+  var midiFileUrl = "songs/Tetris__Kalimba_120.mid";
 
   loadDataUri = function (dataUri) {
     bool1 = 0;
