@@ -400,7 +400,7 @@ Soundfont.instrument(ac, "kalimba").then(function (instrumentnow) {
   });
 
   // Definiere die URL zur externen MIDI-Datei
-  var midiFileUrl = "songs/Tetris__Kalimba_120.mid";
+  var midiFileUrl = "songs/Sad_Song_85.mid";
 
   loadDataUri = function (dataUri) {
     bool1 = 0;
