@@ -457,3 +457,26 @@ document.addEventListener("click", function (event) {
     }
   }
 });
+
+function updatePPI() {
+  var selectedPPI = document.getElementById("deviceSelector").value;
+  document.documentElement.style.setProperty("--ppi", selectedPPI);
+  // Füge hier weitere Anpassungen für deine UI hinzu, falls notwendig
+}
+
+function filterDevices() {
+  var input, filter, select, options, option, i;
+  input = document.getElementById("searchInput");
+  filter = input.value.toUpperCase();
+  select = document.getElementById("deviceSelector");
+  options = select.getElementsByTagName("option");
+
+  for (i = 0; i < options.length; i++) {
+    option = options[i];
+    if (option.innerHTML.toUpperCase().indexOf(filter) > -1) {
+      option.style.display = "";
+    } else {
+      option.style.display = "none";
+    }
+  }
+}
