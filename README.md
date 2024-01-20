@@ -11,6 +11,8 @@ That's it!
 - [x] linked with the keyboard
 - [ ] Automatically adjust note length
 - [ ] Works with Master Keyboard
+- [ ] Color settings
+- [ ] Select device setting
 ## Libraries used:
 * [MidiPlayerJS](https://github.com/grimmdude/MidiPlayerJS "https://github.com/grimmdude/MidiPlayerJS")
 * [soundfont-player](https://github.com/danigb/soundfont-player "https://github.com/danigb/soundfont-player")
