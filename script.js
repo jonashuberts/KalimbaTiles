@@ -281,7 +281,9 @@ var onPlayButtonClick = function () {
 
 var onLoadFile = function () {
   Player.stop();
-  var file = document.querySelector("input[type=file]").files[0];
+  var fileInput = document.querySelector("input[type=file]");
+  fileInput.setAttribute("accept", ".midi"); // Accept only .midi files
+  var file = fileInput.files[0];
   var reader = new FileReader();
   if (file) reader.readAsArrayBuffer(file);
   reader.addEventListener(
