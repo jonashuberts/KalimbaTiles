@@ -70,8 +70,12 @@
 <!-- Füge dieses Textfeld für die Suche hinzu -->
 <input type="text" id="searchInput" oninput="filterDevices()" placeholder="Gerät suchen...">
 
+<!-- Das Textfeld für die benutzerdefinierte DPI -->
+<input type="text" id="customDPIInput" oninput="updateCustomPPI()" placeholder="Benutzerdefinierte DPI">
+
 <!-- Der bestehende Select-Tag -->
 <select id="deviceSelector" onchange="updatePPI()">
+	<option value="custom">Custom</option>
 	<option value="113">MacBook Air 13.3"</option>
 	<option value="112">MacBook Pro</option>
 	<option value="113">MacBook Pro 13.3"</option>

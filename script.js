@@ -460,6 +460,9 @@ document.addEventListener("click", function (event) {
 
 function updatePPI() {
   var selectedPPI = document.getElementById("deviceSelector").value;
+  if (selectedPPI !== "custom") {
+    document.getElementById("customDPIInput").value = selectedPPI;
+  }
   document.documentElement.style.setProperty("--ppi", selectedPPI);
   // Füge hier weitere Anpassungen für deine UI hinzu, falls notwendig
 }
@@ -478,5 +481,20 @@ function filterDevices() {
     } else {
       option.style.display = "none";
     }
+  }
+}
+
+function updateCustomPPI() {
+  var customPPI = document.getElementById("customDPIInput").value;
+  // Überprüfe, ob der eingegebene Wert eine gültige Zahl ist
+  if (!isNaN(customPPI) && customPPI > 0) {
+    document.getElementById("deviceSelector").value = "custom";
+    document.documentElement.style.setProperty("--ppi", customPPI);
+  } else {
+    // Setze einen Standardwert oder zeige eine Fehlermeldung an
+    // Hier wird 96 als Standardwert verwendet
+    document.getElementById("deviceSelector").value = "custom";
+    document.documentElement.style.setProperty("--ppi", 96);
+    alert("Bitte geben Sie eine gültige DPI-Zahl ein.");
   }
 }
