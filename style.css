@@ -154,71 +154,105 @@ key-note-animation {
   text-align: center;
 }
 
-[data-key-note="D6"] {
+[data-key-note="Db6"],
+[data-key-note="D6"],
+[data-key-note="D#6"] {
   left: calc((var(--ppi) / 25.4) * -50px);
 }
 
-[data-key-note="B5"] {
+[data-key-note="Bb5"],
+[data-key-note="B5"],
+[data-key-note="B#5"] {
   left: calc((var(--ppi) / 25.4) * -44px);
 }
 
-[data-key-note="G5"] {
+[data-key-note="Gb5"],
+[data-key-note="G5"],
+[data-key-note="G#5"] {
   left: calc((var(--ppi) / 25.4) * -38px);
 }
 
-[data-key-note="E5"] {
+[data-key-note="Eb5"],
+[data-key-note="E5"],
+[data-key-note="E#5"] {
   left: calc((var(--ppi) / 25.4) * -32px);
 }
 
-[data-key-note="C5"] {
+[data-key-note="Cb5"],
+[data-key-note="C5"],
+[data-key-note="C#5"] {
   left: calc((var(--ppi) / 25.4) * -26px);
 }
 
-[data-key-note="A4"] {
+[data-key-note="Ab4"],
+[data-key-note="A4"],
+[data-key-note="A#4"] {
   left: calc((var(--ppi) / 25.4) * -20px);
 }
 
-[data-key-note="F4"] {
+[data-key-note="Fb4"],
+[data-key-note="F4"],
+[data-key-note="F#4"] {
   left: calc((var(--ppi) / 25.4) * -14px);
 }
 
-[data-key-note="D4"] {
+[data-key-note="Db4"],
+[data-key-note="D4"],
+[data-key-note="D#4"] {
   left: calc((var(--ppi) / 25.4) * -8px);
 }
 
-[data-key-note="C4"] {
+[data-key-note="Cb4"],
+[data-key-note="C4"],
+[data-key-note="C#4"] {
   left: calc((var(--ppi) / 25.4) * -2px);
 }
 
-[data-key-note="E4"] {
+[data-key-note="Eb4"],
+[data-key-note="E4"],
+[data-key-note="E#4"] {
   left: calc((var(--ppi) / 25.4) * 4px);
 }
 
-[data-key-note="G4"] {
+[data-key-note="Gb4"],
+[data-key-note="G4"],
+[data-key-note="G#4"] {
   left: calc((var(--ppi) / 25.4) * 10px);
 }
 
-[data-key-note="B4"] {
+[data-key-note="Bb4"],
+[data-key-note="B4"],
+[data-key-note="B#4"] {
   left: calc((var(--ppi) / 25.4) * 16px);
 }
 
-[data-key-note="D5"] {
+[data-key-note="Db5"],
+[data-key-note="D5"],
+[data-key-note="D#5"] {
   left: calc((var(--ppi) / 25.4) * 22px);
 }
 
-[data-key-note="F5"] {
+[data-key-note="Fb5"],
+[data-key-note="F5"],
+[data-key-note="F#5"] {
   left: calc((var(--ppi) / 25.4) * 28px);
 }
 
-[data-key-note="A5"] {
+[data-key-note="Ab5"],
+[data-key-note="A5"],
+[data-key-note="A#5"] {
   left: calc((var(--ppi) / 25.4) * 34px);
 }
 
-[data-key-note="C6"] {
+[data-key-note="Cb6"],
+[data-key-note="C6"],
+[data-key-note="C#6"] {
   left: calc((var(--ppi) / 25.4) * 40px);
 }
 
-[data-key-note="E6"] {
+[data-key-note="Eb6"],
+[data-key-note="E6"],
+[data-key-note="E#6"] {
   left: calc((var(--ppi) / 25.4) * 46px);
 }
 
