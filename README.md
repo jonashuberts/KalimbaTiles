@@ -16,7 +16,8 @@ Stay tuned for exciting updates and improvements. Here's a glimpse of what's in 
 
 - [x]  **Notes Setting Function**: Customize your learning experience with adjustable note settings.
 - [x]  **Keyboard Integration**: Connect seamlessly with your keyboard for enhanced control.
-- [ ]  **Device Selection**: Fine-tune your experience with device-specific settings. Check out the [device selection settings](https://yesviz.com/viewport/).
+- [x]  **Device Selection**: Fine-tune your experience with device-specific settings. Check out the [device selection settings](https://yesviz.com/viewport/).
+- [ ]  **Improve Navbar**: To make settings with less effort and a visual nice UI.
 - [ ]  **Support different scales**: To be able to play various songs outside the c-minor scale.
 - [ ]  **Automatic Note Length Adjustment**: Effortlessly adjust note length for a more dynamic playing experience.
 - [ ]  **English code comments**: So everyone understands the code.
