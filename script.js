@@ -464,7 +464,6 @@ function updatePPI() {
     document.getElementById("customDPIInput").value = selectedPPI;
   }
   document.documentElement.style.setProperty("--ppi", selectedPPI);
-  // Füge hier weitere Anpassungen für deine UI hinzu, falls notwendig
 }
 
 function filterDevices() {
