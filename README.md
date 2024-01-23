@@ -41,8 +41,8 @@ Kalimba Tiles harnesses the power of the following libraries:
 
 ![Play](screenshots/play.png) 
 ![Settings](screenshots/settings.png) 
-![More Settings](more_settings.png) 
-![Device List](device_list.png)
+![More Settings](screenshots/more_settings.png) 
+![Device List](screenshots/device_list.png)
 
 ## License
 
