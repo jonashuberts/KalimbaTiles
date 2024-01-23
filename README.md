@@ -33,3 +33,14 @@ The following libraries power Kalimba Tiles:
 - [Bootstrap](https://getbootstrap.com/): Utilizing the power of Bootstrap for a responsive and visually appealing user interface.
 
 Feel the rhythm, embrace the melody, and let Kalimba Tiles be your companion on your musical journey!
+
+## Links and Screenshots:
+
+- [**App Link**](https://kalimbatiles.netlify.app/)
+- [**YouTube Demo Video**](https://www.youtube.com/watch?v=q6G1YihTOLI&ab_channel=KeyKalimba)
+
+### Screenshots:
+![Play](screenshots/play.png)
+![Settings](screenshots/settings.png)
+![More Settings](screenshots/more_settings.png)
+![Device List](screenshots/device_list.png)
