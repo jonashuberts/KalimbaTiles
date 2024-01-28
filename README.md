@@ -20,6 +20,7 @@ Stay tuned for exciting updates and improvements. Here's a glimpse of what's in 
 - [x]  **Improve Navbar**: Streamline settings with less effort and a visually pleasing UI.
 - [ ]  **Support different scales**: Play various songs outside the c-minor scale.
 - [ ]  **Automatic Note Length Adjustment**: Effortlessly adjust note length for a more dynamic playing experience.
+- [ ]  **Progressbar**: See where you are in the pice (and fast forward and go back).
 - [ ]  **English and Additional Code Comments**: Enhance code understanding with comprehensive comments.
 - [ ]  **Color Settings**: Personalize the app interface with customizable color settings.
 - [ ]  ~~**Navbar hide Button**: A button to hide and unhide the navbar.~~
