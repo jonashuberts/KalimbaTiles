@@ -12,13 +12,9 @@ Recently modernized into a robust React/Vite application, Kalimba Tiles now feat
 4. **Tempo & Controls**: Adjust the learning speed dynamically, toggle note numbers/dots, and pause/play with a single click.
 5. **Have Fun Learning**: Enjoy discovering new songs and refining your kalimba skills.
 
-## Screenshots
+## Screenshot
 
-### Main Interface
 ![Main Interface](screenshots/main.png) 
-
-### Active Playback
-![Active Playback](screenshots/playing.png) 
 
 ## Local Development
 
