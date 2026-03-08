@@ -1,0 +1,141 @@
+.kalimba-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 2rem;
+  z-index: 10;
+}
+
+.kalimba-board {
+  display: flex;
+  justify-content: space-around;
+  margin-top: calc((var(--ppi) / 25.4) * 20px);
+  height: calc((var(--ppi) / 25.4) * 70px);
+  width: calc((var(--ppi) / 25.4) * 110px);
+  background-color: var(--kalimba-wood);
+  border-radius: var(--radius-lg);
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 5px 5px 10px rgba(107, 107, 107, 0.2),
+    inset -5px -5px 10px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+.kalimba-key {
+  margin-top: calc((var(--ppi) / 25.4) * 2px);
+  width: calc((var(--ppi) / 25.4) * 4px);
+  height: calc((var(--ppi) / 25.4) * 60px);
+  border-radius: calc((var(--ppi) / 25.4) * 1px);
+  background: linear-gradient(180deg, #f5f0eb 0%, #dbd4ca 100%);
+  box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.6);
+  z-index: 10;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.1s ease, transform 0.1s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 10%;
+}
+
+.kalimba-key:hover {
+  background: linear-gradient(180deg, #ffffff 0%, #e8e4de 100%);
+}
+
+.kalimba-key:active, .kalimba-key.active {
+  background: var(--kalimba-key-active) !important;
+  box-shadow: 0 0 8px var(--tile-glow);
+  transform: translateY(2px);
+}
+
+.kalimba-key.first-key {
+  margin-left: calc((var(--ppi) / 25.4) * 4px);
+}
+
+.kalimba-key.last-key {
+  margin-right: calc((var(--ppi) / 25.4) * 4px);
+}
+
+/* Red Highlighted Keys (C, A, B, G, A) standard on 17-key */
+.kalimba-key[data-note="C4"],
+.kalimba-key[data-note="A4"],
+.kalimba-key[data-note="B4"],
+.kalimba-key[data-note="G5"],
+.kalimba-key[data-note="A5"] {
+  background: linear-gradient(180deg, #efa5ad 0%, var(--kalimba-key-red) 100%);
+}
+
+.kalimba-key[data-note="C4"]:active,
+.kalimba-key[data-note="C4"].active,
+.kalimba-key[data-note="A4"]:active,
+.kalimba-key[data-note="A4"].active,
+.kalimba-key[data-note="B4"]:active,
+.kalimba-key[data-note="B4"].active,
+.kalimba-key[data-note="G5"]:active,
+.kalimba-key[data-note="G5"].active,
+.kalimba-key[data-note="A5"]:active,
+.kalimba-key[data-note="A5"].active {
+    background: #ff767f !important;
+}
+
+.top-pad {
+  position: absolute;
+  width: calc((var(--ppi) / 25.4) * 104px);
+  background-color: var(--kalimba-top-pad);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  top: calc((var(--ppi) / 25.4) * 22px);
+  border-radius: calc((var(--ppi) / 25.4) * 1px);
+  height: calc((var(--ppi) / 25.4) * 3px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), inset 2px 2px 5px rgba(255, 255, 255, 0.2);
+  z-index: 20;
+}
+
+.bottom-pad {
+  position: absolute;
+  width: calc((var(--ppi) / 25.4) * 106px);
+  background-color: var(--kalimba-bottom-pad);
+  height: calc((var(--ppi) / 25.4) * 8px);
+  border-radius: calc((var(--ppi) / 25.4) * 1px);
+  box-shadow: 2px 2px 5px #000, inset 2px 2px 5px rgba(255, 255, 255, 0.1),
+    inset -2px -2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.bottom-pad.pad-1 {
+  top: calc((var(--ppi) / 25.4) * 10px);
+}
+
+.bottom-pad.pad-2 {
+  top: calc((var(--ppi) / 25.4) * 50px);
+}
+
+/* Note Labels */
+.key-label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #111;
+  font-weight: bold;
+  font-family: 'Inter', sans-serif;
+  user-select: none;
+  font-size: calc((var(--ppi) / 25.4) * 2.5px);
+  height: 20%; /* Give it a fixed height area at the bottom */
+}
+
+.key-number {
+  line-height: 1;
+}
+
+.key-octave {
+  font-size: 0.9em;
+  letter-spacing: 1px; /* Space out the double dots slightly */
+  line-height: 1;
+  margin-top: 2px;
+  min-height: 1em; /* Ensure it takes up space even if empty to keep numbers aligned */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

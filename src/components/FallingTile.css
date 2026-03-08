@@ -1,0 +1,84 @@
+.animation-container {
+  flex: 1; 
+  display: flex;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  z-index: 30; /* Render definitively above all parts of the Kalimba including the bridge */
+  overflow: visible; 
+}
+
+.falling-tiles-wrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0; /* Align perfectly with animation-container */
+  width: calc((var(--ppi) / 25.4) * 110px);
+  display: flex;
+  justify-content: space-around;
+}
+
+.falling-col {
+  width: calc((var(--ppi) / 25.4) * 4px); /* Same as key width */
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+/* Adjust outer columns to match the Kalimba's 4px first/last child margins */
+.falling-col:first-child {
+  margin-left: calc((var(--ppi) / 25.4) * 4px);
+}
+.falling-col:last-child {
+  margin-right: calc((var(--ppi) / 25.4) * 4px);
+}
+
+.falling-tile {
+  pointer-events: none;
+  width: 100%;
+  height: calc((var(--ppi) / 25.4) * 8px); /* Shorter notes */
+  background-color: var(--tile-bg);
+  position: absolute;
+  top: 0;
+  transform: translateY(-100%); /* Tile sits just above its 'top' position */
+  animation-name: fall-down;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+  border-radius: calc((var(--ppi) / 25.4) * 2px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 8px var(--tile-glow); /* More minimal glow */
+}
+
+.tile-glow {
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-radius: inherit;
+  opacity: 0.5; /* Muted internal brightness */
+}
+
+@keyframes fall-down {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  98% {
+    opacity: 1;
+  }
+  100% {
+    /* Travel seamlessly past the container EXACTLY to the top of the key */
+    top: calc(100% + calc((var(--ppi) / 25.4) * 22px)); 
+    opacity: 0; /* Despawn visually just as it hits to prevent overlaps before React unmounts */
+  }
+}
+
+/* Ignore control notes that aren't on the kalimba board */
+.falling-tile[data-key-note="C-1"] {
+  display: none;
+}
