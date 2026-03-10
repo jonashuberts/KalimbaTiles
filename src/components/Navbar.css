@@ -156,12 +156,37 @@
 
 @media (max-width: 900px) {
   .navbar {
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
+    padding: 0.8rem 1rem;
   }
   .nav-controls {
     flex-wrap: wrap;
     justify-content: center;
+  }
+}
+
+/* Landscape mobile optimization: hide title, extreme compact padding */
+@media (max-height: 600px) and (orientation: landscape) {
+  .navbar {
+    padding: 0.4rem 1rem;
+  }
+  .nav-brand h1 {
+    display: none; /* Reclaim space occupied by title row */
+  }
+  .nav-controls {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .file-upload-btn, .tempo-input, .device-selector {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.75rem;
+  }
+  .ppi-select {
+    max-width: 100px;
+    font-size: 0.75rem;
+  }
+  .btn-icon {
+    width: 32px;
+    height: 32px;
   }
 }

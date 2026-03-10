@@ -139,3 +139,11 @@
   justify-content: center;
   align-items: center;
 }
+
+/* Landscape mobile optimization: Push Kalimba further down to increase visual runway for notes */
+@media (max-height: 600px) and (orientation: landscape) {
+  .kalimba-container {
+    padding-bottom: 0;
+    margin-bottom: calc((var(--ppi) / 25.4) * -35px); /* Hide the bottom half of the wood */
+  }
+}
