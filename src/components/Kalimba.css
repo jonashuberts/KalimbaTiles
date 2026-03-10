@@ -144,6 +144,16 @@
 @media (max-height: 600px) and (orientation: landscape) {
   .kalimba-container {
     padding-bottom: 0;
-    margin-bottom: calc((var(--ppi) / 25.4) * -35px); /* Hide the bottom half of the wood */
+    margin-bottom: calc(var(--ppi) * -35px / 25.4); /* Hide the bottom half of the wood */
+  }
+
+  .kalimba-key {
+    justify-content: flex-start; /* Move labels to top */
+    padding-top: 15%; /* Push numbers slightly down from the top edge */
+    padding-bottom: 0;
+  }
+
+  .key-label {
+    height: auto;
   }
 }

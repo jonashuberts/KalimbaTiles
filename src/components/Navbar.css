@@ -154,39 +154,30 @@
   font-weight: 600;
 }
 
-@media (max-width: 900px) {
-  .navbar {
-    padding: 0.8rem 1rem;
-  }
-  .nav-controls {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-}
-
-/* Landscape mobile optimization: hide title, extreme compact padding */
+/* Landscape mobile optimization: hide title, tight center packing */
 @media (max-height: 600px) and (orientation: landscape) {
   .navbar {
-    padding: 0.4rem 1rem;
+    padding: 0.5rem 1rem;
+    justify-content: center;
   }
-  .nav-brand h1 {
+  .nav-brand {
     display: none; /* Reclaim space occupied by title row */
   }
   .nav-controls {
-    width: 100%;
-    justify-content: space-between;
-    gap: 0.5rem;
+    width: auto;
+    justify-content: center;
+    gap: 1rem;
   }
   .file-upload-btn, .tempo-input, .device-selector {
-    padding: 0.2rem 0.4rem;
-    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
   }
   .ppi-select {
-    max-width: 100px;
-    font-size: 0.75rem;
+    max-width: 150px;
+    font-size: 0.9rem;
   }
   .btn-icon {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
   }
 }
