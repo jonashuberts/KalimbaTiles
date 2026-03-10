@@ -144,7 +144,7 @@
 @media (max-height: 600px) and (orientation: landscape) {
   .kalimba-container {
     padding-bottom: 0;
-    margin-bottom: calc(var(--ppi) * -55px / 25.4); /* Hide most of the Kalimba (leaves about 1.5cm visible) */
+    margin-bottom: calc(var(--ppi) * -60px / 25.4); /* Hide most of the Kalimba (leaves about 1.5cm visible) */
   }
 
   .kalimba-key {
