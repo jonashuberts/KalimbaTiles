@@ -133,21 +133,24 @@ export function useMidiPlayer() {
       // 1. Add to falling notes animation queue immediately
       setFallingNotes(prev => [...prev, { id: noteId, note: cleanNote }]);
       
-      // 2. Play the sound & light up key AFTER the animation duration (2000ms)
-      scheduleTask(`${noteId}-on`, 2000, () => {
-        if (instrumentRef.current && acRef.current) {
-          if (acRef.current.state === 'suspended') acRef.current.resume();
-          instrumentRef.current.play(event.noteName, acRef.current.currentTime, {
-            gain: event.velocity / 100,
-          });
-        }
+      // 2. Delegate audio rendering entirely to the browser's hardware audio thread (precise 2000ms future playback)
+      // This is immune to JS thread frame drops.
+      if (instrumentRef.current && acRef.current) {
+        if (acRef.current.state === 'suspended') acRef.current.resume();
+        const preciseHitTime = acRef.current.currentTime + 2.0; 
         
+        instrumentRef.current.play(event.noteName, preciseHitTime, {
+          gain: event.velocity / 100,
+        });
+      }
+
+      // 3. Keep scheduleTask ONLY for visual React state cleanup
+      scheduleTask(`${noteId}-on`, 2000, () => {
         setActiveNotes(prev => {
           if (!prev.includes(cleanNote)) return [...prev, cleanNote];
           return prev;
         });
 
-        // 3. Remove from animation queue so they despawn cleanly
         setFallingNotes(prev => prev.filter(n => n.id !== noteId));
       });
     }
@@ -172,7 +175,9 @@ export function useMidiPlayer() {
         playerRef.current.play();
       } else {
         clearTasks();
-        // Small artificial delay matched from legacy code to allow tiles to start rendering
+        // Clear old sounds if restarting
+        if (instrumentRef.current) instrumentRef.current.stop(); 
+        
         setTimeout(() => {
           playerRef.current.play();
         }, 1000); 
@@ -186,8 +191,9 @@ export function useMidiPlayer() {
       playerRef.current.pause();
       setIsPlaying(false);
       pauseTasks();
-      if (instrumentRef.current) {
-        instrumentRef.current.stop(); // Immediately mute active sounds on pause
+      // Halt the native hardware audio clock so scheduled sounds freeze flawlessly in time!
+      if (acRef.current && acRef.current.state === 'running') {
+        acRef.current.suspend(); 
       }
     }
   };
@@ -199,8 +205,12 @@ export function useMidiPlayer() {
       setActiveNotes([]);
       setFallingNotes([]);
       clearTasks();
+      // Resume context briefly if needed to flush buffers out cleanly
+      if (acRef.current && acRef.current.state === 'suspended') {
+        acRef.current.resume();
+      }
       if (instrumentRef.current) {
-        instrumentRef.current.stop(); // Mute active sounds
+        instrumentRef.current.stop(); // Eradicate all buffered scheduled notes securely
       }
     }
   };
