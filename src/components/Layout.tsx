@@ -88,7 +88,7 @@ export const Layout: React.FC = () => {
                         key={noteEvent.id}
                         note={noteEvent.note}
                         duration={2000}
-                        onHit={() => {}}
+                        isPlaying={isPlaying}
                      />
                    ))}
                  </div>

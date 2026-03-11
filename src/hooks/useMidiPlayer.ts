@@ -22,8 +22,63 @@ export function useMidiPlayer() {
   const instrumentRef = useRef<any>(null);
   const acRef = useRef<any>(null);
   
+  // Track scheduled tasks so we can pause and resume them
+  type PendingTask = {
+    id: string;
+    startTime: number;
+    remainingTime: number;
+    callback: () => void;
+    timerId?: ReturnType<typeof setTimeout>;
+  };
+  const pendingTasks = useRef<Map<string, PendingTask>>(new Map());
+
   // To avoid duplicate sound events, we track a flag
   const tempoInitialized = useRef(false);
+
+  const scheduleTask = (id: string, delay: number, callback: () => void) => {
+    const task: PendingTask = {
+      id,
+      startTime: Date.now(),
+      remainingTime: Math.max(0, delay),
+      callback,
+      timerId: setTimeout(() => {
+        callback();
+        pendingTasks.current.delete(id);
+      }, delay)
+    };
+    pendingTasks.current.set(id, task);
+  };
+
+  const pauseTasks = () => {
+    const now = Date.now();
+    for (const task of pendingTasks.current.values()) {
+      if (task.timerId) {
+        clearTimeout(task.timerId);
+        task.timerId = undefined;
+        task.remainingTime -= (now - task.startTime);
+      }
+    }
+  };
+
+  const resumeTasks = () => {
+    const now = Date.now();
+    for (const [id, task] of pendingTasks.current.entries()) {
+      if (!task.timerId) {
+        task.startTime = now;
+        task.timerId = setTimeout(() => {
+          task.callback();
+          pendingTasks.current.delete(id);
+        }, task.remainingTime);
+      }
+    }
+  };
+
+  const clearTasks = () => {
+    for (const task of pendingTasks.current.values()) {
+      if (task.timerId) clearTimeout(task.timerId);
+    }
+    pendingTasks.current.clear();
+  };
 
   useEffect(() => {
     // Initialize AudioContext and Soundfont on mount
@@ -79,8 +134,9 @@ export function useMidiPlayer() {
       setFallingNotes(prev => [...prev, { id: noteId, note: cleanNote }]);
       
       // 2. Play the sound & light up key AFTER the animation duration (2000ms)
-      setTimeout(() => {
+      scheduleTask(`${noteId}-on`, 2000, () => {
         if (instrumentRef.current && acRef.current) {
+          if (acRef.current.state === 'suspended') acRef.current.resume();
           instrumentRef.current.play(event.noteName, acRef.current.currentTime, {
             gain: event.velocity / 100,
           });
@@ -93,23 +149,34 @@ export function useMidiPlayer() {
 
         // 3. Remove from animation queue so they despawn cleanly
         setFallingNotes(prev => prev.filter(n => n.id !== noteId));
-      }, 2000);
+      });
     }
 
     if (event.name === "Note off" || (event.name === "Note on" && event.velocity === 0)) {
       const cleanNote = event.noteName.replace(/C-1/gi, "NO");
-      setTimeout(() => {
+      scheduleTask(`off-${Date.now()}-${Math.random()}`, 2000 + 150, () => {
         setActiveNotes(prev => prev.filter(n => n !== cleanNote));
-      }, 2000 + 150); // Slight delay to ensure the visual key press flashes adequately
+      });
     }
   };
 
   const play = () => {
     if (playerRef.current) {
-      // Small artificial delay matched from legacy code to allow tiles to start rendering
-      setTimeout(() => {
+      if (acRef.current && acRef.current.state === 'suspended') {
+        acRef.current.resume();
+      }
+      
+      const isResuming = playerRef.current.getCurrentTick() > 0 && !isPlaying;
+      if (isResuming) {
+        resumeTasks();
         playerRef.current.play();
-      }, 1000); 
+      } else {
+        clearTasks();
+        // Small artificial delay matched from legacy code to allow tiles to start rendering
+        setTimeout(() => {
+          playerRef.current.play();
+        }, 1000); 
+      }
       setIsPlaying(true);
     }
   };
@@ -118,6 +185,10 @@ export function useMidiPlayer() {
     if (playerRef.current) {
       playerRef.current.pause();
       setIsPlaying(false);
+      pauseTasks();
+      if (instrumentRef.current) {
+        instrumentRef.current.stop(); // Immediately mute active sounds on pause
+      }
     }
   };
 
@@ -127,12 +198,20 @@ export function useMidiPlayer() {
       setIsPlaying(false);
       setActiveNotes([]);
       setFallingNotes([]);
+      clearTasks();
+      if (instrumentRef.current) {
+        instrumentRef.current.stop(); // Mute active sounds
+      }
     }
   };
 
   const reset = () => {
     setActiveNotes([]);
     setFallingNotes([]);
+    clearTasks();
+    if (instrumentRef.current) {
+      instrumentRef.current.stop();
+    }
   };
 
   const setGlobalTempo = (newTempo: number) => {
