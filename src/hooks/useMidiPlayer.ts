@@ -148,8 +148,7 @@ export function useMidiPlayer() {
       // 3. Instead of deleting the DOM element (which causes React to lag on iOS during the exact strike frame),
       // we let the CSS animation keep it at opacity: 0 via animation-fill-mode natively.
       scheduleTask(`${noteId}-on`, 2000, () => {
-        // We removed the activeNotes visual trigger here because JS drifts on mobile!
-        // It is now perfectly synced to CSS onAnimationEnd via triggerKeyEffect.
+        triggerKeyEffect(cleanNote);
       });
 
       // 4. Safe Garbage Collection: remove invisible elements safely 3 seconds AFTER the strike 

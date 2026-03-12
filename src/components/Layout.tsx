@@ -23,8 +23,7 @@ export const Layout: React.FC = () => {
     stop,
     reset,
     setTempo,
-    playDirectNote,
-    triggerKeyEffect
+    playDirectNote
   } = useMidiPlayer();
 
   // Handle File Upload from Local System
@@ -90,7 +89,6 @@ export const Layout: React.FC = () => {
                         note={noteEvent.note}
                         duration={2000}
                         isPlaying={isPlaying}
-                        onHit={triggerKeyEffect}
                      />
                    ))}
                  </div>
