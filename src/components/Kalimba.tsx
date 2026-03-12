@@ -25,6 +25,8 @@ export const KALIMBA_KEYS = [
 interface KalimbaProps {
   ppi: number;
   activeNotes: string[];
+  fallingNotes: { id: string; note: string }[];
+  isPlaying: boolean;
   onNoteClick: (note: string) => void;
   showNumbers: boolean;
 }
@@ -34,6 +36,8 @@ const KalimbaKey = React.memo(({
   isFirst, 
   isLast, 
   isActive, 
+  fallingNotes,
+  isPlaying,
   showNumbers, 
   onNoteClick 
 }: { 
@@ -41,6 +45,8 @@ const KalimbaKey = React.memo(({
   isFirst: boolean; 
   isLast: boolean; 
   isActive: boolean; 
+  fallingNotes: any[];
+  isPlaying: boolean;
   showNumbers: boolean; 
   onNoteClick: (note: string) => void;
 }) => {
@@ -50,6 +56,19 @@ const KalimbaKey = React.memo(({
        data-note={keyData.note}
        onClick={() => onNoteClick(keyData.note)}
     >
+      {/* 
+        This is the secret weapon for iOS sync!
+        We render a pure CSS flash with a 2000ms delay EXACTLY mapped to the dropping tile.
+        This entirely skips React render latency at the 2000ms strike frame!
+      */}
+      {fallingNotes.map((note) => (
+         <div 
+           key={`glow-${note.id}`} 
+           className="kalimba-key-glow"
+           style={{ animationPlayState: isPlaying ? 'running' : 'paused' }}
+         ></div>
+      ))}
+
       {showNumbers && (
         <div className="key-label">
           <span className="key-number">{keyData.label}</span>
@@ -61,11 +80,14 @@ const KalimbaKey = React.memo(({
     </div>
   );
 }, (prev, next) => {
-  // Custom equality: only re-render if the active state or number visibility actually changes
-  return prev.isActive === next.isActive && prev.showNumbers === next.showNumbers;
+  if (prev.isActive !== next.isActive) return false;
+  if (prev.showNumbers !== next.showNumbers) return false;
+  if (prev.isPlaying !== next.isPlaying) return false;
+  if (prev.fallingNotes.length !== next.fallingNotes.length) return false;
+  return true;
 });
 
-export const Kalimba: React.FC<KalimbaProps> = ({ ppi, activeNotes, onNoteClick, showNumbers }) => {
+export const Kalimba: React.FC<KalimbaProps> = ({ ppi, activeNotes, fallingNotes, isPlaying, onNoteClick, showNumbers }) => {
   // Update the CSS variable whenever the PPI changes so hardware dimensions scale correctly
   useEffect(() => {
     document.documentElement.style.setProperty('--ppi', ppi.toString());
@@ -78,6 +100,7 @@ export const Kalimba: React.FC<KalimbaProps> = ({ ppi, activeNotes, onNoteClick,
           const isFirst = index === 0;
           const isLast = index === KALIMBA_KEYS.length - 1;
           const isActive = activeNotes.includes(keyData.note);
+          const keyFallingNotes = fallingNotes.filter(n => n.note === keyData.note);
           
           return (
             <KalimbaKey 
@@ -86,6 +109,8 @@ export const Kalimba: React.FC<KalimbaProps> = ({ ppi, activeNotes, onNoteClick,
               isFirst={isFirst}
               isLast={isLast}
               isActive={isActive}
+              fallingNotes={keyFallingNotes}
+              isPlaying={isPlaying}
               showNumbers={showNumbers}
               onNoteClick={onNoteClick}
             />

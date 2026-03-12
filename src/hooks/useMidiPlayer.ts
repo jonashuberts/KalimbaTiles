@@ -145,11 +145,9 @@ export function useMidiPlayer() {
         });
       }
 
-      // 3. Instead of deleting the DOM element (which causes React to lag on iOS during the exact strike frame),
-      // we let the CSS animation keep it at opacity: 0 via animation-fill-mode natively.
-      scheduleTask(`${noteId}-on`, 2000, () => {
-        triggerKeyEffect(cleanNote);
-      });
+      // 3. The Kalimba Key glow is now natively handled by declarative CSS `animation-delay: 2000ms`
+      // rendered inside KalimbaKey based directly on the `fallingNotes` array!
+      // This achieves precisely 0.0ms of latency drift from the visual tile.
 
       // 4. Safe Garbage Collection: remove invisible elements safely 3 seconds AFTER the strike 
       // when the CPU is completely idle, preventing infinite DOM growth.
@@ -243,19 +241,6 @@ export function useMidiPlayer() {
     }
   };
 
-  // Instantly highlight a key, triggered by CSS onAnimationEnd of the falling tile
-  const triggerKeyEffect = (note: string) => {
-    setActiveNotes(prev => {
-      if (!prev.includes(note)) return [...prev, note];
-      return prev;
-    });
-
-    // Fade the key out exactly 150ms later (simulating a physical tine pluck)
-    scheduleTask(`glow-${Date.now()}-${Math.random()}`, 150, () => {
-      setActiveNotes(prev => prev.filter(n => n !== note));
-    });
-  };
-
   return {
     isReady,
     isPlaying,
@@ -268,7 +253,6 @@ export function useMidiPlayer() {
     stop,
     reset,
     setTempo: setGlobalTempo,
-    playDirectNote,
-    triggerKeyEffect
+    playDirectNote
   };
 }

@@ -100,7 +100,9 @@ export const Layout: React.FC = () => {
         {/* Physical Interactive Kalimba Layer */}
         <Kalimba 
           ppi={ppi} 
-          activeNotes={activeNotes} 
+          activeNotes={activeNotes}
+          fallingNotes={fallingNotes}
+          isPlaying={isPlaying}
           onNoteClick={playDirectNote}
           showNumbers={showNumbers}
         />
