@@ -64,62 +64,30 @@
   background: var(--kalimba-key-active);
   box-shadow: inset 0 0 10px rgba(0,0,0,0.1), 0 0 12px var(--tile-glow);
   opacity: 0;
-.kalimba-key-glow {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  border-radius: inherit;
-  background: var(--kalimba-key-active);
-  box-shadow: inset 0 0 10px rgba(0,0,0,0.1), 0 0 12px var(--tile-glow);
-  opacity: 0;
-  -webkit-animation-duration: 300ms;
+  transform: translate3d(0,0,0); /* Force iOS Hardware Compositing Layer */
+  animation-name: delayed-key-flash;
   animation-duration: 300ms;
-  -webkit-animation-delay: 2000ms;
   animation-delay: 2000ms; /* EXACTLY matched to the visually dropping tile duration! */
-  -webkit-animation-iteration-count: 1;
   animation-iteration-count: 1;
-  -webkit-animation-fill-mode: forwards;
   animation-fill-mode: forwards;
   pointer-events: none;
   z-index: 5;
-  will-change: opacity;
-  /* iOS Safari Hardware Acceleration Fixes */
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0); 
+  will-change: opacity, transform;
 }
 
-.kalimba-key-glow-a {
-  -webkit-animation-name: delayed-key-flash-a;
-  animation-name: delayed-key-flash-a;
-}
-.kalimba-key-glow-b {
-  -webkit-animation-name: delayed-key-flash-b;
-  animation-name: delayed-key-flash-b;
-}
-
-@-webkit-keyframes delayed-key-flash-a {
-  0% { opacity: 1; }
-  30% { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-@keyframes delayed-key-flash-a {
-  0% { opacity: 1; }
-  30% { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-@-webkit-keyframes delayed-key-flash-b {
-  0% { opacity: 1; }
-  30% { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-@keyframes delayed-key-flash-b {
-  0% { opacity: 1; }
-  30% { opacity: 1; }
-  100% { opacity: 0; }
+@keyframes delayed-key-flash {
+  0% {
+    opacity: 1;
+    transform: translate3d(0,0,0);
+  }
+  30% {
+    opacity: 1;
+    transform: translate3d(0,0,0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0,0,0);
+  }
 }
 
 /* Red Highlighted Keys (C, A, B, G, A) standard on 17-key */
@@ -229,5 +197,4 @@
   .key-label {
     height: auto;
   }
-}
 }
