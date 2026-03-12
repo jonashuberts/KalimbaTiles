@@ -7,17 +7,20 @@ interface FallingTileProps {
   isPlaying: boolean;
 }
 
-export const FallingTile: React.FC<FallingTileProps> = ({ note, duration = 2000, isPlaying }) => {
+export const FallingTile = React.memo(({ note, duration = 2000, isPlaying }: FallingTileProps) => {
   return (
     <div 
-      className="falling-tile" 
+      className="falling-tile-wrapper" 
       data-key-note={note}
       style={{ 
         animationDuration: `${duration}ms`,
         animationPlayState: isPlaying ? 'running' : 'paused'
       }}
     >
-      <div className="tile-glow"></div>
+      <div className="falling-tile-visual">
+        <div className="tile-glow"></div>
+      </div>
     </div>
   );
-};
+});
+FallingTile.displayName = 'FallingTile';

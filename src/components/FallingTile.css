@@ -33,24 +33,29 @@
   margin-right: calc((var(--ppi) / 25.4) * 4px);
 }
 
-.falling-tile {
+.falling-tile-wrapper {
   pointer-events: none;
   width: 100%;
-  height: calc((var(--ppi) / 25.4) * 8px); /* Shorter notes */
-  background-color: var(--tile-bg);
+  height: 100%;
   position: absolute;
   top: 0;
-  transform: translateY(-100%); /* Tile sits just above its 'top' position */
+  left: 0;
+  transform: translate3d(0, -100%, 0);
   animation-name: fall-down;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-timing-function: linear;
-  border-radius: calc((var(--ppi) / 25.4) * 2px);
   display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 0 8px var(--tile-glow); /* More minimal glow */
-  will-change: top, opacity; /* Force mobile hardware compositor to pre-calculate this! Very important for iOS */
+  align-items: flex-end; /* visual tile aligns to bottom of this moving container */
+}
+
+.falling-tile-visual {
+  width: 100%;
+  height: calc((var(--ppi) / 25.4) * 8px);
+  background-color: var(--tile-bg);
+  border-radius: calc((var(--ppi) / 25.4) * 2px);
+  box-shadow: 0 0 8px var(--tile-glow);
+  position: relative;
 }
 
 .tile-glow {
@@ -63,7 +68,7 @@
 
 @keyframes fall-down {
   0% {
-    top: 0%;
+    transform: translate3d(0, -100%, 0);
     opacity: 0;
   }
   5% {
@@ -73,13 +78,13 @@
     opacity: 1;
   }
   100% {
-    /* Travel seamlessly past the container EXACTLY to the top of the key */
-    top: calc(100% + calc((var(--ppi) / 25.4) * 22px)); 
-    opacity: 0; /* Despawn visually just as it hits to prevent overlaps before React unmounts */
+    /* Translate exactly container-height + 22px overshoot using physical coordinates */
+    transform: translate3d(0, calc((var(--ppi) / 25.4) * 22px), 0);
+    opacity: 0; 
   }
 }
 
 /* Ignore control notes that aren't on the kalimba board */
-.falling-tile[data-key-note="C-1"] {
+.falling-tile-wrapper[data-key-note="C-1"] {
   display: none;
 }

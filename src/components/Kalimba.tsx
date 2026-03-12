@@ -29,6 +29,42 @@ interface KalimbaProps {
   showNumbers: boolean;
 }
 
+const KalimbaKey = React.memo(({ 
+  keyData, 
+  isFirst, 
+  isLast, 
+  isActive, 
+  showNumbers, 
+  onNoteClick 
+}: { 
+  keyData: any; 
+  isFirst: boolean; 
+  isLast: boolean; 
+  isActive: boolean; 
+  showNumbers: boolean; 
+  onNoteClick: (note: string) => void;
+}) => {
+  return (
+    <div
+       className={`kalimba-key ${isFirst ? 'first-key' : ''} ${isLast ? 'last-key' : ''} ${isActive ? 'active' : ''}`}
+       data-note={keyData.note}
+       onClick={() => onNoteClick(keyData.note)}
+    >
+      {showNumbers && (
+        <div className="key-label">
+          <span className="key-number">{keyData.label}</span>
+          <span className="key-octave">
+            {keyData.octave === '*' ? '•' : keyData.octave === '**' ? '••' : ''}
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}, (prev, next) => {
+  // Custom equality: only re-render if the active state or number visibility actually changes
+  return prev.isActive === next.isActive && prev.showNumbers === next.showNumbers;
+});
+
 export const Kalimba: React.FC<KalimbaProps> = ({ ppi, activeNotes, onNoteClick, showNumbers }) => {
   // Update the CSS variable whenever the PPI changes so hardware dimensions scale correctly
   useEffect(() => {
@@ -44,21 +80,15 @@ export const Kalimba: React.FC<KalimbaProps> = ({ ppi, activeNotes, onNoteClick,
           const isActive = activeNotes.includes(keyData.note);
           
           return (
-            <div
-               key={keyData.note}
-               className={`kalimba-key ${isFirst ? 'first-key' : ''} ${isLast ? 'last-key' : ''} ${isActive ? 'active' : ''}`}
-               data-note={keyData.note}
-               onClick={() => onNoteClick(keyData.note)}
-            >
-              {showNumbers && (
-                <div className="key-label">
-                  <span className="key-number">{keyData.label}</span>
-                  <span className="key-octave">
-                    {keyData.octave === '*' ? '•' : keyData.octave === '**' ? '••' : ''}
-                  </span>
-                </div>
-              )}
-            </div>
+            <KalimbaKey 
+              key={keyData.note}
+              keyData={keyData}
+              isFirst={isFirst}
+              isLast={isLast}
+              isActive={isActive}
+              showNumbers={showNumbers}
+              onNoteClick={onNoteClick}
+            />
           );
         })}
         {/* Hardware Pads for Visual Authenticity */}
