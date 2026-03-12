@@ -50,6 +50,7 @@
   justify-content: center;
   align-items: center;
   box-shadow: 0 0 8px var(--tile-glow); /* More minimal glow */
+  will-change: top, opacity; /* Force mobile hardware compositor to pre-calculate this! Very important for iOS */
 }
 
 .tile-glow {
@@ -81,9 +82,4 @@
 /* Ignore control notes that aren't on the kalimba board */
 .falling-tile[data-key-note="C-1"] {
   display: none;
-}
-
-/* Fast CSS-only despawn to save CPU overhead from React unmounting */
-.falling-tile.tile-hit {
-  opacity: 0 !important;
 }

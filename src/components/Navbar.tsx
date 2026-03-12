@@ -1,6 +1,7 @@
 import React from 'react';
 import { DEVICES } from '../constants/devices';
 import { Play, Square, RotateCcw, Monitor, FileMusic, Settings } from 'lucide-react';
+import packageJson from '../../package.json';
 import './Navbar.css';
 
 interface NavbarProps {
@@ -35,7 +36,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <nav className="navbar">
       <div className="nav-brand">
-        <h1>KalimbaTiles <span className="pro-badge">PRO</span></h1>
+        <h1>KalimbaTiles <span className="version-badge">v{packageJson.version}</span></h1>
       </div>
 
       <div className="nav-controls">

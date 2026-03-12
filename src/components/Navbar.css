@@ -21,14 +21,15 @@
   margin: 0;
 }
 
-.pro-badge {
-  font-size: 0.6rem;
+.version-badge {
+  font-size: 0.65rem;
   padding: 2px 6px;
-  background: var(--text-accent);
-  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
   border-radius: 4px;
-  font-weight: 800;
-  letter-spacing: 1px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  vertical-align: middle;
 }
 
 .nav-controls {

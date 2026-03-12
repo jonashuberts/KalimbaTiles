@@ -5,12 +5,13 @@ interface FallingTileProps {
   note: string;
   duration?: number; // Time it takes to reach the bottom in ms
   isPlaying: boolean;
+  isHit: boolean;
 }
 
-export const FallingTile: React.FC<FallingTileProps> = ({ note, duration = 2000, isPlaying }) => {
+export const FallingTile: React.FC<FallingTileProps> = ({ note, duration = 2000, isPlaying, isHit }) => {
   return (
     <div 
-      className="falling-tile" 
+      className={`falling-tile ${isHit ? 'tile-hit' : ''}`} 
       data-key-note={note}
       style={{ 
         animationDuration: `${duration}ms`,
