@@ -71,16 +71,19 @@
     transform: translate3d(0, -100%, 0);
     opacity: 0;
   }
-  5% {
+  1% {
     opacity: 1;
   }
-  98% {
+  99.9% {
+    transform: translate3d(0, calc((var(--ppi) / 25.4) * 22px), 0);
     opacity: 1;
+    box-shadow: 0 0 8px var(--tile-glow);
   }
   100% {
     /* Translate exactly container-height + 22px overshoot using physical coordinates */
     transform: translate3d(0, calc((var(--ppi) / 25.4) * 22px), 0);
     opacity: 0; 
+    box-shadow: 0 0 0px var(--tile-glow);
   }
 }
 
