@@ -15,8 +15,9 @@ export function useMidiPlayer() {
   const [isReady, setIsReady] = useState(false);
   const [tempo, setTempo] = useState(50);
   const [activeNotes, setActiveNotes] = useState<string[]>([]);
-  // We track "falling" notes separately so they trigger animations exactly when parsed
-  const [fallingNotes, setFallingNotes] = useState<{ id: string; note: string }[]>([]);
+  // Store falling notes. Instead of deleting them from memory aggressively (causing React DOM churn), 
+  // we flag them as "hit" and hide them with CSS to save mobile CPU.
+  const [fallingNotes, setFallingNotes] = useState<{ id: string; note: string; isHit: boolean }[]>([]);
 
   const playerRef = useRef<any>(null);
   const instrumentRef = useRef<any>(null);
@@ -131,7 +132,7 @@ export function useMidiPlayer() {
       const noteId = `${Date.now()}-${Math.random()}`;
       
       // 1. Add to falling notes animation queue immediately
-      setFallingNotes(prev => [...prev, { id: noteId, note: cleanNote }]);
+      setFallingNotes(prev => [...prev, { id: noteId, note: cleanNote, isHit: false }]);
       
       // 2. Delegate audio rendering entirely to the browser's hardware audio thread (precise 2000ms future playback)
       // This is immune to JS thread frame drops.
@@ -144,14 +145,21 @@ export function useMidiPlayer() {
         });
       }
 
-      // 3. Keep scheduleTask ONLY for visual React state cleanup
+      // 3. Instead of deleting the DOM element (which causes React to lag on iOS during the exact strike frame),
+      // we flag it as "hit" so the CSS instantly hides it, but the DOM tree rests. 
       scheduleTask(`${noteId}-on`, 2000, () => {
         setActiveNotes(prev => {
           if (!prev.includes(cleanNote)) return [...prev, cleanNote];
           return prev;
         });
 
-        setFallingNotes(prev => prev.filter(n => n.id !== noteId));
+        setFallingNotes(prev => prev.map(n => n.id === noteId ? { ...n, isHit: true } : n));
+      });
+
+      // 4. Safe Garbage Collection: remove invisible elements safely 3 seconds AFTER the strike 
+      // when the CPU is completely idle, preventing infinite DOM growth.
+      scheduleTask(`${noteId}-cleanup`, 5000, () => {
+         setFallingNotes(prev => prev.filter(n => n.id !== noteId));
       });
     }
 

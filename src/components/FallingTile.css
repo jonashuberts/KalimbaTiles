@@ -82,3 +82,8 @@
 .falling-tile[data-key-note="C-1"] {
   display: none;
 }
+
+/* Fast CSS-only despawn to save CPU overhead from React unmounting */
+.falling-tile.tile-hit {
+  opacity: 0 !important;
+}
