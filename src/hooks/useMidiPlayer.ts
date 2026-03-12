@@ -23,6 +23,7 @@ export function useMidiPlayer() {
   const playerRef = useRef<any>(null);
   const instrumentRef = useRef<any>(null);
   const acRef = useRef<any>(null);
+  const isIntentionallyPaused = useRef(true); // Start true so we don't wake up on random clicks before playing
   
   // Track scheduled tasks so we can pause and resume them
   type PendingTask = {
@@ -98,6 +99,10 @@ export function useMidiPlayer() {
       // It CANNOT be resumed programmatically (e.g., inside the handleMidiEvent loop).
       // It MUST be resumed synchronously inside a direct user interaction event (touchstart/click).
       const unlockAudioContext = () => {
+        // If the user intentionally pressed Pause/Stop, we should not hijack their choice and force-play 
+        // the remaining 2000ms buffer just because the click event bubbled up to the document!
+        if (isIntentionallyPaused.current) return;
+
         if (acRef.current && acRef.current.state === 'suspended') {
           acRef.current.resume().then(() => {
             console.log("AudioContext forcefully awakened by user interaction.");
@@ -184,6 +189,7 @@ export function useMidiPlayer() {
   };
 
   const play = () => {
+    isIntentionallyPaused.current = false;
     if (playerRef.current) {
       if (acRef.current && acRef.current.state === 'suspended') {
         acRef.current.resume();
@@ -207,6 +213,7 @@ export function useMidiPlayer() {
   };
 
   const pause = () => {
+    isIntentionallyPaused.current = true;
     if (playerRef.current) {
       playerRef.current.pause();
       setIsPlaying(false);
@@ -219,6 +226,7 @@ export function useMidiPlayer() {
   };
 
   const stop = () => {
+    isIntentionallyPaused.current = true;
     if (playerRef.current) {
       playerRef.current.stop();
       setIsPlaying(false);
