@@ -62,25 +62,27 @@
   top: 0; left: 0; right: 0; bottom: 0;
   border-radius: inherit;
   background: var(--kalimba-key-active);
-  box-shadow: 0 0 8px var(--tile-glow);
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.1), 0 0 12px var(--tile-glow);
   opacity: 0;
   animation-name: delayed-key-flash;
-  animation-duration: 200ms;
+  animation-duration: 300ms;
   animation-delay: 2000ms; /* EXACTLY matched to the visually dropping tile duration! */
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   pointer-events: none;
   z-index: 5;
+  will-change: opacity;
 }
 
 @keyframes delayed-key-flash {
   0% {
     opacity: 1;
-    transform: translateY(2px);
+  }
+  30% {
+    opacity: 1;
   }
   100% {
     opacity: 0;
-    transform: translateY(0);
   }
 }
 
