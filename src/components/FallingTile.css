@@ -54,7 +54,9 @@
   height: calc((var(--ppi) / 25.4) * 8px);
   background-color: var(--tile-bg);
   border-radius: calc((var(--ppi) / 25.4) * 2px);
-  box-shadow: 0 0 8px var(--tile-glow);
+  /* The shadow was clipping against the GPU composite layer edge. 
+     Instead of box-shadow, we just rely on the white inner glow for the bright aesthetic 
+     which avoids dirty repaints on iOS */
   position: relative;
 }
 
@@ -71,19 +73,16 @@
     transform: translate3d(0, -100%, 0);
     opacity: 0;
   }
-  1% {
+  5% {
     opacity: 1;
   }
-  99.9% {
-    transform: translate3d(0, calc((var(--ppi) / 25.4) * 22px), 0);
+  98% {
     opacity: 1;
-    box-shadow: 0 0 8px var(--tile-glow);
   }
   100% {
     /* Translate exactly container-height + 22px overshoot using physical coordinates */
     transform: translate3d(0, calc((var(--ppi) / 25.4) * 22px), 0);
     opacity: 0; 
-    box-shadow: 0 0 0px var(--tile-glow);
   }
 }
 

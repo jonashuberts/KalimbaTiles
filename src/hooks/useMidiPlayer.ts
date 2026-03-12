@@ -93,6 +93,26 @@ export function useMidiPlayer() {
           console.log("Soundfont loaded!");
         });
       }
+
+      // iOS Safari forcefully suspends the AudioContext when the screen is locked or the app is backgrounded.
+      // It CANNOT be resumed programmatically (e.g., inside the handleMidiEvent loop).
+      // It MUST be resumed synchronously inside a direct user interaction event (touchstart/click).
+      const unlockAudioContext = () => {
+        if (acRef.current && acRef.current.state === 'suspended') {
+          acRef.current.resume().then(() => {
+            console.log("AudioContext forcefully awakened by user interaction.");
+          });
+        }
+      };
+
+      document.addEventListener('touchstart', unlockAudioContext, { passive: true });
+      document.addEventListener('click', unlockAudioContext, { passive: true });
+
+      return () => {
+        document.removeEventListener('touchstart', unlockAudioContext);
+        document.removeEventListener('click', unlockAudioContext);
+        document.removeEventListener('keydown', unlockAudioContext);
+      };
     }
   }, []);
 
