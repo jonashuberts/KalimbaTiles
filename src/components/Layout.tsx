@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Navbar } from './Navbar';
-import { Kalimba, KALIMBA_KEYS } from './Kalimba';
+import { Kalimba } from './Kalimba';
+import { KALIMBA_KEYS } from '../constants/kalimba';
 import { FallingTile } from './FallingTile';
 import { useMidiPlayer } from '../hooks/useMidiPlayer';
 import './Layout.css';
@@ -49,7 +50,7 @@ export const Layout: React.FC = () => {
         })
         .catch(err => console.error("Failed to load MIDI from URL:", err));
     }
-  }, []);
+  }, [initPlayer]);
 
   return (
     <div className="layout-container">
@@ -77,7 +78,7 @@ export const Layout: React.FC = () => {
         <div className="animation-container">
           <div className="falling-tiles-wrapper">
              {/* We create 17 invisible flex columns mathematically matching the keys. */}
-             {KALIMBA_KEYS.map((keyData) => {
+             {KALIMBA_KEYS.map((keyData: { note: string; label: string; octave: string }) => {
                // Filter events meant for this specific key pipeline
                const activeTilesForThisKey = fallingNotes.filter(n => n.note === keyData.note);
                
