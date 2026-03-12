@@ -64,8 +64,13 @@
   background: var(--kalimba-key-active);
   box-shadow: inset 0 0 10px rgba(0,0,0,0.1), 0 0 12px var(--tile-glow);
   opacity: 0;
-  -webkit-animation-name: delayed-key-flash;
-  animation-name: delayed-key-flash;
+.kalimba-key-glow {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: inherit;
+  background: var(--kalimba-key-active);
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.1), 0 0 12px var(--tile-glow);
+  opacity: 0;
   -webkit-animation-duration: 300ms;
   animation-duration: 300ms;
   -webkit-animation-delay: 2000ms;
@@ -84,13 +89,34 @@
   transform: translateZ(0); 
 }
 
-@-webkit-keyframes delayed-key-flash {
+.kalimba-key-glow-a {
+  -webkit-animation-name: delayed-key-flash-a;
+  animation-name: delayed-key-flash-a;
+}
+.kalimba-key-glow-b {
+  -webkit-animation-name: delayed-key-flash-b;
+  animation-name: delayed-key-flash-b;
+}
+
+@-webkit-keyframes delayed-key-flash-a {
   0% { opacity: 1; }
   30% { opacity: 1; }
   100% { opacity: 0; }
 }
 
-@keyframes delayed-key-flash {
+@keyframes delayed-key-flash-a {
+  0% { opacity: 1; }
+  30% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@-webkit-keyframes delayed-key-flash-b {
+  0% { opacity: 1; }
+  30% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes delayed-key-flash-b {
   0% { opacity: 1; }
   30% { opacity: 1; }
   100% { opacity: 0; }
@@ -203,4 +229,5 @@
   .key-label {
     height: auto;
   }
+}
 }

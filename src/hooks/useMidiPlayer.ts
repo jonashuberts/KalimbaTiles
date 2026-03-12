@@ -84,7 +84,7 @@ export function useMidiPlayer() {
   useEffect(() => {
     // Initialize AudioContext and Soundfont on mount
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    if (AudioCtx) {
+    if (AudioCtx && !acRef.current) {
       acRef.current = new AudioCtx();
       if (window.Soundfont) {
         window.Soundfont.instrument(acRef.current, 'kalimba').then((inst: any) => {
@@ -93,7 +93,31 @@ export function useMidiPlayer() {
         });
       }
     }
-  }, []);
+
+    // Crucial fix for iOS Safari background/lock-screen sustained audio glitches.
+    // If the browser loses visibility natively, we must explicitly suspend the hardware audio clock.
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (playerRef.current && isPlaying) {
+          playerRef.current.pause();
+          setIsPlaying(false);
+          pauseTasks();
+        }
+        if (acRef.current && acRef.current.state === 'running') {
+          acRef.current.suspend(); 
+        }
+        if (instrumentRef.current) {
+          instrumentRef.current.stop(); // Eradicate all lingering scheduled tones infinitely buffering
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [isPlaying]); // Depend on isPlaying so the event handler closure captures the latest state
 
   const initPlayer = (arrayBuffer: ArrayBuffer) => {
     if (!window.MidiPlayer) {

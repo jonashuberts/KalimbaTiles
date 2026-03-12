@@ -60,11 +60,12 @@ const KalimbaKey = React.memo(({
         This is the secret weapon for iOS sync!
         We render a pure CSS flash with a 2000ms delay EXACTLY mapped to the dropping tile.
         This entirely skips React render latency at the 2000ms strike frame!
+        We alternate -a and -b variants because iOS Safari natively drops concurrent identical animations.
       */}
-      {fallingNotes.map((note) => (
+      {fallingNotes.map((note, idx) => (
          <div 
            key={`glow-${note.id}`} 
-           className="kalimba-key-glow"
+           className={`kalimba-key-glow kalimba-key-glow-${idx % 2 === 0 ? 'a' : 'b'}`}
            style={{ animationPlayState: isPlaying ? 'running' : 'paused' }}
          ></div>
       ))}
