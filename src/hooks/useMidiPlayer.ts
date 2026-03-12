@@ -148,10 +148,8 @@ export function useMidiPlayer() {
       // 3. Instead of deleting the DOM element (which causes React to lag on iOS during the exact strike frame),
       // we let the CSS animation keep it at opacity: 0 via animation-fill-mode natively.
       scheduleTask(`${noteId}-on`, 2000, () => {
-        setActiveNotes(prev => {
-          if (!prev.includes(cleanNote)) return [...prev, cleanNote];
-          return prev;
-        });
+        // We removed the activeNotes visual trigger here because JS drifts on mobile!
+        // It is now perfectly synced to CSS onAnimationEnd via triggerKeyEffect.
       });
 
       // 4. Safe Garbage Collection: remove invisible elements safely 3 seconds AFTER the strike 
@@ -162,10 +160,8 @@ export function useMidiPlayer() {
     }
 
     if (event.name === "Note off" || (event.name === "Note on" && event.velocity === 0)) {
-      const cleanNote = event.noteName.replace(/C-1/gi, "NO");
-      scheduleTask(`off-${Date.now()}-${Math.random()}`, 2000 + 150, () => {
-        setActiveNotes(prev => prev.filter(n => n !== cleanNote));
-      });
+      // We removed the matching Note Off visual trigger here.
+      // The Kalimba simply glows for 150ms on strike and fades, just like physically plucking a tine.
     }
   };
 
@@ -248,6 +244,19 @@ export function useMidiPlayer() {
     }
   };
 
+  // Instantly highlight a key, triggered by CSS onAnimationEnd of the falling tile
+  const triggerKeyEffect = (note: string) => {
+    setActiveNotes(prev => {
+      if (!prev.includes(note)) return [...prev, note];
+      return prev;
+    });
+
+    // Fade the key out exactly 150ms later (simulating a physical tine pluck)
+    scheduleTask(`glow-${Date.now()}-${Math.random()}`, 150, () => {
+      setActiveNotes(prev => prev.filter(n => n !== note));
+    });
+  };
+
   return {
     isReady,
     isPlaying,
@@ -260,6 +269,7 @@ export function useMidiPlayer() {
     stop,
     reset,
     setTempo: setGlobalTempo,
-    playDirectNote
+    playDirectNote,
+    triggerKeyEffect
   };
 }
