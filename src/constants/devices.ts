@@ -22,7 +22,8 @@ export const DEVICES = [
   {
     group: "Apple (iPhones)",
     options: [
-      { label: "iPhone 12/13/14/15/16 (Pro/Max/Plus)", value: "153" },
+      { label: "iPhone 12-17 (Pro/Max/Plus)", value: "153" },
+      { label: "iPhone 17 Air", value: "156" },
       { label: "iPhone 12/13 mini", value: "159" },
       { label: "iPhone 11 Pro / Pro Max", value: "153" },
       { label: "iPhone 11 / XR", value: "163" },
