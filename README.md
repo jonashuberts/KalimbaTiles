@@ -30,13 +30,15 @@ npm install
 npm run dev
 ```
 
-## Libraries Used
+## Libraries & Attributes
 
 Kalimba Tiles harnesses the power of the following libraries:
 - [React](https://react.dev/) & [Vite](https://vitejs.dev/) - For lightning-fast UI rendering and development.
 - [Lucide React](https://lucide.dev/) - Beautiful, consistent iconography.
 - [MidiPlayerJS](https://github.com/grimmdude/MidiPlayerJS): A versatile MIDI player for seamless integration of MIDI files.
 - [soundfont-player](https://github.com/danigb/soundfont-player): Enhance your kalimba sounds with this flexible SoundFont player.
+
+The default `sample.mid` piece included natively in the application is [Kalimba Experiments One](https://musescore.com/user/38202511/scores/6738980), composed by Januaryisashape, licensed under Attribution.
 
 ## License
 
