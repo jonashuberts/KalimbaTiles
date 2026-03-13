@@ -58,7 +58,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button 
             className={`btn-icon ${isPlaying ? 'active' : ''}`} 
             onClick={onPlay} 
-            disabled={!isReady}
             title={isPlaying ? "Pause" : "Play"}
           >
             {isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="none" />}
@@ -74,11 +73,11 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="setting-group">
           <span className="setting-label">Tempo</span>
           <input 
-            type="number" 
+            type={isReady ? "number" : "text"}
             className="tempo-input" 
             min={10} 
             max={200} 
-            value={tempo}
+            value={isReady ? tempo : "---"}
             onChange={(e) => setTempo(Number(e.target.value))}
             disabled={!isReady}
           />

@@ -17,7 +17,10 @@ export const FallingTile = React.memo(({ note, duration = 2000, isPlaying }: Fal
         animationPlayState: isPlaying ? 'running' : 'paused'
       }}
     >
-      <div className="falling-tile-visual">
+      <div 
+        className="falling-tile-visual"
+        style={{ animationPlayState: isPlaying ? 'running' : 'paused' }}
+      >
         <div className="tile-glow"></div>
       </div>
     </div>
