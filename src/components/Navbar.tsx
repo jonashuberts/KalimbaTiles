@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Square, RotateCcw, FileMusic, Settings, Minus, Plus } from 'lucide-react';
+import { Play, Square, RotateCcw, FileMusic, Minus, Plus } from 'lucide-react';
 import packageJson from '../../package.json';
 import './Navbar.css';
 
@@ -105,14 +105,15 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        <button 
-          className={`btn-icon toggle-btn ${showNumbers ? 'active' : ''}`}
-          onClick={() => setShowNumbers(!showNumbers)}
-          title="Toggle Numbers"
-        >
-          <Settings size={20} />
-          <span className="toggle-text">123</span>
-        </button>
+        <div className="setting-group" style={{ marginLeft: "auto" }}>
+          <button 
+            className={`btn-icon toggle-btn ${showNumbers ? 'active' : ''}`}
+            onClick={() => setShowNumbers(!showNumbers)}
+            title="Toggle Numbers"
+          >
+            123
+          </button>
+        </div>
       </div>
     </nav>
   );
