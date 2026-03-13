@@ -40,7 +40,13 @@ export const Layout: React.FC = () => {
     const reader = new FileReader();
     reader.onload = (e) => {
       if (e.target?.result && e.target.result instanceof ArrayBuffer) {
-        initPlayer(e.target.result);
+        try {
+          initPlayer(e.target.result);
+        } catch(err: any) {
+          console.error("Invalid MIDI file loaded:", err);
+          alert("Error parsing MIDI file: " + err.message);
+          pause();
+        }
       }
     };
     reader.readAsArrayBuffer(file);
@@ -60,6 +66,38 @@ export const Layout: React.FC = () => {
     }
   }, [initPlayer]);
 
+  const handlePlayClick = () => {
+    if (!isReady) {
+      // Calling play() synchronously flips the paused flag to false during the physical click event,
+      // which allows the browser's audio policies to legally awaken the AudioContext immediately!
+      play(); 
+      
+      // Load sample.mid and start playing automatically if no user file is ready
+      fetch('/sample.mid')
+        .then(res => {
+           if (!res.ok) throw new Error("Could not fetch sample.mid");
+           return res.arrayBuffer();
+        })
+        .then(buffer => {
+          try {
+            initPlayer(buffer);
+            setTimeout(() => play(), 100);
+          } catch(err: any) {
+            console.error("Invalid default MIDI sample:", err);
+            pause();
+            alert("Error parsing default sample.mid: " + err.message);
+          }
+        })
+        .catch(err => {
+          console.error("Failed to fetch sample.mid", err);
+          pause();
+          alert("Failed to fetch default sample.md: " + err.message);
+        });
+    } else {
+      isPlaying ? pause() : play();
+    }
+  };
+
   return (
     <div className="layout-container">
       {/* Dynamic Background Elements */}
@@ -72,7 +110,7 @@ export const Layout: React.FC = () => {
         tempo={tempo}
         setTempo={setTempo}
         onFileUpload={handleFileUpload}
-        onPlay={isPlaying ? pause : play}
+        onPlay={handlePlayClick}
         onStop={stop}
         onReset={reset}
         isPlaying={isPlaying}

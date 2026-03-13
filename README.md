@@ -2,7 +2,12 @@
 
 Welcome to Kalimba Tiles, your go-to app for practicing and mastering the enchanting melodies of the kalimba. Whether you're a beginner or an experienced player, this app is meticulously crafted to enhance your Kalimba learning experience.
 
-Recently modernized into a robust React/Vite application, Kalimba Tiles now features beautiful glowing aesthetics, perfect mathematical visual synchronization, and device-specific rendering scales. 
+## 🚀 KalimbaTiles v2.1.0 Release
+
+Recently modernized into a robust React/Vite application, Kalimba Tiles v2.1 natively implements a hardware-bound rendering pipeline:
+- **Z-Index Waterfall Physics**: Notes now physically slide and despawn gracefully *underneath* the metal Kalimba tines.
+- **Microsecond Audio-Sync**: Guaranteed zero-latency drift on Apple/iOS hardware between physical strike and key lighting.
+- **Universal Local Scaling**: Complete freedom from rigid device look-up lists.
 
 ## Features & Usage
 

@@ -4,7 +4,7 @@
   justify-content: center;
   position: relative;
   width: 100%;
-  z-index: 30; /* Render definitively above all parts of the Kalimba including the bridge */
+  z-index: 5; /* Render above the wooden board (0) but below the keys (10) and bridge (20) */
   overflow: visible; 
 }
 
@@ -54,10 +54,20 @@
   height: calc((var(--ppi) / 25.4) * 8px);
   background-color: var(--tile-bg);
   border-radius: calc((var(--ppi) / 25.4) * 2px);
-  /* The shadow was clipping against the GPU composite layer edge. 
-     Instead of box-shadow, we just rely on the white inner glow for the bright aesthetic 
-     which avoids dirty repaints on iOS */
   position: relative;
+  
+  /* Slide down smoothly behind the Kalimba keys silently */
+  animation-name: continue-fall;
+  animation-duration: 300ms;
+  animation-delay: 2000ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+}
+
+@keyframes continue-fall {
+  0% { transform: translateY(0); opacity: 1; }
+  99% { transform: translateY(calc((var(--ppi) / 25.4) * 60px)); opacity: 1; }
+  100% { transform: translateY(calc((var(--ppi) / 25.4) * 60px)); opacity: 0; }
 }
 
 .tile-glow {
@@ -76,13 +86,10 @@
   5% {
     opacity: 1;
   }
-  98% {
-    opacity: 1;
-  }
   100% {
     /* Translate exactly container-height + 22px overshoot using physical coordinates */
     transform: translate3d(0, calc((var(--ppi) / 25.4) * 22px), 0);
-    opacity: 0; 
+    opacity: 1; 
   }
 }
 
