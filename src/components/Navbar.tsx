@@ -86,28 +86,21 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         <div className="scale-selector">
           <span className="setting-label">Scale</span>
-          <div className="slider-container">
+          <div className="control-group">
             <button 
-              className="slider-btn" 
+              className="control-btn" 
               onClick={() => setPpi(Math.max(50, ppi - 1))}
               title="Decrease Scale"
             >
-              <Minus size={14} />
+              <Minus size={16} />
             </button>
-            <input 
-              type="range"
-              min="50"
-              max="250"
-              value={ppi}
-              onChange={(e) => setPpi(Number(e.target.value))}
-              className="scale-slider"
-            />
+            <span className="scale-value">{ppi}</span>
             <button 
-              className="slider-btn" 
+              className="control-btn" 
               onClick={() => setPpi(Math.min(250, ppi + 1))}
               title="Increase Scale"
             >
-              <Plus size={14} />
+              <Plus size={16} />
             </button>
           </div>
         </div>
