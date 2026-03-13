@@ -7,7 +7,7 @@ interface FallingTileProps {
   isPlaying: boolean;
 }
 
-export const FallingTile = React.memo(({ note, duration = 2000, isPlaying }: FallingTileProps) => {
+export const FallingTile = React.memo(({ note, duration = 2300, isPlaying }: FallingTileProps) => {
   return (
     <div 
       className="falling-tile-wrapper" 

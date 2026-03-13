@@ -134,7 +134,7 @@ export const Layout: React.FC = () => {
                      <FallingTile
                         key={noteEvent.id}
                         note={noteEvent.note}
-                        duration={2000}
+                        duration={2300}
                         isPlaying={isPlaying}
                      />
                    ))}

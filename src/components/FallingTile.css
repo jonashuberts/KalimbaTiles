@@ -40,13 +40,14 @@
   position: absolute;
   top: 0;
   left: 0;
-  transform: translate3d(0, -100%, 0);
-  animation-name: fall-down;
+  
+  /* Fall animation spans exact 2300ms: 2000ms to hit the key, 300ms to glide out of frame invisibly underneath */
+  animation-name: fall-down-through;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-timing-function: linear;
   display: flex;
-  align-items: flex-end; /* visual tile aligns to bottom of this moving container */
+  align-items: flex-end;
 }
 
 .falling-tile-visual {
@@ -55,19 +56,6 @@
   background-color: var(--tile-bg);
   border-radius: calc((var(--ppi) / 25.4) * 2px);
   position: relative;
-  
-  /* Slide down smoothly behind the Kalimba keys silently */
-  animation-name: continue-fall;
-  animation-duration: 300ms;
-  animation-delay: 2000ms;
-  animation-fill-mode: forwards;
-  animation-timing-function: linear;
-}
-
-@keyframes continue-fall {
-  0% { transform: translateY(0); opacity: 1; }
-  99% { transform: translateY(calc((var(--ppi) / 25.4) * 60px)); opacity: 1; }
-  100% { transform: translateY(calc((var(--ppi) / 25.4) * 60px)); opacity: 0; }
 }
 
 .tile-glow {
@@ -78,7 +66,8 @@
   opacity: 0.5; /* Muted internal brightness */
 }
 
-@keyframes fall-down {
+/* Timeline mathematically locked to duration={2300ms} prop inside React */
+@keyframes fall-down-through {
   0% {
     transform: translate3d(0, -100%, 0);
     opacity: 0;
@@ -86,10 +75,24 @@
   5% {
     opacity: 1;
   }
-  100% {
-    /* Translate exactly container-height + 22px overshoot using physical coordinates */
+  
+  /* t=2000ms: Exactly 86.95% of 2300ms */
+  /* Reaches standard impact threshold (+22px overshoot) */
+  86.95% {
     transform: translate3d(0, calc((var(--ppi) / 25.4) * 22px), 0);
-    opacity: 1; 
+    opacity: 1;
+  }
+  
+  /* t=2299ms: Glide deeply under the metal key seamlessly */
+  99.9% {
+    transform: translate3d(0, calc((var(--ppi) / 25.4) * 82px), 0);
+    opacity: 1;
+  }
+  
+  /* t=2300ms: Despawn safely */
+  100% {
+    transform: translate3d(0, calc((var(--ppi) / 25.4) * 82px), 0);
+    opacity: 0; 
   }
 }
 
