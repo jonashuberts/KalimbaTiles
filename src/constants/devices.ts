@@ -22,8 +22,11 @@ export const DEVICES = [
   {
     group: "Apple (iPhones)",
     options: [
-      { label: "iPhone 12-17 (Pro/Max/Plus)", value: "153" },
-      { label: "iPhone 17 Air", value: "156" },
+      { label: "iPhone 17 Pro Max / 16 Pro Max", value: "153" },
+      { label: "iPhone 17 Pro / 16 Pro", value: "153" },
+      { label: "iPhone 17 Air / Slim", value: "153" },
+      { label: "iPhone 17 / 16", value: "153" },
+      { label: "iPhone 14/15 (Pro/Max/Plus)", value: "153" },
       { label: "iPhone 12/13 mini", value: "159" },
       { label: "iPhone 11 Pro / Pro Max", value: "153" },
       { label: "iPhone 11 / XR", value: "163" },
@@ -36,6 +39,9 @@ export const DEVICES = [
   {
     group: "Samsung",
     options: [
+      { label: "Galaxy S25/S26 Ultra", value: "148" },
+      { label: "Galaxy S25/S26+", value: "136" },
+      { label: "Galaxy S25/S26", value: "139" },
       { label: "Galaxy S22/S23/S24 Ultra", value: "148" },
       { label: "Galaxy S22+/S23+/S24+", value: "136" },
       { label: "Galaxy S22/S23/S24", value: "139" },
@@ -50,6 +56,8 @@ export const DEVICES = [
   {
     group: "Google",
     options: [
+      { label: "Pixel 10 Pro & XL", value: "144" },
+      { label: "Pixel 10", value: "158" },
       { label: "Pixel 6/7/8/9 Pro & XL", value: "144" },
       { label: "Pixel 6/7/8/9", value: "158" },
       { label: "Pixel 5", value: "157" },
