@@ -1,6 +1,5 @@
 import React from 'react';
-import { DEVICES } from '../constants/devices';
-import { Play, Square, RotateCcw, Monitor, FileMusic, Settings } from 'lucide-react';
+import { Play, Square, RotateCcw, FileMusic, Settings, Minus, Plus } from 'lucide-react';
 import packageJson from '../../package.json';
 import './Navbar.css';
 
@@ -85,23 +84,32 @@ export const Navbar: React.FC<NavbarProps> = ({
           />
         </div>
 
-        <div className="device-selector">
-          <Monitor size={18} />
-          <select 
-            value={ppi} 
-            onChange={(e) => setPpi(Number(e.target.value))}
-            className="ppi-select"
-          >
-            {DEVICES.map((group) => (
-              <optgroup key={group.group} label={group.group}>
-                {group.options.map((opt) => (
-                  <option key={opt.label + opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </optgroup>
-            ))}
-          </select>
+        <div className="scale-selector">
+          <span className="setting-label">Scale</span>
+          <div className="slider-container">
+            <button 
+              className="slider-btn" 
+              onClick={() => setPpi(Math.max(50, ppi - 1))}
+              title="Decrease Scale"
+            >
+              <Minus size={14} />
+            </button>
+            <input 
+              type="range"
+              min="50"
+              max="250"
+              value={ppi}
+              onChange={(e) => setPpi(Number(e.target.value))}
+              className="scale-slider"
+            />
+            <button 
+              className="slider-btn" 
+              onClick={() => setPpi(Math.min(250, ppi + 1))}
+              title="Increase Scale"
+            >
+              <Plus size={14} />
+            </button>
+          </div>
         </div>
 
         <button 

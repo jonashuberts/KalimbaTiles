@@ -8,8 +8,16 @@ import './Layout.css';
 
 export const Layout: React.FC = () => {
   // Global Settings State
-  const [ppi, setPpi] = useState<number>(153);
+  const [ppi, setPpi] = useState<number>(() => {
+    const savedScale = localStorage.getItem('kalimbaScale');
+    return savedScale ? Number(savedScale) : 153;
+  });
   const [showNumbers, setShowNumbers] = useState(true);
+
+  // Persist scale setting to localStorage
+  React.useEffect(() => {
+    localStorage.setItem('kalimbaScale', ppi.toString());
+  }, [ppi]);
 
   // Hook into MIDI Engine
   const {

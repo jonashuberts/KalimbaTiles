@@ -124,25 +124,86 @@
   border-color: var(--text-accent);
 }
 
-.device-selector {
+.scale-selector {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: var(--bg-primary);
-  padding: 0.3rem 0.5rem;
-  border-radius: var(--radius-md);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: var(--text-secondary);
 }
 
-.ppi-select {
-  background: transparent;
-  color: var(--text-primary);
+.slider-container {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: var(--bg-primary);
+  padding: 0.25rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.slider-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
   border: none;
-  font-weight: 500;
-  outline: none;
   cursor: pointer;
-  max-width: 150px;
+  transition: all 0.2s;
+}
+
+.slider-btn:hover {
+  background: rgba(127, 90, 240, 0.2);
+  color: var(--text-accent);
+}
+
+.slider-btn:active {
+  transform: scale(0.95);
+}
+
+.scale-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  outline: none;
+}
+
+.scale-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--text-accent);
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 0 10px rgba(127, 90, 240, 0.5);
+}
+
+.scale-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--text-accent);
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  box-shadow: 0 0 10px rgba(127, 90, 240, 0.5);
+}
+
+.scale-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  background: #fff;
+}
+
+.scale-slider::-moz-range-thumb:hover {
+  transform: scale(1.1);
+  background: #fff;
 }
 
 .toggle-btn {
@@ -169,13 +230,12 @@
     justify-content: center;
     gap: 1rem;
   }
-  .file-upload-btn, .tempo-input, .device-selector {
+  .file-upload-btn, .tempo-input {
     padding: 0.4rem 0.8rem;
     font-size: 0.9rem;
   }
-  .ppi-select {
-    max-width: 150px;
-    font-size: 0.9rem;
+  .scale-slider {
+    width: 60px; /* Shrink slider slightly on tight landscape phones */
   }
   .btn-icon {
     width: 40px;
