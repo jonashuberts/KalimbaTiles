@@ -6,7 +6,8 @@ Recently modernized into a robust React/Vite application, Kalimba Tiles now feat
 
 ## Features & Usage
 
-1. **Dynamic Physical Scaling**: Optimize your practice by selecting your exact device (e.g. iPhone X, iPad). The on-screen UI will mathematically scale so the digital keys match the physical width of your real 17-key Kalimba when mounted.
+1. **Dynamic Physical Scaling**: Optimize your practice by selecting your exact device (e.g. iPhone 16 Pro, Galaxy S24). The on-screen UI will mathematically scale so the digital keys match the physical width of your real 17-key Kalimba when mounted. 
+   *(Device CSS PPI specifications carefully derived using hardware dimensions sourced from [GSMArena](https://www.gsmarena.com/))*
 2. **Select a File**: Choose your favorite `.mid` song or exercise effortlessly using the built-in file selector.
 3. **Perfect Audio-Visual Sync**: Dive into your Kalimba practice session with falling tiles that strike the keys in perfect, millisecond-accurate rhythm with the audio.
 4. **Tempo & Controls**: Adjust the learning speed dynamically, toggle note numbers/dots, and pause/play with a single click.
