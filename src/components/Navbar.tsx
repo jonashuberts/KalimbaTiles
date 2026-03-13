@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Square, RotateCcw, FileMusic, Settings, Minus, Plus } from 'lucide-react';
+import { Play, Pause, Square, RotateCcw, FileMusic, Settings, Minus, Plus } from 'lucide-react';
 import packageJson from '../../package.json';
 import './Navbar.css';
 
@@ -61,7 +61,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             disabled={!isReady}
             title={isPlaying ? "Pause" : "Play"}
           >
-            <Play size={20} fill={isPlaying ? "currentColor" : "none"} />
+            {isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="none" />}
           </button>
           <button className="btn-icon" onClick={onStop} disabled={!isReady} title="Stop">
             <Square size={20} />
