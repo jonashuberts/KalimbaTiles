@@ -246,5 +246,6 @@
   }
   .btn-icon.toggle-btn {
     width: auto; /* Prevent the numbers button from being squished */
+    height: 30px; /* Prevent it from overflowing its 40px container on mobile */
   }
 }

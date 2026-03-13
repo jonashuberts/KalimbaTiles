@@ -2,20 +2,16 @@
 
 Welcome to Kalimba Tiles, your go-to app for practicing and mastering the enchanting melodies of the kalimba. Whether you're a beginner or an experienced player, this app is meticulously crafted to enhance your Kalimba learning experience.
 
-## 🚀 KalimbaTiles v2.1.0 Release
-
-Recently modernized into a robust React/Vite application, Kalimba Tiles v2.1 natively implements a hardware-bound rendering pipeline:
-- **Z-Index Waterfall Physics**: Notes now physically slide and despawn gracefully *underneath* the metal Kalimba tines.
-- **Microsecond Audio-Sync**: Guaranteed zero-latency drift on Apple/iOS hardware between physical strike and key lighting.
-- **Universal Local Scaling**: Complete freedom from rigid device look-up lists.
+Recently modernized into a robust React/Vite application, Kalimba Tiles features beautiful glowing aesthetics, perfect mathematical visual synchronization, and device-independent scaling logic. 
 
 ## Features & Usage
 
 1. **Dynamic Physical Scaling**: Optimize your practice by adjusting the visual Scale of the application to match the physical dimensions of any size Kalimba. The on-screen UI will mathematically scale using your browser's persistent storage so the digital keys match the physical width of your real 17-key Kalimba when mounted onto your specific tablet or mobile device.
 2. **Select a File**: Choose your favorite `.mid` song or exercise effortlessly using the built-in file selector.
-3. **Perfect Audio-Visual Sync**: Dive into your Kalimba practice session with falling tiles that strike the keys in perfect, millisecond-accurate rhythm with the audio.
-4. **Tempo & Controls**: Adjust the learning speed dynamically, toggle note numbers/dots, and pause/play with a single click.
-5. **Have Fun Learning**: Enjoy discovering new songs and refining your kalimba skills.
+3. **Perfect Audio-Visual Sync**: Dive into your Kalimba practice session with falling tiles that strike the keys in perfect, millisecond-accurate rhythm with the audio. Guaranteed zero-latency drift on Apple/iOS hardware between physical strike and key lighting.
+4. **Z-Index Waterfall Physics**: Notes now physically slide and despawn gracefully *underneath* the metal Kalimba tines.
+5. **Tempo & Controls**: Adjust the learning speed dynamically, toggle note numbers/dots, and pause/play with a single click.
+6. **Have Fun Learning**: Enjoy discovering new songs and refining your kalimba skills.
 
 ## Screenshot
 
