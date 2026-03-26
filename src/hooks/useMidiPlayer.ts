@@ -260,7 +260,17 @@ export function useMidiPlayer() {
   const setGlobalTempo = (newTempo: number) => {
     setTempo(newTempo);
     if (playerRef.current) {
+      const wasPlaying = playerRef.current.isPlaying();
+      
+      // MidiPlayerJS calculates the current playback position based on (Date.now() - startTime) * tempo.
+      // If we change the tempo on the fly without pausing, it breaks the math and jumps forward/backward in the song.
+      // We must pause it first to bake its current position into the static `startTick` using the OLD tempo,
+      // apply the new tempo, and gracefully resume so it starts tracking from `startTick` using the NEW tempo. 
+      if (wasPlaying) playerRef.current.pause();
+      
       playerRef.current.setTempo(newTempo);
+      
+      if (wasPlaying) playerRef.current.play();
     }
   };
 
