@@ -44,7 +44,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <span>Select MIDI</span>
           <input 
             type="file" 
-            accept=".mid" 
+            accept=".mid,.midi,audio/midi,audio/x-midi" 
             onChange={(e) => {
               if (e.target.files && e.target.files[0]) {
                 onFileUpload(e.target.files[0]);
