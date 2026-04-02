@@ -32,6 +32,22 @@ export const Navbar: React.FC<NavbarProps> = ({
   showNumbers,
   setShowNumbers
 }) => {
+  const [localTempo, setLocalTempo] = React.useState<string>(tempo.toString());
+
+  React.useEffect(() => {
+    setLocalTempo(tempo.toString());
+  }, [tempo]);
+
+  const commitTempo = () => {
+    const parsed = parseInt(localTempo, 10);
+    if (!isNaN(parsed) && parsed > 0) {
+      setTempo(parsed);
+      setLocalTempo(parsed.toString()); // Clean up leading zeros
+    } else {
+      setLocalTempo(tempo.toString()); // Revert if invalid gracefully
+    }
+  };
+
   return (
     <nav className="navbar">
       <div className="nav-brand">
@@ -77,8 +93,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="tempo-input" 
             min={10} 
             max={200} 
-            value={isReady ? tempo : "---"}
-            onChange={(e) => setTempo(Number(e.target.value))}
+            value={isReady ? localTempo : "---"}
+            onChange={(e) => setLocalTempo(e.target.value)}
+            onBlur={commitTempo}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.currentTarget.blur();
+              }
+            }}
             disabled={!isReady}
           />
         </div>
