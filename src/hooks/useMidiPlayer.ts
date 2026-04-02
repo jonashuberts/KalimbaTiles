@@ -24,6 +24,7 @@ export function useMidiPlayer() {
   const instrumentRef = useRef<any>(null);
   const acRef = useRef<any>(null);
   const isIntentionallyPaused = useRef(true); // Start true so we don't wake up on random clicks before playing
+  const userTempoOverride = useRef<number | null>(null); // Track manual overrides to combat timeline resync resets
   
   // Track scheduled tasks so we can pause and resume them
   type PendingTask = {
@@ -132,6 +133,7 @@ export function useMidiPlayer() {
     }
 
     tempoInitialized.current = false;
+    userTempoOverride.current = null;
 
     playerRef.current = new window.MidiPlayer.Player((event: any) => {
       handleMidiEvent(event);
@@ -153,9 +155,12 @@ export function useMidiPlayer() {
       tempoInitialized.current = true;
     }
     
-    // Safety check for user-adjusted tempo overrides
-    if (playerRef.current && (tempo !== playerRef.current.tempo)) {
-       // Ideally we sync here if the user changed it in the UI, we handle that in setGlobalTempo
+    if (event.name === 'Set Tempo' && playerRef.current) {
+      if (userTempoOverride.current !== null) {
+        playerRef.current.setTempo(userTempoOverride.current);
+      } else {
+        setTempo(playerRef.current.tempo);
+      }
     }
 
     if (event.name === "Note on" && event.velocity > 0) {
@@ -259,6 +264,7 @@ export function useMidiPlayer() {
 
   const setGlobalTempo = (newTempo: number) => {
     setTempo(newTempo);
+    userTempoOverride.current = newTempo;
     if (playerRef.current) {
       const wasPlaying = playerRef.current.isPlaying();
       
