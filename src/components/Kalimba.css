@@ -203,3 +203,10 @@
     height: auto;
   }
 }
+
+/* Desktop optimization: Push Kalimba further up to visually center it more */
+@media (min-width: 768px) and (min-height: 601px) {
+  .kalimba-container {
+    padding-bottom: 15vh; 
+  }
+}
