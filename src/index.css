@@ -45,6 +45,7 @@
 html, body {
   height: 100%;
   width: 100%;
+  touch-action: none; /* Prevents all native pinch-to-zoom and double-tap zooming on iOS Safari */
   background-color: var(--bg-primary);
   color: var(--text-primary);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
