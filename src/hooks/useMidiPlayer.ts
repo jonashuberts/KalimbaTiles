@@ -91,12 +91,14 @@ export function useMidiPlayer() {
     let rafId: number;
     const updateProgress = () => {
       if (playerRef.current) {
-        // MidiPlayerJS returns 100 at start, 0 at end
-        const remain = playerRef.current.getSongPercentRemaining();
-        if (typeof remain === 'number' && !isNaN(remain)) {
-          // Invert it so 0 is start, 100 is end
-          let current = 100 - remain;
-          // Clamp bounds and round cleanly
+        // midiplayer.getSongPercentRemaining() natively uses Math.round() which destroys 
+        // sub-percent precision and causes the slider to visibly jump in ~1% chunks.
+        // We must calculate the raw float percentage manually by observing the mechanical ticks directly!
+        const currentTick = playerRef.current.getCurrentTick();
+        const total = playerRef.current.totalTicks;
+        
+        if (total > 0) {
+          let current = (currentTick / total) * 100;
           current = Math.max(0, Math.min(100, current));
           setProgress(current);
         }
