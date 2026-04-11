@@ -161,10 +161,8 @@
   width: auto;
   min-width: 80px;
   max-width: 120px;
-  padding: 0 1.5rem 0 0.5rem; /* Ensure right side has space for native iOS arrow */
   appearance: auto;
   cursor: pointer;
-  text-align: center;
 }
 
 .scale-selector {
