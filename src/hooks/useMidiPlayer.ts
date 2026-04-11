@@ -87,7 +87,9 @@ export function useMidiPlayer() {
 
   useEffect(() => {
     if (!isPlaying) return;
-    const interval = setInterval(() => {
+    
+    let rafId: number;
+    const updateProgress = () => {
       if (playerRef.current) {
         // MidiPlayerJS returns 100 at start, 0 at end
         const remain = playerRef.current.getSongPercentRemaining();
@@ -99,8 +101,11 @@ export function useMidiPlayer() {
           setProgress(current);
         }
       }
-    }, 250);
-    return () => clearInterval(interval);
+      rafId = requestAnimationFrame(updateProgress);
+    };
+    
+    rafId = requestAnimationFrame(updateProgress);
+    return () => cancelAnimationFrame(rafId);
   }, [isPlaying]);
 
   useEffect(() => {
