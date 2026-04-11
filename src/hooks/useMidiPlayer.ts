@@ -19,6 +19,7 @@ export function useMidiPlayer() {
   // Store falling notes. Instead of deleting them from memory aggressively (causing React DOM churn), 
   // we flag them as "hit" and hide them with CSS to save mobile CPU.
   const [fallingNotes, setFallingNotes] = useState<{ id: string; note: string; isHit: boolean }[]>([]);
+  const [progress, setProgress] = useState(0);
 
   const playerRef = useRef<any>(null);
   const instrumentRef = useRef<any>(null);
@@ -83,6 +84,24 @@ export function useMidiPlayer() {
     }
     pendingTasks.current.clear();
   };
+
+  useEffect(() => {
+    if (!isPlaying) return;
+    const interval = setInterval(() => {
+      if (playerRef.current) {
+        // MidiPlayerJS returns 100 at start, 0 at end
+        const remain = playerRef.current.getSongPercentRemaining();
+        if (typeof remain === 'number' && !isNaN(remain)) {
+          // Invert it so 0 is start, 100 is end
+          let current = 100 - remain;
+          // Clamp bounds and round cleanly
+          current = Math.max(0, Math.min(100, current));
+          setProgress(current);
+        }
+      }
+    }, 250);
+    return () => clearInterval(interval);
+  }, [isPlaying]);
 
   useEffect(() => {
     // Initialize AudioContext and Soundfont on mount
@@ -238,6 +257,7 @@ export function useMidiPlayer() {
     if (playerRef.current) {
       playerRef.current.stop();
       setIsPlaying(false);
+      setProgress(0);
       setActiveNotes([]);
       setFallingNotes([]);
       clearTasks();
@@ -248,6 +268,37 @@ export function useMidiPlayer() {
       if (instrumentRef.current) {
         instrumentRef.current.stop(); // Eradicate all buffered scheduled notes securely
       }
+    }
+  };
+
+  const seek = (percent: number) => {
+    if (!playerRef.current) return;
+    
+    // Hard clamp exactly to percent to keep state instantly responsive for scrubbing UI
+    setProgress(percent);
+    
+    const wasPlaying = !isIntentionallyPaused.current && isPlaying;
+    
+    if (wasPlaying) {
+      playerRef.current.pause();
+    }
+    
+    // Purge visual and audio states comprehensively so skipping does not overlap massive polyphony sounds natively
+    setActiveNotes([]);
+    setFallingNotes([]);
+    clearTasks();
+    if (instrumentRef.current && instrumentRef.current.stop) {
+      instrumentRef.current.stop();
+    }
+
+    try {
+      playerRef.current.skipToPercent(percent);
+    } catch (e) {
+      console.error("Seek error natively within MidiPlayer:", e);
+    }
+
+    if (wasPlaying) {
+      playerRef.current.play();
     }
   };
 
@@ -293,12 +344,14 @@ export function useMidiPlayer() {
     isReady,
     isPlaying,
     tempo,
+    progress,
     activeNotes,
     fallingNotes,
     initPlayer,
     play,
     pause,
     stop,
+    seek,
     reset,
     setTempo: setGlobalTempo,
     playDirectNote

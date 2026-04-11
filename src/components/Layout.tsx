@@ -39,7 +39,9 @@ export const Layout: React.FC = () => {
     stop,
     reset,
     setTempo,
-    playDirectNote
+    playDirectNote,
+    progress,
+    seek
   } = useMidiPlayer();
 
   // Handle File Upload from Local System
@@ -126,6 +128,8 @@ export const Layout: React.FC = () => {
         setShowNumbers={setShowNumbers}
         tuning={tuning}
         setTuning={setTuning}
+        progress={progress}
+        seek={seek}
       />
 
       <main className="main-content">

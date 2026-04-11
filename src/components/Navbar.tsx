@@ -19,6 +19,8 @@ interface NavbarProps {
   isReady: boolean;
   showNumbers: boolean;
   setShowNumbers: (val: boolean) => void;
+  progress: number;
+  seek: (percent: number) => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -35,7 +37,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   isPlaying,
   isReady,
   showNumbers,
-  setShowNumbers
+  setShowNumbers,
+  progress,
+  seek
 }) => {
   const [localTempo, setLocalTempo] = React.useState<string>(tempo.toString());
 
@@ -154,6 +158,20 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="toggle-text">123</span>
           </button>
         </div>
+      </div>
+
+      <div className="progress-bar-container">
+        <input 
+          type="range" 
+          className="progress-bar" 
+          min="0" 
+          max="100" 
+          step="0.05"
+          value={progress}
+          onChange={(e) => seek(Number(e.target.value))}
+          disabled={!isReady}
+          style={{ '--progress': `${progress}%` } as React.CSSProperties}
+        />
       </div>
     </nav>
   );
