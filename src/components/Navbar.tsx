@@ -1,11 +1,14 @@
 import React from 'react';
 import { Play, Pause, Square, RotateCcw, FileMusic, Settings, Minus, Plus } from 'lucide-react';
+import { TUNINGS } from '../constants/kalimba';
 import packageJson from '../../package.json';
 import './Navbar.css';
 
 interface NavbarProps {
   ppi: number;
   setPpi: (val: number) => void;
+  tuning: string;
+  setTuning: (val: string) => void;
   tempo: number;
   setTempo: (val: number) => void;
   onFileUpload: (file: File) => void;
@@ -21,6 +24,8 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({
   ppi,
   setPpi,
+  tuning,
+  setTuning,
   tempo,
   setTempo,
   onFileUpload,
@@ -105,13 +110,26 @@ export const Navbar: React.FC<NavbarProps> = ({
           />
         </div>
 
+        <div className="setting-group">
+          <span className="setting-label">Tuning</span>
+          <select 
+            className="tempo-input tuning-select"
+            value={tuning}
+            onChange={(e) => setTuning(e.target.value)}
+          >
+            {Object.keys(TUNINGS).map(scale => (
+              <option key={scale} value={scale}>{scale}</option>
+            ))}
+          </select>
+        </div>
+
         <div className="scale-selector">
-          <span className="setting-label">Scale</span>
+          <span className="setting-label">Zoom</span>
           <div className="control-group">
             <button 
               className="control-btn" 
               onClick={() => setPpi(Math.max(50, ppi - 1))}
-              title="Decrease Scale"
+              title="Decrease Zoom"
             >
               <Minus size={16} />
             </button>
@@ -119,7 +137,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button 
               className="control-btn" 
               onClick={() => setPpi(Math.min(250, ppi + 1))}
-              title="Increase Scale"
+              title="Increase Zoom"
             >
               <Plus size={16} />
             </button>

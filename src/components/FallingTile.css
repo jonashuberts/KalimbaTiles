@@ -56,6 +56,24 @@
   background-color: var(--tile-bg);
   border-radius: calc((var(--ppi) / 25.4) * 2px);
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.falling-tile-visual.half-note {
+  background: linear-gradient(180deg, #16161a 0%, #242629 100%);
+  border: 1px solid #3a3a42;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.6), inset 0 0 8px rgba(0,0,0,0.8);
+}
+
+.half-note-marker {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: calc((var(--ppi) / 25.4) * 5px);
+  font-weight: 700;
+  line-height: 1;
+  position: absolute;
+  z-index: 2;
 }
 
 .tile-glow {

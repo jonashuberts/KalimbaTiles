@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import './Kalimba.css';
 
-import { KALIMBA_KEYS } from '../constants/kalimba';
+import { KALIMBA_KEYS, getTunedNote, parseNote } from '../constants/kalimba';
 
 interface KalimbaProps {
   ppi: number;
@@ -10,6 +10,7 @@ interface KalimbaProps {
   isPlaying: boolean;
   onNoteClick: (note: string) => void;
   showNumbers: boolean;
+  tuning: string;
 }
 
 const KalimbaKey = React.memo(({ 
@@ -20,7 +21,8 @@ const KalimbaKey = React.memo(({
   fallingNotes,
   isPlaying,
   showNumbers, 
-  onNoteClick 
+  onNoteClick,
+  tuning
 }: { 
   keyData: { note: string; label: string; octave: string }; 
   isFirst: boolean; 
@@ -30,12 +32,13 @@ const KalimbaKey = React.memo(({
   isPlaying: boolean;
   showNumbers: boolean; 
   onNoteClick: (note: string) => void;
+  tuning: string;
 }) => {
   return (
     <div
        className={`kalimba-key ${isFirst ? 'first-key' : ''} ${isLast ? 'last-key' : ''} ${isActive ? 'active' : ''}`}
        data-note={keyData.note}
-       onClick={() => onNoteClick(keyData.note)}
+       onClick={() => onNoteClick(getTunedNote(keyData.note, tuning))}
     >
       {/* 
         This is the secret weapon for iOS sync!
@@ -68,7 +71,7 @@ const KalimbaKey = React.memo(({
   return true;
 });
 
-export const Kalimba: React.FC<KalimbaProps> = ({ ppi, activeNotes, fallingNotes, isPlaying, onNoteClick, showNumbers }) => {
+export const Kalimba: React.FC<KalimbaProps> = ({ ppi, activeNotes, fallingNotes, isPlaying, onNoteClick, showNumbers, tuning }) => {
   // Update the CSS variable whenever the PPI changes so hardware dimensions scale correctly
   useEffect(() => {
     document.documentElement.style.setProperty('--ppi', ppi.toString());
@@ -80,8 +83,17 @@ export const Kalimba: React.FC<KalimbaProps> = ({ ppi, activeNotes, fallingNotes
         {KALIMBA_KEYS.map((keyData, index) => {
           const isFirst = index === 0;
           const isLast = index === KALIMBA_KEYS.length - 1;
-          const isActive = activeNotes.includes(keyData.note);
-          const keyFallingNotes = fallingNotes.filter(n => n.note === keyData.note);
+          const isActive = activeNotes.some(activeNote => {
+            const parsed = parseNote(activeNote);
+            if (!parsed) return activeNote === keyData.note;
+            return `${parsed.letter}${parsed.octave}` === keyData.note;
+          });
+          
+          const keyFallingNotes = fallingNotes.filter(n => {
+            const parsed = parseNote(n.note);
+            if (!parsed) return n.note === keyData.note;
+            return `${parsed.letter}${parsed.octave}` === keyData.note;
+          });
           
           return (
             <KalimbaKey 
@@ -94,6 +106,7 @@ export const Kalimba: React.FC<KalimbaProps> = ({ ppi, activeNotes, fallingNotes
               isPlaying={isPlaying}
               showNumbers={showNumbers}
               onNoteClick={onNoteClick}
+              tuning={tuning}
             />
           );
         })}

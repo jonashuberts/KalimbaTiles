@@ -14,7 +14,40 @@ export const KALIMBA_KEYS = [
   { note: 'B4', label: '7', octave: '' },
   { note: 'D5', label: '2', octave: '*' },
   { note: 'F5', label: '4', octave: '*' },
-  { note: 'A5', label: '6', octave: '*' },
-  { note: 'C6', label: '1', octave: '**' },
   { note: 'E6', label: '3', octave: '**' },
 ];
+
+export const TUNINGS: Record<string, Record<string, string>> = {
+  'C Major': {},
+  'G Major': { F: '#' },
+  'D Major': { F: '#', C: '#' },
+  'A Major': { F: '#', C: '#', G: '#' },
+  'E Major': { F: '#', C: '#', G: '#', D: '#' },
+  'B Major': { F: '#', C: '#', G: '#', D: '#', A: '#' },
+  'F Major': { B: 'b' },
+  'Bb Major': { B: 'b', E: 'b' },
+  'Eb Major': { B: 'b', E: 'b', A: 'b' },
+  'Ab Major': { B: 'b', E: 'b', A: 'b', D: 'b' },
+};
+
+export function parseNote(noteName: string) {
+  const match = noteName.match(/^([A-G])([#b]?)(-?\d+|NO)$/i);
+  if (match) {
+    return { letter: match[1].toUpperCase(), accidental: match[2], octave: match[3] };
+  }
+  return null;
+}
+
+export function isAccidental(noteName: string, tuning: string) {
+  const parsed = parseNote(noteName);
+  if (!parsed) return false;
+  const expectedAccidental = TUNINGS[tuning]?.[parsed.letter] || '';
+  return parsed.accidental !== expectedAccidental;
+}
+
+export function getTunedNote(baseNote: string, tuning: string) {
+  const parsed = parseNote(baseNote);
+  if (!parsed) return baseNote;
+  const accidental = TUNINGS[tuning]?.[parsed.letter] || '';
+  return `${parsed.letter}${accidental}${parsed.octave}`;
+}
