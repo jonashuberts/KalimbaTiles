@@ -9,9 +9,9 @@ Recently modernized into a robust React/Vite application, Kalimba Tiles features
 1. **Dynamic Physical Scaling**: Optimize your practice by adjusting the visual Scale of the application to match the physical dimensions of any size Kalimba. The on-screen UI will mathematically scale using your browser's persistent storage so the digital keys match the physical width of your real 17-key Kalimba when mounted onto your specific tablet or mobile device.
 2. **Select a File**: Choose your favorite `.mid` song or exercise effortlessly using the built-in file selector.
 3. **Perfect Audio-Visual Sync**: Dive into your Kalimba practice session with falling tiles that strike the keys in perfect, millisecond-accurate rhythm with the audio. Guaranteed zero-latency drift on Apple/iOS hardware between physical strike and key lighting.
-4. **Z-Index Waterfall Physics**: Notes now physically slide and despawn gracefully *underneath* the metal Kalimba tines.
-5. **Tempo & Controls**: Adjust the learning speed dynamically, toggle note numbers/dots, and pause/play with a single click.
-6. **Have Fun Learning**: Enjoy discovering new songs and refining your kalimba skills.
+4. **Z-Index Waterfall Physics & 3D Stacking**: Notes slide and despawn gracefully *underneath* the metal Kalimba tines, and feature 3D-beveled visual stacking when rapid notes overlap.
+5. **Interactive YouTube-Style Scrubber**: A minimal dynamic loading bar gives you flawless timeline traversal. Skip through dense massive MIDI tracks and it automatically mutes audio loops and cleans the screen without glitching.
+6. **Tempo, Tuning, & Controls**: Adjust the learning speed dynamically, toggle note numbers/dots, choose flat/sharp alternate tunings for the layout, and experience automatic pause/loop functionality effortlessly.
 
 ## Screenshot
 
