@@ -128,9 +128,7 @@ export function useMidiPlayer() {
       return;
     }
 
-    if (playerRef.current) {
-      playerRef.current.stop();
-    }
+    stop(); // Cleanly stop existing playback, clear active arrays, and halt tasks
 
     tempoInitialized.current = false;
     userTempoOverride.current = null;

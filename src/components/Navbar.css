@@ -232,29 +232,41 @@
 }
 
 /* Landscape mobile optimization: hide title, tight center packing */
-@media (max-height: 600px) and (orientation: landscape) {
+@media (max-width: 850px) {
   .navbar {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem;
     justify-content: center;
   }
   .nav-brand {
     display: none; /* Reclaim space occupied by title row */
   }
   .nav-controls {
-    width: auto;
+    width: 100%;
     justify-content: center;
-    gap: 1rem;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .setting-label {
+    display: none; /* Hide setting labels to fit everything closely */
+  }
+  .file-upload-btn span {
+    display: none; /* Hide "Select MIDI" text, keep just the icon */
+  }
+  .file-upload-btn {
+    padding: 0 0.5rem;
   }
   .file-upload-btn, .tempo-input {
-    padding: 0 0.6rem;
     font-size: 0.85rem;
   }
   .btn-icon {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
   }
   .btn-icon.toggle-btn {
     width: auto; /* Prevent the numbers button from being squished */
-    height: 30px; /* Prevent it from overflowing its 40px container on mobile */
+    height: 30px; /* Prevent it from overflowing its container on mobile */
+  }
+  .tuning-select {
+    max-width: 100px;
   }
 }
