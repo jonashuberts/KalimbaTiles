@@ -25,7 +25,7 @@ export const FallingTile = React.memo(({ note, duration = 2300, isPlaying, isHal
         <div className="tile-glow"></div>
         {isHalfNote && (
           <span className="half-note-marker">
-            {note.includes('#') ? '#' : 'b'}
+            {note.includes('#') ? '♯' : '♭'}
           </span>
         )}
       </div>
