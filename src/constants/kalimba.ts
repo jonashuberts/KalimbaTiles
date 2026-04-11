@@ -14,6 +14,8 @@ export const KALIMBA_KEYS = [
   { note: 'B4', label: '7', octave: '' },
   { note: 'D5', label: '2', octave: '*' },
   { note: 'F5', label: '4', octave: '*' },
+  { note: 'A5', label: '6', octave: '*' },
+  { note: 'C6', label: '1', octave: '**' },
   { note: 'E6', label: '3', octave: '**' },
 ];
 

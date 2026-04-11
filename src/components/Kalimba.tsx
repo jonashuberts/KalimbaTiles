@@ -67,6 +67,7 @@ const KalimbaKey = React.memo(({
   if (prev.isActive !== next.isActive) return false;
   if (prev.showNumbers !== next.showNumbers) return false;
   if (prev.isPlaying !== next.isPlaying) return false;
+  if (prev.tuning !== next.tuning) return false;
   if (prev.fallingNotes.length !== next.fallingNotes.length) return false;
   return true;
 });
