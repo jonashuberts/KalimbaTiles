@@ -328,15 +328,6 @@ export function useMidiPlayer() {
     }
   };
 
-  const reset = () => {
-    setActiveNotes([]);
-    setFallingNotes([]);
-    clearTasks();
-    if (instrumentRef.current) {
-      instrumentRef.current.stop();
-    }
-  };
-
   const setGlobalTempo = (newTempo: number) => {
     setTempo(newTempo);
     userTempoOverride.current = newTempo;
@@ -378,7 +369,6 @@ export function useMidiPlayer() {
     pause,
     stop,
     seek,
-    reset,
     setTempo: setGlobalTempo,
     playDirectNote
   };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Pause, Square, RotateCcw, FileMusic, Settings, Minus, Plus } from 'lucide-react';
+import { Play, Pause, Square, FileMusic, Settings, Minus, Plus } from 'lucide-react';
 import { TUNINGS } from '../constants/kalimba';
 import packageJson from '../../package.json';
 import './Navbar.css';
@@ -14,7 +14,6 @@ interface NavbarProps {
   onFileUpload: (file: File) => void;
   onPlay: () => void;
   onStop: () => void;
-  onReset: () => void;
   isPlaying: boolean;
   isReady: boolean;
   showNumbers: boolean;
@@ -33,7 +32,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   onFileUpload,
   onPlay,
   onStop,
-  onReset,
   isPlaying,
   isReady,
   showNumbers,
@@ -89,9 +87,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
           <button className="btn-icon" onClick={onStop} disabled={!isReady} title="Stop">
             <Square size={20} />
-          </button>
-          <button className="btn-icon danger" onClick={onReset} title="Reset">
-            <RotateCcw size={20} />
           </button>
         </div>
 

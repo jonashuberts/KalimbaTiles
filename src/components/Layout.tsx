@@ -37,7 +37,6 @@ export const Layout: React.FC = () => {
     play,
     pause,
     stop,
-    reset,
     setTempo,
     playDirectNote,
     progress,
@@ -121,7 +120,6 @@ export const Layout: React.FC = () => {
         onFileUpload={handleFileUpload}
         onPlay={handlePlayClick}
         onStop={stop}
-        onReset={reset}
         isPlaying={isPlaying}
         isReady={isReady}
         showNumbers={showNumbers}
