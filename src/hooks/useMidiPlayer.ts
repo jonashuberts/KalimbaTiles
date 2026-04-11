@@ -163,6 +163,15 @@ export function useMidiPlayer() {
       handleMidiEvent(event);
     });
 
+    playerRef.current.on('endOfFile', () => {
+      // The MIDI player has reached the final tick. Wait precisely 2300ms for 
+      // the absolutely final visual tile spawned to successfully physically hit the kalimba tines!
+      setTimeout(() => {
+        setIsPlaying(false);
+        setProgress(100);
+      }, 2300);
+    });
+
     try {
       playerRef.current.loadArrayBuffer(arrayBuffer);
       setTempo(playerRef.current.tempo || 50);
@@ -229,18 +238,28 @@ export function useMidiPlayer() {
         acRef.current.resume();
       }
       
-      const isResuming = playerRef.current.getCurrentTick() > 0 && !isPlaying;
-      if (isResuming) {
-        resumeTasks();
-        playerRef.current.play();
+      const isFinished = playerRef.current.getCurrentTick() >= playerRef.current.totalTicks - 1;
+
+      if (isFinished) {
+         playerRef.current.skipToPercent(0);
+         setProgress(0);
+         clearTasks();
+         if (instrumentRef.current) instrumentRef.current.stop(); 
+         setTimeout(() => { playerRef.current.play(); }, 500);
       } else {
-        clearTasks();
-        // Clear old sounds if restarting
-        if (instrumentRef.current) instrumentRef.current.stop(); 
-        
-        setTimeout(() => {
+        const isResuming = playerRef.current.getCurrentTick() > 0 && !isPlaying;
+        if (isResuming) {
+          resumeTasks();
           playerRef.current.play();
-        }, 1000); 
+        } else {
+          clearTasks();
+          // Clear old sounds if restarting
+          if (instrumentRef.current) instrumentRef.current.stop(); 
+          
+          setTimeout(() => {
+            playerRef.current.play();
+          }, 1000); 
+        }
       }
       setIsPlaying(true);
     }
