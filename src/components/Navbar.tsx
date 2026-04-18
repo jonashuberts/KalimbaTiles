@@ -58,7 +58,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <nav className="navbar">
       <div className="nav-brand">
-        <h1>KalimbaTiles <span className="version-badge">v{packageJson.version}</span></h1>
+        <h1>KalimbaTiles</h1>
       </div>
 
       <div className="nav-controls">
@@ -153,6 +153,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="toggle-text">123</span>
           </button>
         </div>
+
+        <span className="version-badge mobile-visible-badge">v{packageJson.version}</span>
       </div>
 
       <div className="progress-bar-container">
