@@ -2,15 +2,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  padding-top: calc(1rem + env(safe-area-inset-top));
+  padding-bottom: 1rem;
+  padding-left: calc(2rem + env(safe-area-inset-left));
+  padding-right: calc(2rem + env(safe-area-inset-right));
   background: rgba(22, 22, 26, 0.8);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   position: relative;
   z-index: 100;
   box-shadow: var(--shadow-md);
-  /* Make room below padding for the absolute progress bar to visually bleed smoothly */
-  padding-bottom: 1rem;
 }
 
 .nav-brand h1 {
@@ -245,7 +246,10 @@
 /* Landscape mobile optimization: hide title, tight center packing */
 @media (max-width: 850px) {
   .navbar {
-    padding: 0.5rem;
+    padding-top: calc(0.5rem + env(safe-area-inset-top));
+    padding-bottom: 0.5rem;
+    padding-left: calc(0.5rem + env(safe-area-inset-left));
+    padding-right: calc(0.5rem + env(safe-area-inset-right));
     justify-content: center;
   }
   .nav-brand {
