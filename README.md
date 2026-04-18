@@ -15,7 +15,7 @@ Recently modernized into a robust React/Vite application, Kalimba Tiles features
 
 ## Screenshot
 
-![Main Interface](screenshots/main.png) 
+![Main Interface](screenshots/main.png?raw=true&v=2.2.5) 
 
 ## Local Development
 
