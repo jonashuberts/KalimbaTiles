@@ -54,6 +54,28 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
+#portrait-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg-primary);
+  z-index: 99999;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 2rem;
+  text-align: center;
+}
+
+@media screen and (orientation: portrait) {
+  #portrait-overlay {
+    display: flex;
+  }
+}
+
 #root {
   height: 100%;
   width: 100%;
