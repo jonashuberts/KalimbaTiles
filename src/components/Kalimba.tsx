@@ -11,6 +11,9 @@ interface KalimbaProps {
   onNoteClick: (note: string) => void;
   showNumbers: boolean;
   tuning: string;
+  isTuningMode?: boolean;
+  selectedTuningKey?: string | null;
+  currentTuningCents?: number | null;
 }
 
 const KalimbaKey = React.memo(({ 
@@ -22,7 +25,9 @@ const KalimbaKey = React.memo(({
   isPlaying,
   showNumbers, 
   onNoteClick,
-  tuning
+  tuning,
+  isTuningActive,
+  tuneCents
 }: { 
   keyData: { note: string; label: string; octave: string }; 
   isFirst: boolean; 
@@ -33,18 +38,26 @@ const KalimbaKey = React.memo(({
   showNumbers: boolean; 
   onNoteClick: (note: string) => void;
   tuning: string;
+  isTuningActive?: boolean;
+  tuneCents?: number | null;
 }) => {
+
+  const getTuneStatus = () => {
+    if (!isTuningActive || tuneCents === null || tuneCents === undefined) return '';
+    if (Math.abs(tuneCents) <= 10) return 'perfect';
+    if (tuneCents < -10) return 'flat'; // Too low, hammer UP
+    if (tuneCents > 10) return 'sharp'; // Too high, hammer DOWN
+    return '';
+  };
+
+  const status = getTuneStatus();
+
   return (
     <div
-       className={`kalimba-key ${isFirst ? 'first-key' : ''} ${isLast ? 'last-key' : ''} ${isActive ? 'active' : ''}`}
+       className={`kalimba-key ${isFirst ? 'first-key' : ''} ${isLast ? 'last-key' : ''} ${isActive ? 'active' : ''} ${isTuningActive ? 'tuning-focus' : ''} ${status ? `tune-${status}` : ''}`}
        data-note={keyData.note}
        onClick={() => onNoteClick(getTunedNote(keyData.note, tuning))}
     >
-      {/* 
-        This is the secret weapon for iOS sync!
-        We render a pure CSS flash with a 2000ms delay EXACTLY mapped to the dropping tile.
-        This entirely skips React render latency at the 2000ms strike frame!
-      */}
       {fallingNotes.map((note) => (
          <div 
            key={`glow-${note.id}`} 
@@ -52,6 +65,14 @@ const KalimbaKey = React.memo(({
            style={{ animationPlayState: isPlaying ? 'running' : 'paused' }}
          ></div>
       ))}
+
+      {isTuningActive && status && (
+        <div className="tuning-indicator">
+          {status === 'flat' && <span className="tune-arrow up">↑</span>}
+          {status === 'sharp' && <span className="tune-arrow down">↓</span>}
+          {status === 'perfect' && <span className="tune-dot">●</span>}
+        </div>
+      )}
 
       {showNumbers && (
         <div className="key-label">
@@ -68,18 +89,30 @@ const KalimbaKey = React.memo(({
   if (prev.showNumbers !== next.showNumbers) return false;
   if (prev.isPlaying !== next.isPlaying) return false;
   if (prev.tuning !== next.tuning) return false;
+  if (prev.isTuningActive !== next.isTuningActive) return false;
+  if (prev.tuneCents !== next.tuneCents) return false;
   if (prev.fallingNotes.length !== next.fallingNotes.length) return false;
   return true;
 });
 
-export const Kalimba: React.FC<KalimbaProps> = ({ ppi, activeNotes, fallingNotes, isPlaying, onNoteClick, showNumbers, tuning }) => {
-  // Update the CSS variable whenever the PPI changes so hardware dimensions scale correctly
+export const Kalimba: React.FC<KalimbaProps> = ({ 
+  ppi, 
+  activeNotes, 
+  fallingNotes, 
+  isPlaying, 
+  onNoteClick, 
+  showNumbers, 
+  tuning,
+  isTuningMode,
+  selectedTuningKey,
+  currentTuningCents
+}) => {
   useEffect(() => {
     document.documentElement.style.setProperty('--ppi', ppi.toString());
   }, [ppi]);
 
   return (
-    <div className="kalimba-container">
+    <div className={`kalimba-container ${isTuningMode ? 'tuning-mode-active' : ''}`}>
       <div className="kalimba-board">
         {KALIMBA_KEYS.map((keyData, index) => {
           const isFirst = index === 0;
@@ -95,6 +128,9 @@ export const Kalimba: React.FC<KalimbaProps> = ({ ppi, activeNotes, fallingNotes
             if (!parsed) return n.note === keyData.note;
             return `${parsed.letter}${parsed.octave}` === keyData.note;
           });
+
+          const tunedNote = getTunedNote(keyData.note, tuning);
+          const isTuningActive = isTuningMode && selectedTuningKey === tunedNote;
           
           return (
             <KalimbaKey 
@@ -108,6 +144,8 @@ export const Kalimba: React.FC<KalimbaProps> = ({ ppi, activeNotes, fallingNotes
               showNumbers={showNumbers}
               onNoteClick={onNoteClick}
               tuning={tuning}
+              isTuningActive={isTuningActive}
+              tuneCents={isTuningActive ? currentTuningCents : null}
             />
           );
         })}

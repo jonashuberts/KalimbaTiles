@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Pause, Square, FileMusic, Settings, Minus, Plus } from 'lucide-react';
+import { Play, Pause, Square, FileMusic, Settings, Minus, Plus, Mic } from 'lucide-react';
 import { TUNINGS } from '../constants/kalimba';
 import packageJson from '../../package.json';
 import './Navbar.css';
@@ -20,6 +20,8 @@ interface NavbarProps {
   setShowNumbers: (val: boolean) => void;
   progress: number;
   seek: (percent: number) => void;
+  isTuningMode: boolean;
+  toggleTuningMode: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -37,7 +39,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   showNumbers,
   setShowNumbers,
   progress,
-  seek
+  seek,
+  isTuningMode,
+  toggleTuningMode
 }) => {
   const [localTempo, setLocalTempo] = React.useState<string>(tempo.toString());
 
@@ -62,52 +66,56 @@ export const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       <div className="nav-controls">
-        <label className="file-upload-btn">
-          <FileMusic size={18} />
-          <span>Select MIDI</span>
-          <input 
-            type="file" 
-            accept=".mid,.midi,audio/midi,audio/x-midi" 
-            onChange={(e) => {
-              if (e.target.files && e.target.files[0]) {
-                onFileUpload(e.target.files[0]);
-              }
-            }} 
-            hidden
-          />
-        </label>
+        {!isTuningMode && (
+          <>
+            <label className="file-upload-btn">
+              <FileMusic size={18} />
+              <span>Select MIDI</span>
+              <input 
+                type="file" 
+                accept=".mid,.midi,audio/midi,audio/x-midi" 
+                onChange={(e) => {
+                  if (e.target.files && e.target.files[0]) {
+                    onFileUpload(e.target.files[0]);
+                  }
+                }} 
+                hidden
+              />
+            </label>
 
-        <div className="playback-controls">
-          <button 
-            className={`btn-icon ${isPlaying ? 'active' : ''}`} 
-            onClick={onPlay} 
-            title={isPlaying ? "Pause" : "Play"}
-          >
-            {isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="none" />}
-          </button>
-          <button className="btn-icon" onClick={onStop} disabled={!isReady} title="Stop">
-            <Square size={20} />
-          </button>
-        </div>
+            <div className="playback-controls">
+              <button 
+                className={`btn-icon ${isPlaying ? 'active' : ''}`} 
+                onClick={onPlay} 
+                title={isPlaying ? "Pause" : "Play"}
+              >
+                {isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="none" />}
+              </button>
+              <button className="btn-icon" onClick={onStop} disabled={!isReady} title="Stop">
+                <Square size={20} />
+              </button>
+            </div>
 
-        <div className="setting-group">
-          <span className="setting-label">Tempo</span>
-          <input 
-            type={isReady ? "number" : "text"}
-            className="tempo-input" 
-            min={10} 
-            max={200} 
-            value={isReady ? localTempo : "---"}
-            onChange={(e) => setLocalTempo(e.target.value)}
-            onBlur={commitTempo}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.currentTarget.blur();
-              }
-            }}
-            disabled={!isReady}
-          />
-        </div>
+            <div className="setting-group">
+              <span className="setting-label">Tempo</span>
+              <input 
+                type={isReady ? "number" : "text"}
+                className="tempo-input" 
+                min={10} 
+                max={200} 
+                value={isReady ? localTempo : "---"}
+                onChange={(e) => setLocalTempo(e.target.value)}
+                onBlur={commitTempo}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.currentTarget.blur();
+                  }
+                }}
+                disabled={!isReady}
+              />
+            </div>
+          </>
+        )}
 
         <div className="setting-group">
           <span className="setting-label">Tuning</span>
@@ -154,22 +162,35 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
         </div>
 
+        <div className="control-group">
+          <button 
+            className={`btn-icon toggle-btn ${isTuningMode ? 'active tune-mode-btn' : ''}`}
+            onClick={toggleTuningMode}
+            title="Tuner"
+          >
+            <Mic size={20} />
+            <span className="toggle-text">Tune</span>
+          </button>
+        </div>
+
         <span className="version-badge mobile-visible-badge">v{packageJson.version}</span>
       </div>
 
-      <div className="progress-bar-container">
-        <input 
-          type="range" 
-          className="progress-bar" 
-          min="0" 
-          max="100" 
-          step="0.05"
-          value={progress}
-          onChange={(e) => seek(Number(e.target.value))}
-          disabled={!isReady}
-          style={{ '--progress': `${progress}%` } as React.CSSProperties}
-        />
-      </div>
+      {!isTuningMode && (
+        <div className="progress-bar-container">
+          <input 
+            type="range" 
+            className="progress-bar" 
+            min="0" 
+            max="100" 
+            step="0.05"
+            value={progress}
+            onChange={(e) => seek(Number(e.target.value))}
+            disabled={!isReady}
+            style={{ '--progress': `${progress}%` } as React.CSSProperties}
+          />
+        </div>
+      )}
     </nav>
   );
 };

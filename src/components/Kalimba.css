@@ -210,3 +210,71 @@
     padding-bottom: 15vh; 
   }
 }
+
+/* --- Tuning Dashboard Logic --- */
+.tuning-mode-active .kalimba-key {
+  transition: all 0.3s ease;
+}
+
+.tuning-mode-active .kalimba-key:not(.tuning-focus) {
+  opacity: 0.5;
+  filter: grayscale(80%);
+}
+
+.kalimba-key.tuning-focus {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.8);
+  z-index: 50;
+}
+
+.kalimba-key.tuning-focus.tune-flat {
+  background: linear-gradient(180deg, #ffd1bf 0%, #ff6b6b 100%) !important;
+  box-shadow: 0 0 15px rgba(255, 107, 107, 0.6);
+}
+
+.kalimba-key.tuning-focus.tune-sharp {
+  background: linear-gradient(180deg, #ffd1bf 0%, #ff9e3d 100%) !important;
+  box-shadow: 0 0 15px rgba(255, 158, 61, 0.6);
+}
+
+.kalimba-key.tuning-focus.tune-perfect {
+  background: linear-gradient(180deg, #d8f5cb 0%, #4cd137 100%) !important;
+  box-shadow: 0 0 20px rgba(76, 209, 55, 0.8);
+}
+
+.tuning-indicator {
+  position: absolute;
+  top: 5px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: calc((var(--ppi) / 25.4) * 5px);
+  font-weight: 900;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  animation: pulse-arrow 1s infinite alternate;
+}
+
+.tuning-indicator .tune-arrow.up {
+  color: #ff3f34;
+}
+
+.tuning-indicator .tune-arrow.down {
+  color: #ff9f1a;
+}
+
+.tuning-indicator .tune-dot {
+  color: #05c46b;
+  font-size: calc((var(--ppi) / 25.4) * 3px);
+  animation: pop-grow 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes pulse-arrow {
+  0% { transform: translateY(0); opacity: 0.8; }
+  100% { transform: translateY(-2px); opacity: 1; }
+}
+
+@keyframes pop-grow {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1.5); opacity: 1; }
+}

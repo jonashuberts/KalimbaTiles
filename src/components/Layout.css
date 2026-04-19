@@ -39,3 +39,17 @@
   position: relative;
   z-index: 10;
 }
+
+.tuning-error-banner {
+  background: #ff3f34;
+  color: white;
+  padding: 0.8rem;
+  text-align: center;
+  font-weight: 600;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  box-shadow: var(--shadow-sm);
+}

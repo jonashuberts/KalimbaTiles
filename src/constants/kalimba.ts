@@ -53,3 +53,27 @@ export function getTunedNote(baseNote: string, tuning: string) {
   const accidental = TUNINGS[tuning]?.[parsed.letter] || '';
   return `${parsed.letter}${accidental}${parsed.octave}`;
 }
+
+const NOTE_INDEX: Record<string, number> = {
+  'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 'Eb': 3, 'E': 4,
+  'F': 5, 'F#': 6, 'Gb': 6, 'G': 7, 'G#': 8, 'Ab': 8, 'A': 9,
+  'A#': 10, 'Bb': 10, 'B': 11
+};
+
+export function getFrequencyFromNote(note: string): number | null {
+  const parsed = parseNote(note);
+  if (!parsed) return null;
+  
+  const noteName = `${parsed.letter}${parsed.accidental}`;
+  const index = NOTE_INDEX[noteName];
+  if (index === undefined) return null;
+  
+  const octave = parseInt(parsed.octave, 10);
+  const midiNote = (octave + 1) * 12 + index;
+  
+  return 440 * Math.pow(2, (midiNote - 69) / 12);
+}
+
+export function getCentsOffPitch(freq: number, targetFreq: number): number {
+  return 1200 * Math.log2(freq / targetFreq);
+}

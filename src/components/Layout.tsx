@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Navbar } from './Navbar';
 import { Kalimba } from './Kalimba';
-import { KALIMBA_KEYS, parseNote, isAccidental } from '../constants/kalimba';
+import { KALIMBA_KEYS, parseNote, isAccidental, getFrequencyFromNote, getCentsOffPitch } from '../constants/kalimba';
 import { FallingTile } from './FallingTile';
 import { useMidiPlayer } from '../hooks/useMidiPlayer';
+import { usePitchDetection } from '../hooks/usePitchDetection';
 import './Layout.css';
 
 export const Layout: React.FC = () => {
@@ -16,6 +17,13 @@ export const Layout: React.FC = () => {
   const [tuning, setTuning] = useState<string>(() => {
     return localStorage.getItem('kalimbaTuning') || 'C Major';
   });
+
+  // Tuning Mode State
+  const [isTuningMode, setIsTuningMode] = useState(false);
+  const [selectedTuningKey, setSelectedTuningKey] = useState<string | null>(null);
+
+  // Hook into Hardware Audio
+  const { pitch, error: micError, startListening, stopListening } = usePitchDetection();
 
   // Persist settings to localStorage
   React.useEffect(() => {
@@ -42,6 +50,40 @@ export const Layout: React.FC = () => {
     progress,
     seek
   } = useMidiPlayer();
+
+  const handleToggleTuningMode = async () => {
+    if (isTuningMode) {
+      setIsTuningMode(false);
+      setSelectedTuningKey(null);
+      stopListening();
+    } else {
+      stop(); // Mathematically eradicate playback before entering tuning
+      await startListening();
+      setIsTuningMode(true);
+    }
+  };
+
+  const handleNoteClick = (note: string) => {
+    if (isTuningMode) {
+      setSelectedTuningKey(note);
+      playDirectNote(note); // Output the correct tuned tone exactly so user can tune by ear
+    } else {
+      playDirectNote(note);
+    }
+  };
+
+  // Processing Math
+  let renderTuningCents: number | null = null;
+  if (isTuningMode && selectedTuningKey && pitch) {
+    const exactFrequency = getFrequencyFromNote(selectedTuningKey);
+    if (exactFrequency) {
+      const diff = getCentsOffPitch(pitch, exactFrequency);
+      // Suppress massive harmonic echoes if the app mistakenly tracked noise or wrong tines
+      if (Math.abs(diff) < 200) {
+        renderTuningCents = diff;
+      }
+    }
+  }
 
   // Handle File Upload from Local System
   const handleFileUpload = (file: File) => {
@@ -76,11 +118,7 @@ export const Layout: React.FC = () => {
 
   const handlePlayClick = () => {
     if (!isReady) {
-      // Calling play() synchronously flips the paused flag to false during the physical click event,
-      // which allows the browser's audio policies to legally awaken the AudioContext immediately!
       play(); 
-      
-      // Load sample.mid and start playing automatically if no user file is ready
       fetch('/sample.mid')
         .then(res => {
            if (!res.ok) throw new Error("Could not fetch sample.mid");
@@ -108,6 +146,12 @@ export const Layout: React.FC = () => {
 
   return (
     <div className="layout-container">
+      {micError && (
+        <div className="tuning-error-banner">
+          {micError} Ensure microphone permissions are granted.
+        </div>
+      )}
+
       {/* Dynamic Background Elements */}
       <div className="bg-glow bg-top"></div>
       <div className="bg-glow bg-bottom"></div>
@@ -128,50 +172,55 @@ export const Layout: React.FC = () => {
         setTuning={setTuning}
         progress={progress}
         seek={seek}
+        isTuningMode={isTuningMode}
+        toggleTuningMode={handleToggleTuningMode}
       />
 
       <main className="main-content">
         {/* Falling Note Animation Layer */}
-        <div className="animation-container">
-          <div className="falling-tiles-wrapper">
-             {/* We create 17 invisible flex columns mathematically matching the keys. */}
-             {KALIMBA_KEYS.map((keyData: { note: string; label: string; octave: string }) => {
-               // Filter events meant for this specific key pipeline by mapping base notes
-               const activeTilesForThisKey = fallingNotes.filter(n => {
-                 const parsed = parseNote(n.note);
-                 if (!parsed) return n.note === keyData.note; // fallback for unparseable chunks
-                 return `${parsed.letter}${parsed.octave}` === keyData.note;
-               });
-               
-               return (
-                 <div key={`col-${keyData.note}`} className="falling-col">
-                   {activeTilesForThisKey.map(noteEvent => {
-                     const isHalf = isAccidental(noteEvent.note, tuning);
-                     return (
-                       <FallingTile
-                          key={noteEvent.id}
-                          note={noteEvent.note}
-                          duration={2300}
-                          isPlaying={isPlaying}
-                          isHalfNote={isHalf}
-                       />
-                     );
-                   })}
-                 </div>
-               );
-             })}
+        {!isTuningMode && (
+          <div className="animation-container">
+            <div className="falling-tiles-wrapper">
+               {KALIMBA_KEYS.map((keyData: { note: string; label: string; octave: string }) => {
+                 const activeTilesForThisKey = fallingNotes.filter(n => {
+                   const parsed = parseNote(n.note);
+                   if (!parsed) return n.note === keyData.note; 
+                   return `${parsed.letter}${parsed.octave}` === keyData.note;
+                 });
+                 
+                 return (
+                   <div key={`col-${keyData.note}`} className="falling-col">
+                     {activeTilesForThisKey.map(noteEvent => {
+                       const isHalf = isAccidental(noteEvent.note, tuning);
+                       return (
+                         <FallingTile
+                            key={noteEvent.id}
+                            note={noteEvent.note}
+                            duration={2300}
+                            isPlaying={isPlaying}
+                            isHalfNote={isHalf}
+                         />
+                       );
+                     })}
+                   </div>
+                 );
+               })}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Physical Interactive Kalimba Layer */}
         <Kalimba 
           ppi={ppi} 
           activeNotes={activeNotes}
-          fallingNotes={fallingNotes}
+          fallingNotes={!isTuningMode ? fallingNotes : []}
           isPlaying={isPlaying}
-          onNoteClick={playDirectNote}
+          onNoteClick={handleNoteClick}
           showNumbers={showNumbers}
           tuning={tuning}
+          isTuningMode={isTuningMode}
+          selectedTuningKey={selectedTuningKey}
+          currentTuningCents={renderTuningCents}
         />
       </main>
     </div>
