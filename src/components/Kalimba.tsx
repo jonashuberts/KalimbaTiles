@@ -14,6 +14,7 @@ interface KalimbaProps {
   isTuningMode?: boolean;
   selectedTuningKey?: string | null;
   currentTuningCents?: number | null;
+  tuningMemory?: Record<string, boolean>;
 }
 
 const KalimbaKey = React.memo(({ 
@@ -28,6 +29,7 @@ const KalimbaKey = React.memo(({
   tuning,
   isTuningMode,
   isTuningActive,
+  isMemorizedTuned,
   tuneCents
 }: { 
   keyData: { note: string; label: string; octave: string }; 
@@ -41,6 +43,7 @@ const KalimbaKey = React.memo(({
   tuning: string;
   isTuningMode?: boolean;
   isTuningActive?: boolean;
+  isMemorizedTuned?: boolean;
   tuneCents?: number | null;
 }) => {
 
@@ -56,7 +59,7 @@ const KalimbaKey = React.memo(({
 
   return (
     <div
-       className={`kalimba-key ${isFirst ? 'first-key' : ''} ${isLast ? 'last-key' : ''} ${isActive ? 'active' : ''} ${isTuningActive ? 'tuning-focus' : ''} ${status ? `tune-${status}` : ''}`}
+       className={`kalimba-key ${isFirst ? 'first-key' : ''} ${isLast ? 'last-key' : ''} ${isActive ? 'active' : ''} ${isTuningActive ? 'tuning-focus' : ''} ${!isTuningActive && isTuningMode && isMemorizedTuned ? 'tuned-memory' : ''} ${status ? `tune-${status}` : ''}`}
        data-note={keyData.note}
        onClick={() => onNoteClick(getTunedNote(keyData.note, tuning))}
     >
@@ -93,6 +96,7 @@ const KalimbaKey = React.memo(({
   if (prev.tuning !== next.tuning) return false;
   if (prev.isTuningMode !== next.isTuningMode) return false;
   if (prev.isTuningActive !== next.isTuningActive) return false;
+  if (prev.isMemorizedTuned !== next.isMemorizedTuned) return false;
   if (prev.tuneCents !== next.tuneCents) return false;
   if (prev.fallingNotes.length !== next.fallingNotes.length) return false;
   // Deep equality checks for callback function references to brutally prevent stale closures
@@ -110,7 +114,8 @@ export const Kalimba: React.FC<KalimbaProps> = ({
   tuning,
   isTuningMode,
   selectedTuningKey,
-  currentTuningCents
+  currentTuningCents,
+  tuningMemory
 }) => {
   useEffect(() => {
     document.documentElement.style.setProperty('--ppi', ppi.toString());
@@ -136,6 +141,7 @@ export const Kalimba: React.FC<KalimbaProps> = ({
 
           const tunedNote = getTunedNote(keyData.note, tuning);
           const isTuningActive = isTuningMode && selectedTuningKey === tunedNote;
+          const isMemorizedTuned = tuningMemory?.[tunedNote] === true;
           
           return (
             <KalimbaKey 
@@ -151,6 +157,7 @@ export const Kalimba: React.FC<KalimbaProps> = ({
               tuning={tuning}
               isTuningMode={isTuningMode}
               isTuningActive={isTuningActive}
+              isMemorizedTuned={isMemorizedTuned}
               tuneCents={isTuningActive ? currentTuningCents : null}
             />
           );

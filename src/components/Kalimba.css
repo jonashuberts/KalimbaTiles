@@ -229,6 +229,11 @@
   border-top: 2px solid rgba(255, 255, 255, 0.9);
 }
 
+.kalimba-key.tuned-memory {
+  background: linear-gradient(180deg, #f0fdf4 0%, #dcfce7 100%);
+  border-top: 2px solid rgba(74, 222, 128, 0.4);
+}
+
 .kalimba-key.tuning-focus.tune-flat {
   background: linear-gradient(180deg, #ffd1bf 0%, #ff6b6b 100%) !important;
   box-shadow: 0 0 15px rgba(255, 107, 107, 0.6);
@@ -246,15 +251,18 @@
 
 .tuning-indicator {
   position: absolute;
-  top: 5px;
-  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   font-size: calc((var(--ppi) / 25.4) * 5px);
   font-weight: 900;
   text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-  animation: pulse-arrow 1s infinite alternate;
+  pointer-events: none;
+  z-index: 20;
 }
 
 .tuning-indicator .tune-arrow.up {

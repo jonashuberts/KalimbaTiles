@@ -57,8 +57,10 @@ export function usePitchDetection() {
 
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
+  const filterRef = useRef<BiquadFilterNode | null>(null);
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const rafIdRef = useRef<number | null>(null);
+  const pitchHistoryRef = useRef<number[]>([]);
 
   const stopListening = () => {
     if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
@@ -95,8 +97,14 @@ export function usePitchDetection() {
       analyser.fftSize = 2048;
       analyserRef.current = analyser;
       
+      const filter = audioContext.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.value = 1400; // Shield overtone noise aggressively while preserving Kalimba physical harmonic base
+      filterRef.current = filter;
+
       const source = audioContext.createMediaStreamSource(stream);
-      source.connect(analyser);
+      source.connect(filter);
+      filter.connect(analyser);
       
       setIsListening(true);
       
@@ -109,7 +117,18 @@ export function usePitchDetection() {
         const f = autoCorrelate(buffer, audioContextRef.current.sampleRate);
         
         if (f !== -1) {
-          setPitch(f);
+          pitchHistoryRef.current.push(f);
+          if (pitchHistoryRef.current.length > 7) {
+            pitchHistoryRef.current.shift();
+          }
+
+          if (pitchHistoryRef.current.length >= 3) {
+            const sorted = [...pitchHistoryRef.current].sort((a, b) => a - b);
+            const median = sorted[Math.floor(sorted.length / 2)];
+            setPitch(median);
+          } else {
+            setPitch(f);
+          }
         }
         
         rafIdRef.current = requestAnimationFrame(updatePitch);

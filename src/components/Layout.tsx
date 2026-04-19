@@ -23,6 +23,9 @@ export const Layout: React.FC = () => {
   // Tuning Mode State
   const [isTuningMode, setIsTuningMode] = useState(false);
   const [selectedTuningKey, setSelectedTuningKey] = useState<string | null>(null);
+  
+  // Maps dynamically verified perfect key tunings to persistent board visual logic
+  const [tuningMemory, setTuningMemory] = useState<Record<string, boolean>>({});
 
   // Hook into Hardware Audio
   const { pitch, error: micError, startListening, stopListening } = usePitchDetection();
@@ -92,9 +95,28 @@ export const Layout: React.FC = () => {
       // Relax the tolerance slightly. A kalimba can easily be 3 semitones out of tune on an abused tine.
       if (Math.abs(diff) < 400) {
         renderTuningCents = diff;
+
+        // Dispatch tuning memory state mutations
+        if (Math.abs(diff) <= 10) {
+           if (!tuningMemory[selectedTuningKey]) {
+               // Update memory! Wait, we shouldn't infinitely loop or mutate state directly during render body.
+               // We will push this to a React useEffect below relying on selectedTuningKey and renderTuningCents.
+           }
+        }
       }
     }
   }
+
+  // React strictly updates persistent tuning memory when active metrics cross the mathematically verified thresholds
+  React.useEffect(() => {
+    if (isTuningMode && selectedTuningKey && renderTuningCents !== null) {
+      if (Math.abs(renderTuningCents) <= 10) {
+        setTuningMemory(prev => prev[selectedTuningKey] ? prev : { ...prev, [selectedTuningKey]: true });
+      } else {
+        setTuningMemory(prev => !prev[selectedTuningKey] ? prev : { ...prev, [selectedTuningKey]: false });
+      }
+    }
+  }, [isTuningMode, selectedTuningKey, renderTuningCents]);
 
   // Handle File Upload from Local System
   const handleFileUpload = (file: File) => {
@@ -238,6 +260,7 @@ export const Layout: React.FC = () => {
           isTuningMode={isTuningMode}
           selectedTuningKey={selectedTuningKey}
           currentTuningCents={renderTuningCents}
+          tuningMemory={tuningMemory}
         />
       </main>
 
