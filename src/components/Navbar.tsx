@@ -1,7 +1,6 @@
 import React from 'react';
 import { Play, Pause, Square, FileMusic, Settings, Minus, Plus, Mic } from 'lucide-react';
 import { TUNINGS } from '../constants/kalimba';
-import packageJson from '../../package.json';
 import './Navbar.css';
 
 interface NavbarProps {
@@ -63,7 +62,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     <nav className="navbar">
       <div className="nav-brand">
         <h1>KalimbaTiles</h1>
-        <span className="version-badge mobile-visible-badge">v{packageJson.version}</span>
       </div>
 
       <div className="nav-controls">

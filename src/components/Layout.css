@@ -86,3 +86,17 @@
   from { transform: translate(-50%, -100%); opacity: 0; }
   to { transform: translate(-50%, 0); opacity: 1; }
 }
+
+.version-watermark {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.8rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+  font-family: inherit;
+  z-index: 1000;
+  user-select: none;
+}

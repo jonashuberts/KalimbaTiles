@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Navbar } from './Navbar';
 import { Kalimba } from './Kalimba';
-import { KALIMBA_KEYS, parseNote, isAccidental, getFrequencyFromNote, getCentsOffPitch } from '../constants/kalimba';
+import { parseNote, isAccidental, getFrequencyFromNote, getCentsOffPitch } from '../constants/kalimba';
+import { KALIMBA_KEYS } from '../constants/kalimba';
 import { FallingTile } from './FallingTile';
 import { useMidiPlayer } from '../hooks/useMidiPlayer';
 import { usePitchDetection } from '../hooks/usePitchDetection';
+import packageJson from '../../package.json';
 import './Layout.css';
 
 export const Layout: React.FC = () => {
@@ -229,6 +231,11 @@ export const Layout: React.FC = () => {
           currentTuningCents={renderTuningCents}
         />
       </main>
+
+      {/* Global Version Watermark */}
+      <div className="version-watermark">
+        v{packageJson.version}
+      </div>
     </div>
   );
 };
