@@ -151,6 +151,12 @@ export const Layout: React.FC = () => {
           {micError} Ensure microphone permissions are granted.
         </div>
       )}
+      
+      {isTuningMode && !selectedTuningKey && !micError && (
+        <div className="tuning-instruction-banner">
+          Tap a Kalimba key to start tuning it!
+        </div>
+      )}
 
       {/* Dynamic Background Elements */}
       <div className="bg-glow bg-top"></div>

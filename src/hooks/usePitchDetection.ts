@@ -73,6 +73,16 @@ export function usePitchDetection() {
   const startListening = async () => {
     try {
       setError(null);
+      
+      // CRITICAL iOS SAFARI FIX: AudioContext must be explicitly instantiated and resumed
+      // SYNCHRONOUSLY within the click handler thread, BEFORE awaiting getUserMedia!
+      const AudioContextCtor = window.AudioContext || (window as any).webkitAudioContext;
+      const audioContext = new AudioContextCtor();
+      if (audioContext.state === 'suspended') {
+          audioContext.resume();
+      }
+      audioContextRef.current = audioContext;
+
       const stream = await navigator.mediaDevices.getUserMedia({ audio: {
         echoCancellation: false,
         autoGainControl: false,
@@ -80,10 +90,6 @@ export function usePitchDetection() {
       }});
       
       mediaStreamRef.current = stream;
-      
-      const AudioContextCtor = window.AudioContext || (window as any).webkitAudioContext;
-      const audioContext = new AudioContextCtor();
-      audioContextRef.current = audioContext;
       
       const analyser = audioContext.createAnalyser();
       analyser.fftSize = 2048;
@@ -98,14 +104,12 @@ export function usePitchDetection() {
       const buffer = new Float32Array(bufferLength);
       
       const updatePitch = () => {
-        analyser.getFloatTimeDomainData(buffer);
-        const f = autoCorrelate(buffer, audioContext.sampleRate);
+        if (!analyserRef.current || !audioContextRef.current) return;
+        analyserRef.current.getFloatTimeDomainData(buffer);
+        const f = autoCorrelate(buffer, audioContextRef.current.sampleRate);
         
         if (f !== -1) {
           setPitch(f);
-        } else {
-          // Keep old pitch briefly to prevent flickering, but fade it logically or clear it
-          // setPitch(null);
         }
         
         rafIdRef.current = requestAnimationFrame(updatePitch);

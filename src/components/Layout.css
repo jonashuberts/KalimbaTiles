@@ -53,3 +53,23 @@
   z-index: 9999;
   box-shadow: var(--shadow-sm);
 }
+
+.tuning-instruction-banner {
+  background: var(--primary-color, #4facfe);
+  color: white;
+  padding: 0.5rem;
+  text-align: center;
+  font-weight: bold;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9998;
+  font-size: 0.9rem;
+  animation: slide-down 0.3s ease-out;
+}
+
+@keyframes slide-down {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
