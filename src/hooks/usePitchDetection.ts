@@ -10,7 +10,7 @@ function autoCorrelate(buf: Float32Array, sampleRate: number): number {
     rms += val * val;
   }
   rms = Math.sqrt(rms / SIZE);
-  if (rms < 0.01) return -1; // Silence threshold
+  if (rms < 0.002) return -1; // Lowered silence threshold for extremely quiet phone mics capturing acoustic kalimbas
 
   let r1 = 0, r2 = SIZE - 1, thres = 0.2;
   for (let i = 0; i < SIZE / 2; i++)

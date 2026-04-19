@@ -79,9 +79,18 @@ export const Layout: React.FC = () => {
   if (isTuningMode && selectedTuningKey && pitch) {
     const exactFrequency = getFrequencyFromNote(selectedTuningKey);
     if (exactFrequency) {
-      const diff = getCentsOffPitch(pitch, exactFrequency);
-      // Suppress massive harmonic echoes if the app mistakenly tracked noise or wrong tines
-      if (Math.abs(diff) < 200) {
+      let diff = getCentsOffPitch(pitch, exactFrequency);
+      
+      // Overtone Tolerance: Kalimba metal tines produce extremely heavy harmonic overtones.
+      // Phone microphones using Math Autocorrelation regularly lock onto the 1st or 2nd harmonic (octaves).
+      // We physically fold the cent difference modulo 1200 (1 Octave = 1200 cents) to 
+      // extract purely the chromatic tuning offset regardless of the octave detected!
+      diff = diff % 1200;
+      if (diff > 600) diff -= 1200;
+      if (diff < -600) diff += 1200;
+
+      // Relax the tolerance slightly. A kalimba can easily be 3 semitones out of tune on an abused tine.
+      if (Math.abs(diff) < 400) {
         renderTuningCents = diff;
       }
     }
