@@ -44,6 +44,17 @@
   gap: 1.5rem;
 }
 
+.nav-section {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.nav-section:not(:last-child) {
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  padding-right: 1.5rem;
+}
+
 .file-upload-btn {
   display: flex;
   align-items: center;
@@ -244,7 +255,7 @@
 }
 
 /* Landscape mobile optimization: hide title, tight center packing */
-@media (max-width: 850px) {
+@media (max-width: 1050px) {
   .navbar {
     padding-top: calc(0.5rem + env(safe-area-inset-top));
     padding-bottom: 0.5rem;
@@ -259,6 +270,10 @@
     width: 100%;
     justify-content: center;
     gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .nav-section {
+    justify-content: center;
     flex-wrap: wrap;
   }
   .setting-label {

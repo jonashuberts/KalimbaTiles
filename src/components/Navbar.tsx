@@ -63,117 +63,122 @@ export const Navbar: React.FC<NavbarProps> = ({
     <nav className="navbar">
       <div className="nav-brand">
         <h1>KalimbaTiles</h1>
+        <span className="version-badge mobile-visible-badge">v{packageJson.version}</span>
       </div>
 
       <div className="nav-controls">
-        {!isTuningMode && (
-          <>
-            <label className="file-upload-btn">
-              <FileMusic size={18} />
-              <span>Select MIDI</span>
-              <input 
-                type="file" 
-                accept=".mid,.midi,audio/midi,audio/x-midi" 
-                onChange={(e) => {
-                  if (e.target.files && e.target.files[0]) {
-                    onFileUpload(e.target.files[0]);
-                  }
-                }} 
-                hidden
-              />
-            </label>
+        {/* Left Side: Environment Configuration */}
+        <div className="nav-section">
+          <div className="setting-group">
+            <span className="setting-label">Tuning</span>
+            <select 
+              className="tempo-input tuning-select"
+              value={tuning}
+              onChange={(e) => setTuning(e.target.value)}
+            >
+              {Object.keys(TUNINGS).map(scale => (
+                <option key={scale} value={scale}>{scale}</option>
+              ))}
+            </select>
+          </div>
 
-            <div className="playback-controls">
+          <div className="scale-selector">
+            <span className="setting-label">Zoom</span>
+            <div className="control-group">
               <button 
-                className={`btn-icon ${isPlaying ? 'active' : ''}`} 
-                onClick={onPlay} 
-                title={isPlaying ? "Pause" : "Play"}
+                className="control-btn" 
+                onClick={() => setPpi(Math.max(50, ppi - 1))}
+                title="Decrease Zoom"
               >
-                {isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="none" />}
+                <Minus size={16} />
               </button>
-              <button className="btn-icon" onClick={onStop} disabled={!isReady} title="Stop">
-                <Square size={20} />
+              <span className="scale-value">{ppi}</span>
+              <button 
+                className="control-btn" 
+                onClick={() => setPpi(Math.min(250, ppi + 1))}
+                title="Increase Zoom"
+              >
+                <Plus size={16} />
               </button>
             </div>
+          </div>
 
-            <div className="setting-group">
-              <span className="setting-label">Tempo</span>
-              <input 
-                type={isReady ? "number" : "text"}
-                className="tempo-input" 
-                min={10} 
-                max={200} 
-                value={isReady ? localTempo : "---"}
-                onChange={(e) => setLocalTempo(e.target.value)}
-                onBlur={commitTempo}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.currentTarget.blur();
-                  }
-                }}
-                disabled={!isReady}
-              />
-            </div>
-          </>
-        )}
-
-        <div className="setting-group">
-          <span className="setting-label">Tuning</span>
-          <select 
-            className="tempo-input tuning-select"
-            value={tuning}
-            onChange={(e) => setTuning(e.target.value)}
-          >
-            {Object.keys(TUNINGS).map(scale => (
-              <option key={scale} value={scale}>{scale}</option>
-            ))}
-          </select>
-        </div>
-
-        <div className="scale-selector">
-          <span className="setting-label">Zoom</span>
           <div className="control-group">
             <button 
-              className="control-btn" 
-              onClick={() => setPpi(Math.max(50, ppi - 1))}
-              title="Decrease Zoom"
+              className={`btn-icon toggle-btn ${showNumbers ? 'active' : ''}`}
+              onClick={() => setShowNumbers(!showNumbers)}
+              title="Toggle Numbers"
             >
-              <Minus size={16} />
-            </button>
-            <span className="scale-value">{ppi}</span>
-            <button 
-              className="control-btn" 
-              onClick={() => setPpi(Math.min(250, ppi + 1))}
-              title="Increase Zoom"
-            >
-              <Plus size={16} />
+              <Settings size={20} />
+              <span className="toggle-text">123</span>
             </button>
           </div>
         </div>
 
-        <div className="control-group">
-          <button 
-            className={`btn-icon toggle-btn ${showNumbers ? 'active' : ''}`}
-            onClick={() => setShowNumbers(!showNumbers)}
-            title="Toggle Numbers"
-          >
-            <Settings size={20} />
-            <span className="toggle-text">123</span>
-          </button>
-        </div>
+        {/* Right Side: Tools & Playback */}
+        <div className="nav-section">
+          {!isTuningMode && (
+            <>
+              <label className="file-upload-btn">
+                <FileMusic size={18} />
+                <span>MIDI</span>
+                <input 
+                  type="file" 
+                  accept=".mid,.midi,audio/midi,audio/x-midi" 
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      onFileUpload(e.target.files[0]);
+                    }
+                  }} 
+                  hidden
+                />
+              </label>
 
-        <div className="control-group">
-          <button 
-            className={`btn-icon toggle-btn ${isTuningMode ? 'active tune-mode-btn' : ''}`}
-            onClick={toggleTuningMode}
-            title="Tuner"
-          >
-            <Mic size={20} />
-            <span className="toggle-text">Tune</span>
-          </button>
-        </div>
+              <div className="setting-group tempo-group">
+                <span className="setting-label">BPM</span>
+                <input 
+                  type={isReady ? "number" : "text"}
+                  className="tempo-input" 
+                  min={10} 
+                  max={200} 
+                  value={isReady ? localTempo : "---"}
+                  onChange={(e) => setLocalTempo(e.target.value)}
+                  onBlur={commitTempo}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.currentTarget.blur();
+                    }
+                  }}
+                  disabled={!isReady}
+                />
+              </div>
 
-        <span className="version-badge mobile-visible-badge">v{packageJson.version}</span>
+              <div className="playback-controls">
+                <button 
+                  className={`btn-icon ${isPlaying ? 'active' : ''}`} 
+                  onClick={onPlay} 
+                  title={isPlaying ? "Pause" : "Play"}
+                >
+                  {isPlaying ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="none" />}
+                </button>
+                <button className="btn-icon" onClick={onStop} disabled={!isReady} title="Stop">
+                  <Square size={18} />
+                </button>
+              </div>
+            </>
+          )}
+
+          <div className="control-group tuner-action-group">
+            <button 
+              className={`btn-icon toggle-btn ${isTuningMode ? 'active tune-mode-btn' : ''}`}
+              onClick={toggleTuningMode}
+              title="Tuner"
+            >
+              <Mic size={20} />
+              <span className="toggle-text">Tune</span>
+            </button>
+          </div>
+        </div>
       </div>
 
       {!isTuningMode && (

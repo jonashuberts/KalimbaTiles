@@ -26,6 +26,7 @@ const KalimbaKey = React.memo(({
   showNumbers, 
   onNoteClick,
   tuning,
+  isTuningMode,
   isTuningActive,
   tuneCents
 }: { 
@@ -38,6 +39,7 @@ const KalimbaKey = React.memo(({
   showNumbers: boolean; 
   onNoteClick: (note: string) => void;
   tuning: string;
+  isTuningMode?: boolean;
   isTuningActive?: boolean;
   tuneCents?: number | null;
 }) => {
@@ -66,7 +68,7 @@ const KalimbaKey = React.memo(({
          ></div>
       ))}
 
-      {isTuningActive && status && (
+      {isTuningMode && isTuningActive && status && (
         <div className="tuning-indicator">
           {status === 'flat' && <span className="tune-arrow up">↑</span>}
           {status === 'sharp' && <span className="tune-arrow down">↓</span>}
@@ -89,9 +91,12 @@ const KalimbaKey = React.memo(({
   if (prev.showNumbers !== next.showNumbers) return false;
   if (prev.isPlaying !== next.isPlaying) return false;
   if (prev.tuning !== next.tuning) return false;
+  if (prev.isTuningMode !== next.isTuningMode) return false;
   if (prev.isTuningActive !== next.isTuningActive) return false;
   if (prev.tuneCents !== next.tuneCents) return false;
   if (prev.fallingNotes.length !== next.fallingNotes.length) return false;
+  // Deep equality checks for callback function references to brutally prevent stale closures
+  if (prev.onNoteClick !== next.onNoteClick) return false; 
   return true;
 });
 
@@ -144,6 +149,7 @@ export const Kalimba: React.FC<KalimbaProps> = ({
               showNumbers={showNumbers}
               onNoteClick={onNoteClick}
               tuning={tuning}
+              isTuningMode={isTuningMode}
               isTuningActive={isTuningActive}
               tuneCents={isTuningActive ? currentTuningCents : null}
             />
