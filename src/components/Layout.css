@@ -89,9 +89,9 @@
 
 .version-watermark {
   position: absolute;
-  bottom: 0.5rem;
-  right: 0.8rem;
-  font-size: 0.7rem;
+  bottom: 1.2rem;
+  right: 1.2rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.5px;
   color: rgba(255, 255, 255, 0.4);

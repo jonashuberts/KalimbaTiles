@@ -112,8 +112,6 @@ export const Layout: React.FC = () => {
     if (isTuningMode && selectedTuningKey && renderTuningCents !== null) {
       if (Math.abs(renderTuningCents) <= 10) {
         setTuningMemory(prev => prev[selectedTuningKey] ? prev : { ...prev, [selectedTuningKey]: true });
-      } else {
-        setTuningMemory(prev => !prev[selectedTuningKey] ? prev : { ...prev, [selectedTuningKey]: false });
       }
     }
   }, [isTuningMode, selectedTuningKey, renderTuningCents]);

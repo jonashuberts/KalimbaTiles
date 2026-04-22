@@ -230,8 +230,9 @@
 }
 
 .kalimba-key.tuned-memory {
-  background: linear-gradient(180deg, #f0fdf4 0%, #dcfce7 100%);
-  border-top: 2px solid rgba(74, 222, 128, 0.4);
+  background: linear-gradient(180deg, #dcfce7 0%, #86efac 100%) !important;
+  border-top: 2px solid rgba(34, 197, 94, 0.8) !important;
+  box-shadow: 0 0 15px rgba(74, 222, 128, 0.6) !important;
 }
 
 .kalimba-key.tuning-focus.tune-flat {
@@ -255,14 +256,13 @@
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc((var(--ppi) / 25.4) * 5px);
+  font-size: calc((var(--ppi) / 25.4) * 8px);
   font-weight: 900;
   text-shadow: 0 2px 4px rgba(0,0,0,0.5);
   pointer-events: none;
-  z-index: 20;
+  z-index: 100;
 }
 
 .tuning-indicator .tune-arrow.up {
