@@ -87,6 +87,7 @@ export const Layout: React.FC = () => {
       
       // Overtone Tolerance: Kalimba metal tines produce extremely heavy harmonic overtones.
       // Phone microphones using Math Autocorrelation regularly lock onto the 1st or 2nd harmonic (octaves).
+
       // We physically fold the cent difference modulo 1200 (1 Octave = 1200 cents) to 
       // extract purely the chromatic tuning offset regardless of the octave detected!
       diff = diff % 1200;
@@ -96,30 +97,32 @@ export const Layout: React.FC = () => {
       // Relax the tolerance slightly. A kalimba can easily be 3 semitones out of tune on an abused tine.
       if (Math.abs(diff) < 400) {
         renderTuningCents = diff;
-
-        // Dispatch tuning memory state mutations
-        if (Math.abs(diff) <= 10) {
-           if (!tuningMemory[selectedTuningKey]) {
-               // Update memory! Wait, we shouldn't infinitely loop or mutate state directly during render body.
-               // We will push this to a React useEffect below relying on selectedTuningKey and renderTuningCents.
-           }
-        }
       }
     }
   }
 
-  // React strictly updates persistent tuning memory when active metrics cross the mathematically verified thresholds
+  // Strictly bind persistent memory to the hardware pitch cycle to absolutely prevent render drops
   React.useEffect(() => {
-    if (isTuningMode && selectedTuningKey && renderTuningCents !== null) {
-      if (Math.abs(renderTuningCents) <= 10) {
-        setTuningMemory(prev => prev[selectedTuningKey] === 'perfect' ? prev : { ...prev, [selectedTuningKey]: 'perfect' });
-      } else if (renderTuningCents > 10) {
-        setTuningMemory(prev => prev[selectedTuningKey] === 'sharp' ? prev : { ...prev, [selectedTuningKey]: 'sharp' });
-      } else if (renderTuningCents < -10) {
-        setTuningMemory(prev => prev[selectedTuningKey] === 'flat' ? prev : { ...prev, [selectedTuningKey]: 'flat' });
+    if (isTuningMode && selectedTuningKey && pitch) {
+      const exactFrequency = getFrequencyFromNote(selectedTuningKey);
+      if (exactFrequency) {
+        let diff = getCentsOffPitch(pitch, exactFrequency);
+        diff = diff % 1200;
+        if (diff > 600) diff -= 1200;
+        if (diff < -600) diff += 1200;
+
+        if (Math.abs(diff) < 400) {
+          if (Math.abs(diff) <= 10) {
+            setTuningMemory(prev => prev[selectedTuningKey] === 'perfect' ? prev : { ...prev, [selectedTuningKey]: 'perfect' });
+          } else if (diff > 10) {
+            setTuningMemory(prev => prev[selectedTuningKey] === 'sharp' ? prev : { ...prev, [selectedTuningKey]: 'sharp' });
+          } else if (diff < -10) {
+            setTuningMemory(prev => prev[selectedTuningKey] === 'flat' ? prev : { ...prev, [selectedTuningKey]: 'flat' });
+          }
+        }
       }
     }
-  }, [isTuningMode, selectedTuningKey, renderTuningCents]);
+  }, [pitch, selectedTuningKey, isTuningMode]);
 
   // Handle File Upload from Local System
   const handleFileUpload = (file: File) => {
