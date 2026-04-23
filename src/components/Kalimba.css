@@ -229,10 +229,22 @@
   border-top: 2px solid rgba(255, 255, 255, 0.9);
 }
 
-.kalimba-key.tuned-memory {
+.kalimba-key.memorized-perfect {
   background: linear-gradient(180deg, #dcfce7 0%, #86efac 100%) !important;
   border-top: 2px solid rgba(34, 197, 94, 0.8) !important;
   box-shadow: 0 0 15px rgba(74, 222, 128, 0.6) !important;
+}
+
+.kalimba-key.memorized-flat {
+  background: linear-gradient(180deg, #fee2e2 0%, #fca5a5 100%) !important;
+  border-top: 2px solid rgba(248, 113, 113, 0.8) !important;
+  box-shadow: 0 0 15px rgba(248, 113, 113, 0.6) !important;
+}
+
+.kalimba-key.memorized-sharp {
+  background: linear-gradient(180deg, #ffedd5 0%, #fdba74 100%) !important;
+  border-top: 2px solid rgba(251, 146, 60, 0.8) !important;
+  box-shadow: 0 0 15px rgba(251, 146, 60, 0.6) !important;
 }
 
 .kalimba-key.tuning-focus.tune-flat {
@@ -255,10 +267,12 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc((var(--ppi) / 25.4) * 8px);
+  font-size: clamp(1.2rem, 4vw, 2rem);
   font-weight: 900;
   text-shadow: 0 2px 4px rgba(0,0,0,0.5);
   pointer-events: none;

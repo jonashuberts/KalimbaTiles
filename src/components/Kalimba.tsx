@@ -14,7 +14,7 @@ interface KalimbaProps {
   isTuningMode?: boolean;
   selectedTuningKey?: string | null;
   currentTuningCents?: number | null;
-  tuningMemory?: Record<string, boolean>;
+  tuningMemory?: Record<string, 'perfect' | 'sharp' | 'flat'>;
 }
 
 const KalimbaKey = React.memo(({ 
@@ -29,7 +29,7 @@ const KalimbaKey = React.memo(({
   tuning,
   isTuningMode,
   isTuningActive,
-  isMemorizedTuned,
+  memoryStatus,
   tuneCents
 }: { 
   keyData: { note: string; label: string; octave: string }; 
@@ -43,7 +43,7 @@ const KalimbaKey = React.memo(({
   tuning: string;
   isTuningMode?: boolean;
   isTuningActive?: boolean;
-  isMemorizedTuned?: boolean;
+  memoryStatus?: 'perfect' | 'sharp' | 'flat' | null;
   tuneCents?: number | null;
 }) => {
 
@@ -59,7 +59,7 @@ const KalimbaKey = React.memo(({
 
   return (
     <div
-       className={`kalimba-key ${isFirst ? 'first-key' : ''} ${isLast ? 'last-key' : ''} ${isActive ? 'active' : ''} ${isTuningActive ? 'tuning-focus' : ''} ${!isTuningActive && isTuningMode && isMemorizedTuned ? 'tuned-memory' : ''} ${status ? `tune-${status}` : ''}`}
+       className={`kalimba-key ${isFirst ? 'first-key' : ''} ${isLast ? 'last-key' : ''} ${isActive ? 'active' : ''} ${isTuningActive ? 'tuning-focus' : ''} ${!isTuningActive && isTuningMode && memoryStatus ? `memorized-${memoryStatus}` : ''} ${status ? `tune-${status}` : ''}`}
        data-note={keyData.note}
        onClick={() => onNoteClick(getTunedNote(keyData.note, tuning))}
     >
@@ -96,7 +96,7 @@ const KalimbaKey = React.memo(({
   if (prev.tuning !== next.tuning) return false;
   if (prev.isTuningMode !== next.isTuningMode) return false;
   if (prev.isTuningActive !== next.isTuningActive) return false;
-  if (prev.isMemorizedTuned !== next.isMemorizedTuned) return false;
+  if (prev.memoryStatus !== next.memoryStatus) return false;
   if (prev.tuneCents !== next.tuneCents) return false;
   if (prev.fallingNotes.length !== next.fallingNotes.length) return false;
   // Deep equality checks for callback function references to brutally prevent stale closures
@@ -141,7 +141,7 @@ export const Kalimba: React.FC<KalimbaProps> = ({
 
           const tunedNote = getTunedNote(keyData.note, tuning);
           const isTuningActive = isTuningMode && selectedTuningKey === tunedNote;
-          const isMemorizedTuned = tuningMemory?.[tunedNote] === true;
+          const memoryStatus = tuningMemory?.[tunedNote] || null;
           
           return (
             <KalimbaKey 
@@ -157,7 +157,7 @@ export const Kalimba: React.FC<KalimbaProps> = ({
               tuning={tuning}
               isTuningMode={isTuningMode}
               isTuningActive={isTuningActive}
-              isMemorizedTuned={isMemorizedTuned}
+              memoryStatus={memoryStatus}
               tuneCents={isTuningActive ? currentTuningCents : null}
             />
           );

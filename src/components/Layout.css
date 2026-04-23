@@ -95,8 +95,16 @@
   font-weight: 700;
   letter-spacing: 0.5px;
   color: rgba(255, 255, 255, 0.4);
-  pointer-events: none;
   font-family: inherit;
   z-index: 1000;
   user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  text-decoration: none;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.version-watermark:hover {
+  color: rgba(255, 255, 255, 0.8);
 }

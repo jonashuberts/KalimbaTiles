@@ -6,6 +6,7 @@ import { KALIMBA_KEYS } from '../constants/kalimba';
 import { FallingTile } from './FallingTile';
 import { useMidiPlayer } from '../hooks/useMidiPlayer';
 import { usePitchDetection } from '../hooks/usePitchDetection';
+import { Github } from 'lucide-react';
 import packageJson from '../../package.json';
 import './Layout.css';
 
@@ -24,8 +25,8 @@ export const Layout: React.FC = () => {
   const [isTuningMode, setIsTuningMode] = useState(false);
   const [selectedTuningKey, setSelectedTuningKey] = useState<string | null>(null);
   
-  // Maps dynamically verified perfect key tunings to persistent board visual logic
-  const [tuningMemory, setTuningMemory] = useState<Record<string, boolean>>({});
+  // Maps dynamically verified key tunings to persistent board visual logic across the full tuning spectrum
+  const [tuningMemory, setTuningMemory] = useState<Record<string, 'perfect' | 'sharp' | 'flat'>>({});
 
   // Hook into Hardware Audio
   const { pitch, error: micError, startListening, stopListening } = usePitchDetection();
@@ -111,7 +112,11 @@ export const Layout: React.FC = () => {
   React.useEffect(() => {
     if (isTuningMode && selectedTuningKey && renderTuningCents !== null) {
       if (Math.abs(renderTuningCents) <= 10) {
-        setTuningMemory(prev => prev[selectedTuningKey] ? prev : { ...prev, [selectedTuningKey]: true });
+        setTuningMemory(prev => prev[selectedTuningKey] === 'perfect' ? prev : { ...prev, [selectedTuningKey]: 'perfect' });
+      } else if (renderTuningCents > 10) {
+        setTuningMemory(prev => prev[selectedTuningKey] === 'sharp' ? prev : { ...prev, [selectedTuningKey]: 'sharp' });
+      } else if (renderTuningCents < -10) {
+        setTuningMemory(prev => prev[selectedTuningKey] === 'flat' ? prev : { ...prev, [selectedTuningKey]: 'flat' });
       }
     }
   }, [isTuningMode, selectedTuningKey, renderTuningCents]);
@@ -263,9 +268,14 @@ export const Layout: React.FC = () => {
       </main>
 
       {/* Global Version Watermark */}
-      <div className="version-watermark">
-        v{packageJson.version}
-      </div>
+      <a 
+        href="https://github.com/jonashuberts/KalimbaTiles" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="version-watermark"
+      >
+        <Github size={12} /> v{packageJson.version}
+      </a>
     </div>
   );
 };
