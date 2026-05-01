@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import './Kalimba.css';
 
 import { KALIMBA_KEYS, getTunedNote, parseNote } from '../constants/kalimba';
+import { ArrowUp, ArrowDown, Circle } from 'lucide-react';
 
 interface KalimbaProps {
   ppi: number;
@@ -73,9 +74,9 @@ const KalimbaKey = React.memo(({
 
       {isTuningMode && isTuningActive && status && (
         <div className="tuning-indicator">
-          {status === 'flat' && <span className="tune-arrow up">↑</span>}
-          {status === 'sharp' && <span className="tune-arrow down">↓</span>}
-          {status === 'perfect' && <span className="tune-dot">●</span>}
+          {status === 'flat' && <ArrowUp size={32} strokeWidth={4} className="tune-arrow up" />}
+          {status === 'sharp' && <ArrowDown size={32} strokeWidth={4} className="tune-arrow down" />}
+          {status === 'perfect' && <Circle fill="currentColor" size={20} className="tune-dot" />}
         </div>
       )}
 

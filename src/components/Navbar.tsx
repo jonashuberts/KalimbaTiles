@@ -66,71 +66,68 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       <div className="nav-controls">
         {/* Left Side: Environment Configuration */}
-        <div className="nav-section">
-          <div className="setting-group">
-            <span className="setting-label">Tuning</span>
-            <select 
-              className="tempo-input tuning-select"
-              value={tuning}
-              onChange={(e) => setTuning(e.target.value)}
-            >
-              {Object.keys(TUNINGS).map(scale => (
-                <option key={scale} value={scale}>{scale}</option>
-              ))}
-            </select>
-          </div>
+        <div className="setting-group">
+          <span className="setting-label">Tuning</span>
+          <select 
+            className="tempo-input tuning-select"
+            value={tuning}
+            onChange={(e) => setTuning(e.target.value)}
+          >
+            {Object.keys(TUNINGS).map(scale => (
+              <option key={scale} value={scale}>{scale}</option>
+            ))}
+          </select>
+        </div>
 
-          <div className="scale-selector">
-            <span className="setting-label">Zoom</span>
-            <div className="control-group">
-              <button 
-                className="control-btn" 
-                onClick={() => setPpi(Math.max(50, ppi - 1))}
-                title="Decrease Zoom"
-              >
-                <Minus size={16} />
-              </button>
-              <span className="scale-value">{ppi}</span>
-              <button 
-                className="control-btn" 
-                onClick={() => setPpi(Math.min(250, ppi + 1))}
-                title="Increase Zoom"
-              >
-                <Plus size={16} />
-              </button>
-            </div>
-          </div>
-
+        <div className="scale-selector">
+          <span className="setting-label">Zoom</span>
           <div className="control-group">
             <button 
-              className={`btn-icon toggle-btn ${showNumbers ? 'active' : ''}`}
-              onClick={() => setShowNumbers(!showNumbers)}
-              title="Toggle Numbers"
+              className="control-btn" 
+              onClick={() => setPpi(Math.max(50, ppi - 1))}
+              title="Decrease Zoom"
             >
-              <Settings size={20} />
-              <span className="toggle-text">123</span>
+              <Minus size={16} />
+            </button>
+            <span className="scale-value">{ppi}</span>
+            <button 
+              className="control-btn" 
+              onClick={() => setPpi(Math.min(250, ppi + 1))}
+              title="Increase Zoom"
+            >
+              <Plus size={16} />
             </button>
           </div>
         </div>
 
+        <div className="control-group">
+          <button 
+            className={`btn-icon toggle-btn ${showNumbers ? 'active' : ''}`}
+            onClick={() => setShowNumbers(!showNumbers)}
+            title="Toggle Numbers"
+          >
+            <Settings size={20} />
+            <span className="toggle-text">123</span>
+          </button>
+        </div>
+
         {/* Right Side: Tools & Playback */}
-        <div className="nav-section">
-          {!isTuningMode && (
-            <>
-              <label className="file-upload-btn">
-                <FileMusic size={18} />
-                <span>MIDI</span>
-                <input 
-                  type="file" 
-                  accept=".mid,.midi,audio/midi,audio/x-midi" 
-                  onChange={(e) => {
-                    if (e.target.files && e.target.files[0]) {
-                      onFileUpload(e.target.files[0]);
-                    }
-                  }} 
-                  hidden
-                />
-              </label>
+        {!isTuningMode && (
+          <>
+            <label className="file-upload-btn">
+              <FileMusic size={18} />
+              <span>MIDI</span>
+              <input 
+                type="file" 
+                accept=".mid,.midi,audio/midi,audio/x-midi" 
+                onChange={(e) => {
+                  if (e.target.files && e.target.files[0]) {
+                    onFileUpload(e.target.files[0]);
+                  }
+                }} 
+                hidden
+              />
+            </label>
 
               <div className="setting-group tempo-group">
                 <span className="setting-label">BPM</span>
@@ -176,7 +173,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="toggle-text">Tune</span>
             </button>
           </div>
-        </div>
       </div>
 
       {!isTuningMode && (
