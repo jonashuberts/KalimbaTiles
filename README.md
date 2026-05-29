@@ -1,6 +1,6 @@
 # Kalimba Tiles
 
-Welcome to Kalimba Tiles, your go-to app for practicing and mastering the enchanting melodies of the kalimba. Whether you're a beginner or an experienced player, this app is meticulously crafted to enhance your Kalimba learning experience.
+Welcome to Kalimba Tiles, your go-to app for **playing and tuning** the kalimba. Whether you're a beginner or an experienced player, this app is meticulously crafted to enhance your Kalimba learning experience.
 
 Recently modernized into a robust React/Vite application, Kalimba Tiles features beautiful glowing aesthetics, perfect mathematical visual synchronization, and device-independent scaling logic. 
 
@@ -12,10 +12,13 @@ Recently modernized into a robust React/Vite application, Kalimba Tiles features
 4. **Z-Index Waterfall Physics & 3D Stacking**: Notes slide and despawn gracefully *underneath* the metal Kalimba tines, and feature 3D-beveled visual stacking when rapid notes overlap.
 5. **Interactive YouTube-Style Scrubber**: A minimal dynamic loading bar gives you flawless timeline traversal. Skip through dense massive MIDI tracks and it automatically mutes audio loops and cleans the screen without glitching.
 6. **Tempo, Tuning, & Controls**: Adjust the learning speed dynamically, toggle note numbers/dots, choose flat/sharp alternate tunings for the layout, and experience automatic pause/loop functionality effortlessly.
+7. **Chromatic Tuner**: Tap any key in tuning mode to tune it by ear using your device microphone. A floating arrow badge shows whether to tune up or down, and each key retains a persistent color (green = in tune, orange = sharp, red = flat) so you can see your full tuning progress at a glance.
 
-## Screenshot
+## Screenshots
 
-![Main Interface](screenshots/main.png?raw=true&v=2.2.5) 
+| Playing Mode | Tuning Mode |
+|---|---|
+| ![Main Interface](screenshots/main.png?raw=true) | ![Tuning Mode](screenshots/tuning.png?raw=true) |
 
 ## Local Development
 
