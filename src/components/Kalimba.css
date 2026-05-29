@@ -216,9 +216,16 @@
   transition: all 0.3s ease;
 }
 
-.tuning-mode-active .kalimba-key:not(.tuning-focus) {
+.tuning-mode-active .kalimba-key:not(.tuning-focus):not(.memorized-perfect):not(.memorized-flat):not(.memorized-sharp) {
   opacity: 0.5;
   filter: grayscale(80%);
+}
+
+.tuning-mode-active .kalimba-key.memorized-perfect,
+.tuning-mode-active .kalimba-key.memorized-flat,
+.tuning-mode-active .kalimba-key.memorized-sharp {
+  opacity: 1;
+  filter: none;
 }
 
 .kalimba-key.tuning-focus {

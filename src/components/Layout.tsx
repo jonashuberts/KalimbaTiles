@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Navbar } from './Navbar';
 import { Kalimba } from './Kalimba';
 import { parseNote, isAccidental, getFrequencyFromNote, getCentsOffPitch } from '../constants/kalimba';
@@ -26,8 +26,8 @@ export const Layout: React.FC = () => {
   const [selectedTuningKey, setSelectedTuningKey] = useState<string | null>(null);
   
   // Maps dynamically verified key tunings to persistent board visual logic across the full tuning spectrum
-  const tuningMemoryRef = useRef<Record<string, 'perfect' | 'sharp' | 'flat'>>({});
-  const [, setMemoryPulse] = useState(0); // Forces re-render when ref mutates
+  // useState (not useRef) is required here so React.memo on KalimbaKey can diff memoryStatus changes
+  const [tuningMemory, setTuningMemory] = useState<Record<string, 'perfect' | 'sharp' | 'flat'>>({});
 
   // Hook into Hardware Audio
   const { pitch, error: micError, startListening, stopListening } = usePitchDetection();
@@ -102,7 +102,7 @@ export const Layout: React.FC = () => {
     }
   }
 
-  // Strictly bind persistent memory to the hardware pitch cycle to absolutely prevent render drops
+  // Bind tuning memory updates directly to pitch hardware cycle
   React.useEffect(() => {
     if (isTuningMode && selectedTuningKey && pitch) {
       const exactFrequency = getFrequencyFromNote(selectedTuningKey);
@@ -113,18 +113,11 @@ export const Layout: React.FC = () => {
         if (diff < -600) diff += 1200;
 
         if (Math.abs(diff) < 400) {
-          let updated = false;
-          if (Math.abs(diff) <= 10 && tuningMemoryRef.current[selectedTuningKey] !== 'perfect') {
-            tuningMemoryRef.current[selectedTuningKey] = 'perfect';
-            updated = true;
-          } else if (diff > 10 && tuningMemoryRef.current[selectedTuningKey] !== 'sharp') {
-            tuningMemoryRef.current[selectedTuningKey] = 'sharp';
-            updated = true;
-          } else if (diff < -10 && tuningMemoryRef.current[selectedTuningKey] !== 'flat') {
-            tuningMemoryRef.current[selectedTuningKey] = 'flat';
-            updated = true;
-          }
-          if (updated) setMemoryPulse(p => p + 1);
+          const next: 'perfect' | 'sharp' | 'flat' =
+            Math.abs(diff) <= 10 ? 'perfect' : diff > 10 ? 'sharp' : 'flat';
+          setTuningMemory(prev =>
+            prev[selectedTuningKey] === next ? prev : { ...prev, [selectedTuningKey]: next }
+          );
         }
       }
     }
@@ -272,7 +265,7 @@ export const Layout: React.FC = () => {
           isTuningMode={isTuningMode}
           selectedTuningKey={selectedTuningKey}
           currentTuningCents={renderTuningCents}
-          tuningMemory={tuningMemoryRef.current}
+          tuningMemory={tuningMemory}
         />
       </main>
 
