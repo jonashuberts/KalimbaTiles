@@ -73,10 +73,10 @@ const KalimbaKey = React.memo(({
       ))}
 
       {isTuningMode && isTuningActive && status && (
-        <div className="tuning-indicator">
-          {status === 'flat' && <ArrowUp size={32} strokeWidth={4} className="tune-arrow up" />}
-          {status === 'sharp' && <ArrowDown size={32} strokeWidth={4} className="tune-arrow down" />}
-          {status === 'perfect' && <Circle fill="currentColor" size={20} className="tune-dot" />}
+        <div className={`tuning-indicator status-${status}`}>
+          {status === 'flat' && <ArrowUp size={20} strokeWidth={3} />}
+          {status === 'sharp' && <ArrowDown size={20} strokeWidth={3} />}
+          {status === 'perfect' && <Circle size={14} fill="white" strokeWidth={0} />}
         </div>
       )}
 
