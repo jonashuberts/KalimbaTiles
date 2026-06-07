@@ -1,71 +1,55 @@
-# KalimbaTiles — Project Rules for Antigravity / Gemini CLI
+# KalimbaTiles — Agent Instructions
 
-## Versioning
+## Versioning Rules
 
-The project follows **Semantic Versioning**: `MAJOR.MINOR.PATCH`
+The project version is in `package.json`. Follow **Semantic Versioning** (`MAJOR.MINOR.PATCH`).
 
-| Segment | When to increment | Who decides |
-|---------|------------------|-------------|
-| `PATCH` (e.g. `2.3.1 → 2.3.2`) | Every normal fix, feature, or improvement | Agent increments automatically |
-| `MINOR` (e.g. `2.3.x → 2.4.0`) | Larger feature additions or significant UX changes | **User must explicitly say "new minor version"** |
-| `MAJOR` (e.g. `2.x → 3.0.0`) | Full rewrites or breaking architectural changes | **User must explicitly approve** |
+- **PATCH** (e.g. `2.3.2 → 2.3.3`): Increment automatically for every fix, feature, or improvement.
+- **MINOR** (e.g. `2.3.x → 2.4.0`): Only increment when the user explicitly says "new minor version". Reset PATCH to 0.
+- **MAJOR** (e.g. `2.x → 3.0.0`): Only increment when the user explicitly approves a major release. Reset MINOR and PATCH to 0.
 
-**Rules:**
-- Always read the current version from `package.json` before bumping.
-- Only ever increment the `PATCH` number by default, never jump numbers.
-- A build (`npm run build`) must succeed before committing.
-- Never push without a successful build.
+Always read the current version from `package.json` before deciding what to bump. Never skip patch numbers. Never bump MINOR or MAJOR without explicit user instruction.
 
----
+## Commit Message Rules
 
-## Commit Message Format
-
-Follow **Conventional Commits** strictly:
+Use **Conventional Commits** format. Every commit must follow this structure:
 
 ```
-<type>(<scope>): <short summary>
+<type>(<scope>): <short summary in lowercase, max 72 chars, no period>
 
-<optional body — what changed and why, bullet points preferred>
+<body: what changed and why — use bullet points for multiple changes>
 ```
 
-**Types:**
-- `feat` — new feature
-- `fix` — bug fix
-- `refactor` — code restructuring without behaviour change
-- `style` — CSS / visual-only changes
-- `docs` — README or documentation only
-- `chore` — build, config, dependencies
-- `perf` — performance improvement
+**Allowed types:** `feat`, `fix`, `refactor`, `style`, `docs`, `chore`, `perf`
 
-**Scope** is the area of code changed, e.g. `tuner`, `navbar`, `midi`, `kalimba`, `ci`, `css`.
+**Scope examples:** `tuner`, `navbar`, `midi`, `kalimba`, `css`, `ci`
 
-**Examples:**
+Good examples:
 ```
 fix(tuner): persistent key colors now survive key deselection
-
 feat(midi): pressing play after song ends restarts from beginning
-
 style(navbar): unify flex gap — remove phantom padding from nav-section
-
 docs: add tuning screenshot and feature description to README
-
-chore: bump patch version to 2.3.2
+chore: bump patch version to 2.3.3
 ```
 
-**Rules:**
-- Summary line max 72 characters, lowercase after the colon, no period at end.
-- Body should explain *what* and *why*, not just *what*.
-- No random or vague messages like "fix stuff" or "update".
+Never write vague messages like "update", "fix stuff", or "changes".
 
----
-
-## Workflow
+## Workflow — Follow This Every Time
 
 1. Make code changes.
-2. Run `npm run build` — fix all TypeScript and lint errors before continuing.
-3. Update version in `package.json` (patch bump only unless told otherwise).
+2. Run `npm run build` — resolve all TypeScript errors before proceeding.
+3. Bump the PATCH version in `package.json`.
 4. `git add -A`
-5. `git commit -m "..."` with a proper conventional commit message.
+5. `git commit` with a proper conventional commit message.
 6. `git push origin main`
 
-Never commit if the build fails.
+Never commit if `npm run build` fails. Never push without committing first.
+
+## Tech Stack
+
+- React + TypeScript + Vite
+- Vanilla CSS (no Tailwind)
+- Lucide React for icons
+- MidiPlayerJS + Soundfont-player for audio
+- Deployed on Netlify via GitHub main branch
