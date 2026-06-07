@@ -45,6 +45,7 @@ export const Layout: React.FC = () => {
   const {
     isReady,
     isPlaying,
+    isFinished,
     tempo,
     activeNotes,
     fallingNotes,
@@ -209,6 +210,7 @@ export const Layout: React.FC = () => {
         onPlay={handlePlayClick}
         onStop={stop}
         isPlaying={isPlaying}
+        isFinished={isFinished}
         isReady={isReady}
         showNumbers={showNumbers}
         setShowNumbers={setShowNumbers}

@@ -14,10 +14,9 @@ declare global {
 export function useMidiPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const [isFinished, setIsFinished] = useState(false);
   const [tempo, setTempo] = useState(50);
   const [activeNotes, setActiveNotes] = useState<string[]>([]);
-  // Store falling notes. Instead of deleting them from memory aggressively (causing React DOM churn), 
-  // we flag them as "hit" and hide them with CSS to save mobile CPU.
   const [fallingNotes, setFallingNotes] = useState<{ id: string; note: string; isHit: boolean }[]>([]);
   const [progress, setProgress] = useState(0);
 
@@ -168,6 +167,7 @@ export function useMidiPlayer() {
       // the absolutely final visual tile spawned to successfully physically hit the kalimba tines!
       setTimeout(() => {
         setIsPlaying(false);
+        setIsFinished(true);
         setProgress(100);
       }, 2300);
     });
@@ -237,29 +237,31 @@ export function useMidiPlayer() {
       if (acRef.current && acRef.current.state === 'suspended') {
         acRef.current.resume();
       }
-      
-      const isFinished = playerRef.current.getCurrentTick() >= playerRef.current.totalTicks - 1;
 
+      // If song was finished, always restart cleanly from the top
       if (isFinished) {
-         playerRef.current.skipToPercent(0);
-         setProgress(0);
-         clearTasks();
-         if (instrumentRef.current) instrumentRef.current.stop(); 
-         setTimeout(() => { playerRef.current.play(); }, 500);
+        setIsFinished(false);
+        setProgress(0);
+        setActiveNotes([]);
+        setFallingNotes([]);
+        clearTasks();
+        if (instrumentRef.current) instrumentRef.current.stop();
+        playerRef.current.skipToPercent(0);
+        setIsPlaying(true);
+        setTimeout(() => { playerRef.current.play(); }, 300);
+        return;
+      }
+
+      const isResuming = playerRef.current.getCurrentTick() > 0 && !isPlaying;
+      if (isResuming) {
+        resumeTasks();
+        playerRef.current.play();
       } else {
-        const isResuming = playerRef.current.getCurrentTick() > 0 && !isPlaying;
-        if (isResuming) {
-          resumeTasks();
+        clearTasks();
+        if (instrumentRef.current) instrumentRef.current.stop();
+        setTimeout(() => {
           playerRef.current.play();
-        } else {
-          clearTasks();
-          // Clear old sounds if restarting
-          if (instrumentRef.current) instrumentRef.current.stop(); 
-          
-          setTimeout(() => {
-            playerRef.current.play();
-          }, 1000); 
-        }
+        }, 1000);
       }
       setIsPlaying(true);
     }
@@ -283,16 +285,16 @@ export function useMidiPlayer() {
     if (playerRef.current) {
       playerRef.current.stop();
       setIsPlaying(false);
+      setIsFinished(false);
       setProgress(0);
       setActiveNotes([]);
       setFallingNotes([]);
       clearTasks();
-      // Resume context briefly if needed to flush buffers out cleanly
       if (acRef.current && acRef.current.state === 'suspended') {
         acRef.current.resume();
       }
       if (instrumentRef.current) {
-        instrumentRef.current.stop(); // Eradicate all buffered scheduled notes securely
+        instrumentRef.current.stop();
       }
     }
   };
@@ -360,6 +362,7 @@ export function useMidiPlayer() {
   return {
     isReady,
     isPlaying,
+    isFinished,
     tempo,
     progress,
     activeNotes,

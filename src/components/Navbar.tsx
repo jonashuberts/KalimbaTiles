@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Pause, Square, FileMusic, Settings, Minus, Plus, Mic } from 'lucide-react';
+import { Play, Pause, Square, FileMusic, Settings, Minus, Plus, Mic, RotateCcw } from 'lucide-react';
 import { TUNINGS } from '../constants/kalimba';
 import './Navbar.css';
 
@@ -14,6 +14,7 @@ interface NavbarProps {
   onPlay: () => void;
   onStop: () => void;
   isPlaying: boolean;
+  isFinished: boolean;
   isReady: boolean;
   showNumbers: boolean;
   setShowNumbers: (val: boolean) => void;
@@ -34,6 +35,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onPlay,
   onStop,
   isPlaying,
+  isFinished,
   isReady,
   showNumbers,
   setShowNumbers,
@@ -154,7 +156,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onClick={onPlay} 
                   title={isPlaying ? "Pause" : "Play"}
                 >
-                  {isPlaying ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="none" />}
+                  {isFinished
+                    ? <RotateCcw size={18} />
+                    : isPlaying
+                      ? <Pause size={18} fill="currentColor" />
+                      : <Play size={18} fill="none" />}
                 </button>
                 <button className="btn-icon" onClick={onStop} disabled={!isReady} title="Stop">
                   <Square size={18} />
