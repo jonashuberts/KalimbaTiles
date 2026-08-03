@@ -1,6 +1,6 @@
 {
   "name": "kalimbatiles",
-  "version": "2.3.7",
+  "version": "2.3.8",
   "license": "AGPL-3.0",
   "type": "module",
   "scripts": {
@@ -33,6 +33,7 @@
   },
   "overrides": {
     "serialize-javascript": ">=7.0.5",
-    "esbuild": "^0.28.1"
+    "esbuild": "^0.28.1",
+    "postcss": "^8.5.25"
   }
 }
