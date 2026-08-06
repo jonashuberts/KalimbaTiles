@@ -10,9 +10,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.png', 'apple-touch-icon.png'],
       manifest: {
-        name: 'KalimbaTiles',
-        short_name: 'KalimbaTiles',
-        description: 'Practice and master the Kalimba with dynamic falling tiles',
+        name: 'Key Kalimba',
+        short_name: 'KeyKalimba',
+        description: 'Practice and master the Kalimba with KeyKalimba',
         theme_color: '#1a1a2e',
         background_color: '#1a1a2e',
         display: 'standalone',

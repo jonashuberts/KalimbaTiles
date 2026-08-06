@@ -1,8 +1,8 @@
-# Kalimba Tiles
+# Key Kalimba
 
-Welcome to Kalimba Tiles, your go-to app for **playing and tuning** the kalimba. Whether you're a beginner or an experienced player, this app is meticulously crafted to enhance your Kalimba learning experience.
+Welcome to Key Kalimba, your go-to app for **playing and tuning** the kalimba. Whether you're a beginner or an experienced player, this app is meticulously crafted to enhance your Kalimba learning experience.
 
-Recently modernized into a robust React/Vite application, Kalimba Tiles features beautiful glowing aesthetics, perfect mathematical visual synchronization, and device-independent scaling logic. 
+Recently modernized into a robust React/Vite application, Key Kalimba features beautiful glowing aesthetics, perfect mathematical visual synchronization, and device-independent scaling logic. 
 
 ## Features & Usage
 
@@ -22,7 +22,7 @@ Recently modernized into a robust React/Vite application, Kalimba Tiles features
 
 ## Local Development
 
-Kalimba Tiles is built with a modern web stack: **React (TypeScript), Vite, and Vanilla CSS**.
+Key Kalimba is built with a modern web stack: **React (TypeScript), Vite, and Vanilla CSS**.
 
 To run the application locally:
 ```bash
@@ -35,7 +35,7 @@ npm run dev
 
 ## Libraries & Attributes
 
-Kalimba Tiles harnesses the power of the following libraries:
+Key Kalimba harnesses the power of the following libraries:
 - [React](https://react.dev/) & [Vite](https://vitejs.dev/) - For lightning-fast UI rendering and development.
 - [Lucide React](https://lucide.dev/) - Beautiful, consistent iconography.
 - [MidiPlayerJS](https://github.com/grimmdude/MidiPlayerJS): A versatile MIDI player for seamless integration of MIDI files.
@@ -47,4 +47,4 @@ The default `sample.mid` piece included natively in the application is [Kalimba 
 
 This project is licensed under the [GNU Affero General Public License v3.0](LICENSE) - see the [LICENSE](LICENSE) file for details.
 
-Feel the rhythm, embrace the melody, and let Kalimba Tiles be your companion on your musical journey!
+Feel the rhythm, embrace the melody, and let Key Kalimba be your companion on your musical journey!

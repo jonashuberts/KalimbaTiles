@@ -1,4 +1,4 @@
-# KalimbaTiles — Agent Instructions
+# KeyKalimba — Agent Instructions
 
 ## Versioning Rules
 

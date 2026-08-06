@@ -62,7 +62,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <nav className="navbar">
       <div className="nav-brand">
-        <h1>KalimbaTiles</h1>
+        <h1>KeyKalimba</h1>
       </div>
 
       <div className="nav-controls">
