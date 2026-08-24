@@ -10,6 +10,17 @@ The project version is in `package.json`. Follow **Semantic Versioning** (`MAJOR
 
 Always read the current version from `package.json` before deciding what to bump. Never skip patch numbers. Never bump MINOR or MAJOR without explicit user instruction.
 
+## Release & Tag Rules (Tag == Release)
+
+Every Git tag MUST correspond to a published GitHub Release. Never create a raw Git tag without also creating the GitHub Release.
+
+- When publishing a release version (e.g. `v2.4.1`), tag the commit and immediately publish the GitHub Release via GitHub CLI:
+  ```bash
+  git tag v<VERSION>
+  git push origin v<VERSION>
+  gh release create v<VERSION> --title "v<VERSION>: <Short Title>" --notes "<Bullet points of changes>"
+  ```
+
 ## Commit Message Rules
 
 Use **Conventional Commits** format. Every commit must follow this structure:
@@ -43,6 +54,7 @@ Never write vague messages like "update", "fix stuff", or "changes".
 4. `git add -A`
 5. `git commit` with a proper conventional commit message.
 6. `git push origin main`
+7. If creating a release tag, create and push the Git tag and run `gh release create` immediately.
 
 Never commit if `npm run build` fails. Never push without committing first.
 
