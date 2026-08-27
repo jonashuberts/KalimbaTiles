@@ -6,47 +6,57 @@
   padding-bottom: 2rem;
 }
 
+/* Apple-style Physical Wooden Resonator Board */
 .kalimba-board {
   display: flex;
   justify-content: space-around;
   margin-top: calc((var(--ppi) / 25.4) * 20px);
   height: calc((var(--ppi) / 25.4) * 70px);
   width: calc((var(--ppi) / 25.4) * 110px);
-  background-color: var(--kalimba-wood);
+  background: radial-gradient(circle at 50% 20%, var(--kalimba-wood-highlight) 0%, var(--kalimba-wood) 60%, var(--kalimba-wood-shadow) 100%);
   border-radius: var(--radius-lg);
   position: relative;
   overflow: visible;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 5px 5px 10px rgba(107, 107, 107, 0.2),
-    inset -5px -5px 10px rgba(0, 0, 0, 0.4);
-  transition: all 0.3s ease;
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8),
+              0 0 0 1px rgba(255, 255, 255, 0.08),
+              inset 0 1px 2px rgba(255, 255, 255, 0.15),
+              inset 0 -8px 20px rgba(0, 0, 0, 0.6);
+  transition: transform 0.3s var(--spring-gentle);
 }
 
+/* Brushed Steel Physical Tine (Key) */
 .kalimba-key {
   margin-top: calc((var(--ppi) / 25.4) * 2px);
   width: calc((var(--ppi) / 25.4) * 4px);
   height: calc((var(--ppi) / 25.4) * 60px);
-  border-radius: calc((var(--ppi) / 25.4) * 1px);
-  background: linear-gradient(180deg, #f5f0eb 0%, #dbd4ca 100%);
-  box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.6);
+  border-radius: calc((var(--ppi) / 25.4) * 1.2px);
+  background: linear-gradient(180deg, #fdfcfa 0%, #eae6df 35%, #d1ccc2 85%, #b5aea3 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5),
+              inset 0 1px 0 rgba(255, 255, 255, 0.9),
+              inset 1px 0 0 rgba(255, 255, 255, 0.4),
+              inset -1px 0 0 rgba(0, 0, 0, 0.2),
+              inset 0 -2px 4px rgba(0, 0, 0, 0.25);
   z-index: 10;
   position: relative;
   cursor: pointer;
-  transition: background-color 0.1s ease, transform 0.1s ease;
+  transition: transform 0.12s var(--spring-snappy), background 0.15s ease, box-shadow 0.15s ease;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
   padding-bottom: 10%;
+  user-select: none;
 }
 
 .kalimba-key:hover {
-  background: linear-gradient(180deg, #ffffff 0%, #e8e4de 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #f4f0e8 35%, #ddd8ce 85%, #c2bbb0 100%);
 }
 
+/* Instant Tactile Depression on Strike / Tap */
 .kalimba-key:active, .kalimba-key.active {
   background: var(--kalimba-key-active) !important;
-  box-shadow: 0 0 8px var(--tile-glow);
-  transform: translateY(2px);
+  box-shadow: 0 0 16px var(--text-accent-glow), 0 2px 4px rgba(0, 0, 0, 0.6) !important;
+  transform: translateY(3px) scale(0.99);
 }
 
 .kalimba-key.first-key {
@@ -57,27 +67,22 @@
   margin-right: calc((var(--ppi) / 25.4) * 4px);
 }
 
+/* Resonance Flash Layer */
 .kalimba-key-glow {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
   border-radius: inherit;
-  
-  /* Use a bright, flat background instead of heavy shadows for iOS performance */
   background: var(--kalimba-key-active);
-  box-shadow: 0 0 10px var(--tile-glow); 
-  
+  box-shadow: 0 0 14px var(--tile-glow);
   opacity: 0;
   animation-name: delayed-key-flash;
-  animation-duration: 400ms; /* Even longer duration for better visibility */
+  animation-duration: 400ms;
   animation-delay: 2000ms;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   pointer-events: none;
   z-index: 5;
-  
-  /* Force GPU rendering for opacity strictly */
   will-change: opacity;
-  -webkit-transform: translateZ(0);
   transform: translateZ(0);
 }
 
@@ -86,23 +91,28 @@
     opacity: 0;
   }
   5% {
-    opacity: 1; /* Instant pop */
+    opacity: 1;
   }
   30% {
-    opacity: 1; /* Hold */
+    opacity: 1;
   }
   100% {
-    opacity: 0; /* Smooth fade */
+    opacity: 0;
   }
 }
 
-/* Red Highlighted Keys (C, A, B, G, A) standard on 17-key */
+/* Traditional Crimson Tinted Keys (C, A, B, G, A) */
 .kalimba-key[data-note="C4"],
 .kalimba-key[data-note="A4"],
 .kalimba-key[data-note="B4"],
 .kalimba-key[data-note="G5"],
 .kalimba-key[data-note="A5"] {
-  background: linear-gradient(180deg, #efa5ad 0%, var(--kalimba-key-red) 100%);
+  background: linear-gradient(180deg, #ff8a93 0%, #e04850 45%, #b82b33 90%, #941e24 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5),
+              inset 0 1px 0 rgba(255, 255, 255, 0.8),
+              inset 1px 0 0 rgba(255, 255, 255, 0.3),
+              inset -1px 0 0 rgba(0, 0, 0, 0.3),
+              inset 0 -2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .kalimba-key[data-note="C4"]:active,
@@ -115,7 +125,7 @@
 .kalimba-key[data-note="G5"].active,
 .kalimba-key[data-note="A5"]:active,
 .kalimba-key[data-note="A5"].active {
-    background: #ff767f !important;
+  background: #ff5e68 !important;
 }
 
 .kalimba-key[data-note="C4"] .kalimba-key-glow,
@@ -123,20 +133,21 @@
 .kalimba-key[data-note="B4"] .kalimba-key-glow,
 .kalimba-key[data-note="G5"] .kalimba-key-glow,
 .kalimba-key[data-note="A5"] .kalimba-key-glow {
-    background: #ff767f !important;
+  background: #ff5e68 !important;
 }
 
+/* Metal Bridge & Pressure Bar */
 .top-pad {
   position: absolute;
   width: calc((var(--ppi) / 25.4) * 104px);
-  background-color: var(--kalimba-top-pad);
+  background: linear-gradient(180deg, #e8e4de 0%, #b8b2a8 100%);
   display: flex;
   align-items: center;
   justify-content: space-around;
   top: calc((var(--ppi) / 25.4) * 22px);
   border-radius: calc((var(--ppi) / 25.4) * 1px);
   height: calc((var(--ppi) / 25.4) * 3px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), inset 2px 2px 5px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.6);
   z-index: 20;
 }
 
@@ -146,8 +157,8 @@
   background-color: var(--kalimba-bottom-pad);
   height: calc((var(--ppi) / 25.4) * 8px);
   border-radius: calc((var(--ppi) / 25.4) * 1px);
-  box-shadow: 2px 2px 5px #000, inset 2px 2px 5px rgba(255, 255, 255, 0.1),
-    inset -2px -2px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 6px #000, inset 0 1px 2px rgba(255, 255, 255, 0.1),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.6);
 }
 
 .bottom-pad.pad-1 {
@@ -158,45 +169,47 @@
   top: calc((var(--ppi) / 25.4) * 50px);
 }
 
-/* Note Labels */
+/* Engraved Note Labels */
 .key-label {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: #111;
-  font-weight: bold;
-  font-family: 'Inter', sans-serif;
+  color: #1a1a1e;
+  font-weight: 700;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
   user-select: none;
   font-size: calc((var(--ppi) / 25.4) * 2.5px);
-  height: 20%; /* Give it a fixed height area at the bottom */
+  height: 20%;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 .key-number {
   line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .key-octave {
   font-size: 0.9em;
-  letter-spacing: 1px; /* Space out the double dots slightly */
+  letter-spacing: 1px;
   line-height: 1;
   margin-top: 2px;
-  min-height: 1em; /* Ensure it takes up space even if empty to keep numbers aligned */
+  min-height: 1em;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Landscape mobile optimization: Push Kalimba further down to increase visual runway for notes */
+/* Landscape mobile optimization */
 @media (max-height: 600px) and (orientation: landscape) {
   .kalimba-container {
     padding-bottom: 0;
-    margin-bottom: calc(var(--ppi) * -60px / 25.4); /* Hide most of the Kalimba (leaves about 1.5cm visible) */
+    margin-bottom: calc(var(--ppi) * -60px / 25.4);
   }
 
   .kalimba-key {
-    justify-content: flex-start; /* Move labels to top */
-    padding-top: calc(var(--ppi) * 2px / 25.4); /* Almost touching the top edge so dots are visible */
+    justify-content: flex-start;
+    padding-top: calc(var(--ppi) * 2px / 25.4);
     padding-bottom: 0;
   }
 
@@ -205,16 +218,15 @@
   }
 }
 
-/* Desktop optimization: Push Kalimba further up to visually center it more */
 @media (min-width: 768px) and (min-height: 601px) {
   .kalimba-container {
-    padding-bottom: 15vh; 
+    padding-bottom: 15vh;
   }
 }
 
-/* --- Tuning Dashboard Logic --- */
+/* --- Apple-Style Tuning Mode Visuals --- */
 .tuning-mode-active .kalimba-key {
-  transition: all 0.3s ease;
+  transition: all 0.25s var(--spring-gentle);
 }
 
 .tuning-mode-active .kalimba-key:not(.tuning-focus):not(.memorized-perfect):not(.memorized-flat):not(.memorized-sharp) {
@@ -230,78 +242,90 @@
 }
 
 .kalimba-key.tuning-focus {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.8), 0 0 15px rgba(255, 255, 255, 0.3);
-  background: linear-gradient(180deg, #ffffff 0%, #d8d4cf 100%);
-  z-index: 10;
-  border-top: 2px solid rgba(255, 255, 255, 0.9);
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.8), 0 0 20px rgba(255, 255, 255, 0.4);
+  background: linear-gradient(180deg, #ffffff 0%, #dedad4 100%);
+  z-index: 15;
+  border-top: 2px solid #ffffff;
 }
 
 .kalimba-key.memorized-perfect {
-  background: linear-gradient(180deg, #bbf7d0 0%, #4ade80 100%) !important;
-  border-top: 3px solid rgba(22, 163, 74, 0.9) !important;
-  box-shadow: 0 0 18px rgba(34, 197, 94, 0.7), 2px 5px 15px rgba(0,0,0,0.5) !important;
+  background: linear-gradient(180deg, #dcfce7 0%, var(--system-green) 100%) !important;
+  border-top: 3px solid #ffffff !important;
+  box-shadow: 0 0 20px var(--system-green-glow), 0 4px 12px rgba(0,0,0,0.5) !important;
 }
 
 .kalimba-key.memorized-flat {
-  background: linear-gradient(180deg, #fecaca 0%, #f87171 100%) !important;
-  border-top: 3px solid rgba(220, 38, 38, 0.9) !important;
-  box-shadow: 0 0 18px rgba(248, 113, 113, 0.7), 2px 5px 15px rgba(0,0,0,0.5) !important;
+  background: linear-gradient(180deg, #fee2e2 0%, var(--system-red) 100%) !important;
+  border-top: 3px solid #ffffff !important;
+  box-shadow: 0 0 20px var(--system-red-glow), 0 4px 12px rgba(0,0,0,0.5) !important;
 }
 
 .kalimba-key.memorized-sharp {
-  background: linear-gradient(180deg, #fed7aa 0%, #fb923c 100%) !important;
-  border-top: 3px solid rgba(234, 88, 12, 0.9) !important;
-  box-shadow: 0 0 18px rgba(251, 146, 60, 0.7), 2px 5px 15px rgba(0,0,0,0.5) !important;
+  background: linear-gradient(180deg, #ffedd5 0%, var(--system-orange) 100%) !important;
+  border-top: 3px solid #ffffff !important;
+  box-shadow: 0 0 20px var(--system-orange-glow), 0 4px 12px rgba(0,0,0,0.5) !important;
 }
 
 .kalimba-key.tuning-focus.tune-flat {
-  background: linear-gradient(180deg, #ffd1bf 0%, #ff6b6b 100%) !important;
-  box-shadow: 0 0 15px rgba(255, 107, 107, 0.6);
+  background: linear-gradient(180deg, #fee2e2 0%, var(--system-red) 100%) !important;
+  box-shadow: 0 0 20px var(--system-red-glow);
 }
 
 .kalimba-key.tuning-focus.tune-sharp {
-  background: linear-gradient(180deg, #ffd1bf 0%, #ff9e3d 100%) !important;
-  box-shadow: 0 0 15px rgba(255, 158, 61, 0.6);
+  background: linear-gradient(180deg, #ffedd5 0%, var(--system-orange) 100%) !important;
+  box-shadow: 0 0 20px var(--system-orange-glow);
 }
 
 .kalimba-key.tuning-focus.tune-perfect {
-  background: linear-gradient(180deg, #d8f5cb 0%, #4cd137 100%) !important;
-  box-shadow: 0 0 20px rgba(76, 209, 55, 0.8);
+  background: linear-gradient(180deg, #dcfce7 0%, var(--system-green) 100%) !important;
+  box-shadow: 0 0 24px var(--system-green-glow);
 }
 
-/* Tuning indicator floats ABOVE the key as a badge — avoids key width constraints */
+/* Dynamic Island Floating Badge */
 .tuning-indicator {
   position: absolute;
-  top: -48px;
+  top: -50px;
   left: 50%;
   transform: translateX(-50%);
   width: 36px;
   height: 36px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: none;
   z-index: 200;
-  -webkit-transform: translateX(-50%);
+  animation: dynamic-island-spring 0.35s var(--spring-bounce);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+@keyframes dynamic-island-spring {
+  0% {
+    transform: translateX(-50%) scale(0.6) translateY(10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(-50%) scale(1) translateY(0);
+    opacity: 1;
+  }
 }
 
 .tuning-indicator.status-flat {
-  background: #ef4444;
-  box-shadow: 0 0 12px rgba(239, 68, 68, 0.8);
+  background: var(--system-red);
+  box-shadow: 0 0 16px var(--system-red-glow), 0 6px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
   color: white;
 }
 
 .tuning-indicator.status-sharp {
-  background: #f97316;
-  box-shadow: 0 0 12px rgba(249, 115, 22, 0.8);
+  background: var(--system-orange);
+  box-shadow: 0 0 16px var(--system-orange-glow), 0 6px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
   color: white;
 }
 
 .tuning-indicator.status-perfect {
-  background: #22c55e;
-  box-shadow: 0 0 12px rgba(34, 197, 94, 0.8);
+  background: var(--system-green);
+  box-shadow: 0 0 18px var(--system-green-glow), 0 6px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
   color: white;
 }
 
@@ -310,16 +334,6 @@
   width: 20px !important;
   height: 20px !important;
   stroke: white !important;
-  stroke-width: 3 !important;
+  stroke-width: 2.8 !important;
   fill: none;
-}
-
-@keyframes pulse-arrow {
-  0% { transform: translateY(0); opacity: 0.8; }
-  100% { transform: translateY(-2px); opacity: 1; }
-}
-
-@keyframes pop-grow {
-  0% { transform: scale(0.5); opacity: 0; }
-  100% { transform: scale(1.5); opacity: 1; }
 }

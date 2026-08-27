@@ -4,28 +4,27 @@
   justify-content: center;
   position: relative;
   width: 100%;
-  z-index: 5; /* Render above the wooden board (0) but below the keys (10) and bridge (20) */
+  z-index: 5;
   overflow: visible; 
 }
 
 .falling-tiles-wrapper {
   position: absolute;
   top: 0;
-  bottom: 0; /* Align perfectly with animation-container */
+  bottom: 0;
   width: calc((var(--ppi) / 25.4) * 110px);
   display: flex;
   justify-content: space-around;
 }
 
 .falling-col {
-  width: calc((var(--ppi) / 25.4) * 4px); /* Same as key width */
+  width: calc((var(--ppi) / 25.4) * 4px);
   height: 100%;
   display: flex;
   justify-content: center;
   position: relative;
 }
 
-/* Adjust outer columns to match the Kalimba's 4px first/last child margins */
 .falling-col:first-child {
   margin-left: calc((var(--ppi) / 25.4) * 4px);
 }
@@ -40,8 +39,6 @@
   position: absolute;
   top: 0;
   left: 0;
-  
-  /* Fall animation spans exact 2300ms: 2000ms to hit the key, 300ms to glide out of frame invisibly underneath */
   animation-name: fall-down-through;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
@@ -50,70 +47,69 @@
   align-items: flex-end;
 }
 
+/* Apple 3D Glass Note Chip */
 .falling-tile-visual {
   width: 100%;
-  height: calc((var(--ppi) / 25.4) * 7px); /* Reduced slightly to mitigate collision threshold */
-  background-color: var(--tile-bg);
-  border-radius: calc((var(--ppi) / 25.4) * 2px);
+  height: calc((var(--ppi) / 25.4) * 7.5px);
+  background: linear-gradient(180deg, rgba(165, 180, 252, 0.95) 0%, var(--tile-bg) 60%, #4338ca 100%);
+  border-radius: calc((var(--ppi) / 25.4) * 1.5px);
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* Establishes clear edges so overlapping rapid-fire notes stack naturally like 3D chips rather than glitching into a flat blob */
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5),
-              inset 0 -1px 0 rgba(0, 0, 0, 0.5),
-              0 2px 4px rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8),
+              inset 0 -1px 0 rgba(0, 0, 0, 0.4),
+              0 4px 10px rgba(0, 0, 0, 0.45),
+              0 0 12px var(--tile-glow);
 }
 
-
 .half-note-marker {
-  color: var(--text-primary);
+  color: #ffffff;
   font-size: calc((var(--ppi) / 25.4) * 4.5px);
-  font-weight: 400;
+  font-weight: 600;
   line-height: 1;
   position: absolute;
   z-index: 2;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 .tile-glow {
   width: 100%;
   height: 100%;
-  background: white;
+  background: rgba(255, 255, 255, 0.4);
   border-radius: inherit;
-  opacity: 0.5; /* Muted internal brightness */
+  opacity: 0.6;
 }
 
-/* Timeline mathematically locked to duration={2300ms} prop inside React */
+/* Timeline locked to duration={2300ms} */
 @keyframes fall-down-through {
   0% {
     transform: translate3d(0, -100%, 0);
     opacity: 0;
   }
-  5% {
+  4% {
     opacity: 1;
   }
   
-  /* t=2000ms: Exactly 86.95% of 2300ms */
-  /* Reaches standard impact threshold (+22px overshoot) */
+  /* t=2000ms: Impact threshold (+22px overshoot) */
   86.95% {
     transform: translate3d(0, calc((var(--ppi) / 25.4) * 22px), 0);
     opacity: 1;
   }
   
-  /* t=2299ms: Glide deeply under the metal key seamlessly */
+  /* t=2299ms: Glide under metal tines */
   99.9% {
     transform: translate3d(0, calc((var(--ppi) / 25.4) * 82px), 0);
     opacity: 1;
   }
   
-  /* t=2300ms: Despawn safely */
+  /* t=2300ms: Despawn */
   100% {
     transform: translate3d(0, calc((var(--ppi) / 25.4) * 82px), 0);
     opacity: 0; 
   }
 }
 
-/* Ignore control notes that aren't on the kalimba board */
 .falling-tile-wrapper[data-key-note="C-1"] {
   display: none;
 }

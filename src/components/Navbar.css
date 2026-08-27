@@ -2,37 +2,42 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: calc(1rem + env(safe-area-inset-top));
-  padding-bottom: 1rem;
-  padding-left: calc(2rem + env(safe-area-inset-left));
-  padding-right: calc(2rem + env(safe-area-inset-right));
-  background: rgba(22, 22, 26, 0.8);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: calc(0.75rem + env(safe-area-inset-top));
+  padding-bottom: 0.75rem;
+  padding-left: calc(1.5rem + env(safe-area-inset-left));
+  padding-right: calc(1.5rem + env(safe-area-inset-right));
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border-bottom: 1px solid var(--glass-border-subtle);
+  box-shadow: var(--glass-highlight), var(--glass-shadow);
   position: relative;
   z-index: 100;
-  box-shadow: var(--shadow-md);
+  transition: all 0.25s var(--spring-gentle);
 }
 
 .nav-brand h1 {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 700;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.03em;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   margin: 0;
+  color: var(--text-primary);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 .version-badge {
   font-size: 0.65rem;
-  padding: 4px 8px;
-  background: var(--bg-tertiary);
+  padding: 3px 8px;
+  background: rgba(255, 255, 255, 0.08);
   color: var(--text-secondary);
-  border-radius: 8px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--glass-border-subtle);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,132 +46,151 @@
 .nav-controls {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
 .nav-section {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 0.85rem;
 }
 
+/* Apple-style Tactile Button Presets */
 .file-upload-btn {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0 1rem;
-  height: 40px;
+  gap: 0.45rem;
+  padding: 0 0.95rem;
+  height: 38px;
   box-sizing: border-box;
-  background: var(--bg-primary);
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-md);
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   cursor: pointer;
-  transition: all 0.2s;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid var(--glass-border-subtle);
+  box-shadow: var(--glass-highlight);
   color: var(--text-primary);
+  transition: transform 0.15s var(--spring-snappy), background 0.15s ease, border-color 0.15s ease;
 }
 
 .file-upload-btn:hover {
-  background: rgba(127, 90, 240, 0.2);
-  border-color: var(--text-accent);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
+.file-upload-btn:active {
+  transform: scale(0.95);
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* Playback Control Pod */
 .playback-controls {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
-  height: 40px;
+  gap: 0.2rem;
+  height: 38px;
   box-sizing: border-box;
-  background: var(--bg-primary);
-  padding: 4px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 3px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border-subtle);
+  box-shadow: var(--glass-highlight);
 }
 
 .btn-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   box-sizing: border-box;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   color: var(--text-secondary);
-  transition: all 0.2s;
-  background: var(--bg-primary);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--glass-border-subtle);
+  box-shadow: var(--glass-highlight);
   cursor: pointer;
+  transition: transform 0.15s var(--spring-snappy), background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 .playback-controls .btn-icon {
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
   border: none;
   background: transparent;
+  box-shadow: none;
 }
 
 .btn-icon:disabled {
-  opacity: 0.5;
+  opacity: 0.35;
   cursor: not-allowed;
 }
 
 .btn-icon:not(:disabled):hover {
-  background: var(--bg-tertiary);
+  background: rgba(255, 255, 255, 0.12);
   color: var(--text-primary);
 }
 
+.btn-icon:not(:disabled):active {
+  transform: scale(0.92);
+}
+
 .btn-icon.active {
-  color: var(--text-accent);
-  background: var(--bg-tertiary);
-  border-color: rgba(255,255,255,0.08);
+  color: #ffffff;
+  background: var(--text-accent);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 16px var(--text-accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .playback-controls .btn-icon.active {
-  border-color: transparent;
+  background: var(--text-accent);
+  color: #fff;
 }
 
 .btn-icon.danger:not(:disabled):hover {
-  color: #ef4444;
-  background: rgba(239, 68, 68, 0.1);
-  border-color: #ef4444;
-}
-
-.playback-controls .btn-icon.danger:not(:disabled):hover {
-  border-color: transparent;
+  color: var(--system-red);
+  background: rgba(255, 69, 58, 0.12);
+  border-color: rgba(255, 69, 58, 0.3);
 }
 
 .setting-group {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
 }
 
 .setting-label {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--text-secondary);
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
   font-weight: 700;
 }
 
 .tempo-input {
-  width: 60px;
-  height: 40px;
+  width: 58px;
+  height: 38px;
   box-sizing: border-box;
-  background: var(--bg-primary);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--glass-border-subtle);
+  box-shadow: var(--glass-highlight);
   color: var(--text-primary);
-  padding: 0 0.5rem;
-  border-radius: 12px;
+  padding: 0 0.4rem;
+  border-radius: var(--radius-md);
   text-align: center;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
+  font-variant-numeric: tabular-nums;
+  transition: border-color 0.15s ease, background 0.15s ease;
 }
+
 .tempo-input:focus {
   outline: none;
   border-color: var(--text-accent);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 3px var(--text-accent-glow);
 }
 
 .tuning-select {
@@ -174,145 +198,150 @@
   min-width: 100px;
   appearance: none;
   -webkit-appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
   background-repeat: no-repeat;
-  background-position: right 0.5rem center;
-  background-size: 1.25em;
+  background-position: right 0.6rem center;
+  background-size: 1.1em;
   cursor: pointer;
-  padding-left: 1.25rem;
-  padding-right: 1.75rem;
+  padding-left: 0.9rem;
+  padding-right: 1.8rem;
   text-align: center;
 }
 
 .scale-selector {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .control-group {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
-  height: 40px;
+  gap: 0.15rem;
+  height: 38px;
   box-sizing: border-box;
-  background: var(--bg-primary);
-  padding: 4px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 3px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border-subtle);
+  box-shadow: var(--glass-highlight);
 }
 
 .control-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  background: var(--bg-tertiary);
-  color: var(--text-accent);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
   border: none;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: transform 0.15s var(--spring-snappy), background 0.15s ease, color 0.15s ease;
 }
 
 .control-btn:hover {
-  background: rgba(127, 90, 240, 0.2);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.16);
 }
 
 .control-btn:active {
-  transform: scale(0.95);
+  transform: scale(0.9);
 }
 
 .scale-value {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 44px;
-  height: 30px;
+  min-width: 42px;
+  height: 32px;
   font-weight: 600;
   color: var(--text-primary);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
+  font-variant-numeric: tabular-nums;
 }
 
 .toggle-btn {
   width: auto;
-  height: 30px;
+  height: 32px;
   padding: 0 0.75rem;
-  gap: 0.5rem;
-  border-radius: 8px;
+  gap: 0.4rem;
+  border-radius: var(--radius-sm);
   border: none;
 }
+
 .toggle-text {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 600;
 }
 
-/* Landscape mobile optimization: hide title, tight center packing */
+/* Landscape mobile optimization */
 @media (max-width: 1050px) {
   .navbar {
-    padding-top: calc(0.5rem + env(safe-area-inset-top));
-    padding-bottom: 0.5rem;
-    padding-left: calc(0.5rem + env(safe-area-inset-left));
-    padding-right: calc(0.5rem + env(safe-area-inset-right));
+    padding-top: calc(0.4rem + env(safe-area-inset-top));
+    padding-bottom: 0.4rem;
+    padding-left: calc(0.75rem + env(safe-area-inset-left));
+    padding-right: calc(0.75rem + env(safe-area-inset-right));
     justify-content: center;
   }
   .nav-brand {
-    display: none; /* Reclaim space occupied by title row */
+    display: none;
   }
   .nav-controls {
     width: 100%;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
     flex-wrap: wrap;
   }
   .nav-section {
     justify-content: center;
     flex-wrap: wrap;
+    gap: 0.4rem;
   }
   .setting-label {
-    display: none; /* Hide setting labels to fit everything closely */
+    display: none;
   }
   .file-upload-btn span {
-    display: none; /* Hide "Select MIDI" text, keep just the icon */
+    display: none;
   }
   .file-upload-btn {
     padding: 0;
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
     justify-content: center;
   }
   .file-upload-btn, .tempo-input {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
   }
   .btn-icon {
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
   }
   .btn-icon.toggle-btn {
-    width: auto; /* Prevent the numbers button from being squished */
-    height: 30px; /* Prevent it from overflowing its container on mobile */
+    width: auto;
+    height: 32px;
   }
   .tuning-select {
-    max-width: 100px;
+    max-width: 95px;
   }
 }
 
-/* YouTube Style Progress Bar overlay pinned perfectly to bottom lip */
+/* Apple Fluid Timeline Scrubber pinned to bottom edge */
 .progress-bar-container {
   position: absolute;
-  bottom: 0; /* Attach to absolute bottom edge */
+  bottom: 0;
   left: 0;
   width: 100%;
-  height: 3px; /* Minimal resting height */
-  background: rgba(255, 255, 255, 0.1); /* Ghost track */
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
   z-index: 10;
-  transition: height 0.15s ease-out;
+  transition: height 0.2s var(--spring-gentle);
+  cursor: pointer;
 }
 
-.progress-bar-container:hover {
-  height: 6px; /* Expand on hover like YouTube */
+.progress-bar-container:hover,
+.progress-bar-container:active {
+  height: 7px;
 }
 
 .progress-bar {
@@ -331,10 +360,9 @@
 
 .progress-bar:disabled {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
-/* Invisible native wrapper since we use a custom painted background gradient using --progress */
 .progress-bar::-webkit-slider-runnable-track {
   width: 100%;
   height: 100%;
@@ -349,35 +377,36 @@
   border-radius: 0;
 }
 
-/* Scrub Handle Thumb - Hidden unless hovering or active! */
+/* Apple Spring Scrub Thumb */
 .progress-bar::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  background: var(--text-accent);
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transform: scale(0);
-  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-  margin-top: -3px; /* vertically align exactly within expanded track */
+  transition: transform 0.25s var(--spring-bounce);
+  margin-top: -3.5px;
 }
 
-/* Expanding Thumb exactly like Youtube's red dot */
 .progress-bar-container:hover .progress-bar::-webkit-slider-thumb,
 .progress-bar:active::-webkit-slider-thumb {
   transform: scale(1);
 }
 
 .progress-bar::-moz-range-thumb {
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   border: none;
   border-radius: 50%;
-  background: var(--text-accent);
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transform: scale(0);
-  transition: transform 0.1s;
+  transition: transform 0.25s var(--spring-bounce);
 }
 
 .progress-bar-container:hover .progress-bar::-moz-range-thumb,

@@ -1,57 +1,89 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
   --ppi: 153;
   
-  /* Modern Dark Theme Colors */
-  --bg-primary: #0a0a0c;
-  --bg-secondary: #16161a;
-  --bg-tertiary: #242629;
+  /* Apple System Dark Palette */
+  --bg-primary: #000000;
+  --bg-secondary: #121216;
+  --bg-tertiary: #1c1c22;
+  --bg-elevated: #26262e;
   
-  --text-primary: #fffffe;
-  --text-secondary: #94a1b2;
-  --text-accent: #7f5af0;
-  
-  /* Kalimba Specific Colors */
-  --kalimba-wood: #3a1e12;
-  --kalimba-wood-shadow: #1e0d07;
-  --kalimba-key: #dbd4ca;
-  --kalimba-key-active: #d6f2f8;
-  --kalimba-key-red: #e35b62;
-  --kalimba-top-pad: #d3c4b5;
-  --kalimba-bottom-pad: #2c201d;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.65);
+  --text-tertiary: rgba(255, 255, 255, 0.40);
+  --text-accent: #6366f1; /* Modern iOS Indigo/Purple */
+  --text-accent-glow: rgba(99, 102, 241, 0.4);
 
-  --tile-glow: rgba(127, 90, 240, 0.8);
-  --tile-bg: #7f5af0;
+  /* Apple System Status Colors */
+  --system-green: #30d158;
+  --system-green-glow: rgba(48, 209, 88, 0.45);
+  --system-orange: #ff9f0a;
+  --system-orange-glow: rgba(255, 159, 10, 0.45);
+  --system-red: #ff453a;
+  --system-red-glow: rgba(255, 69, 58, 0.45);
   
-  /* Radii & Shadows */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  /* Kalimba Physical Materials */
+  --kalimba-wood: #261610;
+  --kalimba-wood-highlight: #3d2319;
+  --kalimba-wood-shadow: #0f0705;
+  --kalimba-steel-light: #ffffff;
+  --kalimba-steel-mid: #e2ded9;
+  --kalimba-steel-dark: #b8b2a8;
+  --kalimba-key-active: #d6f2f8;
+  --kalimba-key-red: #e04850;
+  --kalimba-top-pad: #d3c4b5;
+  --kalimba-bottom-pad: #1a1210;
+
+  --tile-bg: #6366f1;
+  --tile-glow: rgba(99, 102, 241, 0.8);
   
-  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
-  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
-  --shadow-glow: 0 0 15px var(--tile-glow);
+  /* Apple Vibrant Glass Materials */
+  --glass-bg: rgba(22, 22, 28, 0.75);
+  --glass-bg-hover: rgba(36, 36, 44, 0.85);
+  --glass-bg-active: rgba(44, 44, 54, 0.95);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-border-subtle: rgba(255, 255, 255, 0.06);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  --glass-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), 0 4px 12px rgba(0, 0, 0, 0.3);
+  
+  /* Apple Continuous Radii */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
+  
+  /* Physical Spring Easing Curves */
+  --spring-snappy: cubic-bezier(0.2, 0.9, 0.3, 1);
+  --spring-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --spring-gentle: cubic-bezier(0.25, 1, 0.5, 1);
+  
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 10px 24px -4px rgba(0, 0, 0, 0.5), 0 4px 10px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 24px 48px -12px rgba(0, 0, 0, 0.7);
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html, body {
   height: 100%;
   width: 100%;
-  touch-action: none; /* Prevents all native pinch-to-zoom and double-tap zooming on iOS Safari */
+  touch-action: none;
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", sans-serif;
   overflow: hidden;
   position: relative;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
 }
 
 #portrait-overlay {
@@ -61,12 +93,14 @@ html, body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: var(--bg-primary);
+  background: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
   z-index: 99999;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 2rem;
+  padding: 2.5rem;
   text-align: center;
 }
 
@@ -83,10 +117,11 @@ html, body {
   flex-direction: column;
 }
 
-/* Base Styles */
+/* Apple-style Base Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-primary);
+  letter-spacing: -0.025em;
 }
 
 button {
@@ -94,54 +129,31 @@ button {
   cursor: pointer;
   border: none;
   background: transparent;
+  user-select: none;
 }
 
-/* Custom Scrollbar for Dropdowns */
+/* Custom Apple Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-primary);
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--bg-tertiary);
-  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.35);
 }
 
-/* Animations */
-@keyframes key-note-animation {
-  0% {
-    opacity: 0;
-    background-color: var(--tile-bg);
-    box-shadow: var(--shadow-glow);
-    transform: translateY(-50px);
+/* Reduced Motion Override for Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
-  10% {
-    opacity: 1;
-    background-color: var(--tile-bg);
-    transform: translateY(0);
-  }
-  90% {
-    opacity: 1;
-    background-color: var(--tile-bg);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(200px);
-    box-shadow: none;
-  }
-}
-
-/* Keyframe utility classes */
-.animate-fade-in {
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
