@@ -2,10 +2,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: calc(0.65rem + env(safe-area-inset-top));
-  padding-bottom: 0.75rem;
-  padding-left: calc(1.5rem + env(safe-area-inset-left));
-  padding-right: calc(1.5rem + env(safe-area-inset-right));
+  padding-top: calc(0.85rem + env(safe-area-inset-top));
+  padding-bottom: 0.95rem;
+  padding-left: calc(1.75rem + env(safe-area-inset-left));
+  padding-right: calc(1.75rem + env(safe-area-inset-right));
   background: var(--glass-bg);
   backdrop-filter: blur(24px) saturate(190%);
   -webkit-backdrop-filter: blur(24px) saturate(190%);
@@ -17,19 +17,19 @@
 }
 
 .nav-brand h1 {
-  font-size: 1.1rem;
+  font-size: 1.18rem;
   font-weight: 600;
   letter-spacing: -0.025em;
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.5rem;
   margin: 0;
   color: var(--text-primary);
 }
 
 .version-badge {
-  font-size: 0.62rem;
-  padding: 2px 7px;
+  font-size: 0.65rem;
+  padding: 3px 8px;
   background: rgba(255, 255, 255, 0.05);
   color: var(--text-secondary);
   border-radius: var(--radius-sm);
@@ -45,27 +45,27 @@
 .nav-controls {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.85rem;
 }
 
 .nav-section {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.75rem;
 }
 
 /* Subtle Apple-style Tactile Button Presets */
 .file-upload-btn {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0 0.8rem;
-  height: 34px;
+  gap: 0.45rem;
+  padding: 0 0.9rem;
+  height: 36px;
   box-sizing: border-box;
   background: rgba(255, 255, 255, 0.04);
   border-radius: var(--radius-sm);
   font-weight: 500;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   cursor: pointer;
   border: 1px solid var(--glass-border-subtle);
   box-shadow: var(--glass-highlight);
@@ -88,7 +88,7 @@
   display: flex;
   align-items: center;
   gap: 0.2rem;
-  height: 34px;
+  height: 36px;
   box-sizing: border-box;
   background: rgba(255, 255, 255, 0.04);
   padding: 3px;
@@ -101,8 +101,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   box-sizing: border-box;
   border-radius: var(--radius-sm);
   color: var(--text-secondary);
@@ -114,8 +114,8 @@
 }
 
 .playback-controls .btn-icon {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: var(--radius-xs);
   border: none;
   background: transparent;
@@ -158,11 +158,11 @@
 .setting-group {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
 }
 
 .setting-label {
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--text-tertiary);
@@ -170,18 +170,18 @@
 }
 
 .tempo-input {
-  width: 52px;
-  height: 34px;
+  width: 56px;
+  height: 36px;
   box-sizing: border-box;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--glass-border-subtle);
   box-shadow: var(--glass-highlight);
   color: var(--text-primary);
-  padding: 0 0.35rem;
+  padding: 0 0.4rem;
   border-radius: var(--radius-sm);
   text-align: center;
   font-weight: 500;
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-variant-numeric: tabular-nums;
   transition: border-color 0.15s ease, background 0.15s ease;
 }
@@ -195,30 +195,30 @@
 
 .tuning-select {
   width: auto;
-  min-width: 90px;
+  min-width: 95px;
   appearance: none;
   -webkit-appearance: none;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
   background-repeat: no-repeat;
-  background-position: right 0.5rem center;
-  background-size: 1em;
+  background-position: right 0.6rem center;
+  background-size: 1.05em;
   cursor: pointer;
-  padding-left: 0.75rem;
-  padding-right: 1.6rem;
+  padding-left: 0.85rem;
+  padding-right: 1.7rem;
   text-align: center;
 }
 
 .scale-selector {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
 }
 
 .control-group {
   display: flex;
   align-items: center;
   gap: 0.15rem;
-  height: 34px;
+  height: 36px;
   box-sizing: border-box;
   background: rgba(255, 255, 255, 0.04);
   padding: 3px;
@@ -231,8 +231,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: var(--radius-xs);
   background: rgba(255, 255, 255, 0.05);
   color: var(--text-primary);
@@ -253,37 +253,37 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 36px;
-  height: 28px;
+  min-width: 38px;
+  height: 30px;
   font-weight: 500;
   color: var(--text-primary);
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-variant-numeric: tabular-nums;
 }
 
 .toggle-btn {
   width: auto;
-  height: 28px;
-  padding: 0 0.65rem;
-  gap: 0.35rem;
+  height: 30px;
+  padding: 0 0.7rem;
+  gap: 0.4rem;
   border-radius: var(--radius-xs);
   border: none;
 }
 
 .toggle-text {
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 500;
 }
 
 /* =========================================================
-   Apple Landscape Mobile Optimization (Entspanntes Spacing & Luft)
+   Apple Landscape Mobile Optimization (Substanziell & Großzügig)
    ========================================================= */
 @media (max-width: 1050px), (max-height: 600px) and (orientation: landscape) {
   .navbar {
-    padding-top: calc(0.45rem + env(safe-area-inset-top));
-    padding-bottom: 0.55rem;
-    padding-left: calc(1rem + env(safe-area-inset-left));
-    padding-right: calc(1rem + env(safe-area-inset-right));
+    padding-top: calc(0.55rem + env(safe-area-inset-top));
+    padding-bottom: 0.65rem;
+    padding-left: calc(1.25rem + env(safe-area-inset-left));
+    padding-right: calc(1.25rem + env(safe-area-inset-right));
     justify-content: center;
   }
   
@@ -294,13 +294,13 @@
   .nav-controls {
     width: 100%;
     justify-content: center;
-    gap: 0.55rem;
+    gap: 0.65rem;
     flex-wrap: nowrap;
   }
   
   .nav-section {
     justify-content: center;
-    gap: 0.55rem;
+    gap: 0.65rem;
   }
   
   .setting-label {
@@ -313,66 +313,66 @@
   
   .file-upload-btn {
     padding: 0;
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
     border-radius: var(--radius-xs);
     justify-content: center;
   }
   
   .playback-controls {
-    height: 32px;
-    padding: 2.5px;
+    height: 34px;
+    padding: 3px;
     border-radius: var(--radius-xs);
   }
   
   .playback-controls .btn-icon {
-    width: 27px;
-    height: 27px;
+    width: 28px;
+    height: 28px;
   }
   
   .btn-icon {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
     border-radius: var(--radius-xs);
   }
   
   .btn-icon.toggle-btn {
     width: auto;
-    height: 27px;
-    padding: 0 0.6rem;
+    height: 28px;
+    padding: 0 0.65rem;
   }
   
   .control-group {
-    height: 32px;
-    padding: 2.5px;
+    height: 34px;
+    padding: 3px;
     border-radius: var(--radius-xs);
   }
   
   .control-btn {
-    width: 27px;
-    height: 27px;
+    width: 28px;
+    height: 28px;
   }
   
   .scale-value {
-    min-width: 34px;
-    height: 27px;
-    font-size: 0.8rem;
+    min-width: 36px;
+    height: 28px;
+    font-size: 0.82rem;
   }
   
   .tempo-input {
-    width: 46px;
-    height: 32px;
-    font-size: 0.8rem;
+    width: 48px;
+    height: 34px;
+    font-size: 0.82rem;
     border-radius: var(--radius-xs);
   }
   
   .tuning-select {
-    height: 32px;
-    font-size: 0.8rem;
-    max-width: 90px;
-    min-width: 82px;
-    padding-left: 0.6rem;
-    padding-right: 1.4rem;
+    height: 34px;
+    font-size: 0.82rem;
+    max-width: 95px;
+    min-width: 86px;
+    padding-left: 0.65rem;
+    padding-right: 1.5rem;
     border-radius: var(--radius-xs);
   }
 }

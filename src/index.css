@@ -3,15 +3,15 @@
 :root {
   --ppi: 153;
   
-  /* Apple System Dark Palette */
-  --bg-primary: #000000;
-  --bg-secondary: #121216;
-  --bg-tertiary: #1c1c22;
-  --bg-elevated: #26262e;
+  /* Apple Rich Dark Ambient Palette */
+  --bg-primary: #0a0a0e;
+  --bg-secondary: #14141a;
+  --bg-tertiary: #1f1f28;
+  --bg-elevated: #282834;
   
   --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.65);
-  --text-tertiary: rgba(255, 255, 255, 0.40);
+  --text-secondary: rgba(255, 255, 255, 0.70);
+  --text-tertiary: rgba(255, 255, 255, 0.45);
   --text-accent: #6366f1; /* Modern iOS Indigo/Purple */
   --text-accent-glow: rgba(99, 102, 241, 0.4);
 
@@ -31,7 +31,7 @@
   --kalimba-steel-mid: #e2ded9;
   --kalimba-steel-dark: #b8b2a8;
   --kalimba-key-active: #d6f2f8;
-  --kalimba-key-red: #e04850;
+  --kalimba-key-red: #c4686e;
   --kalimba-top-pad: #d3c4b5;
   --kalimba-bottom-pad: #1a1210;
 
@@ -39,11 +39,11 @@
   --tile-glow: rgba(99, 102, 241, 0.8);
   
   /* Apple Vibrant Glass Materials */
-  --glass-bg: rgba(22, 22, 28, 0.75);
+  --glass-bg: rgba(22, 22, 28, 0.78);
   --glass-bg-hover: rgba(36, 36, 44, 0.85);
   --glass-bg-active: rgba(44, 44, 54, 0.95);
   --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-border-subtle: rgba(255, 255, 255, 0.06);
+  --glass-border-subtle: rgba(255, 255, 255, 0.08);
   --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.18);
   --glass-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), 0 4px 12px rgba(0, 0, 0, 0.3);
   
@@ -93,7 +93,7 @@ html, body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.92);
+  background: rgba(10, 10, 14, 0.94);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
   z-index: 99999;

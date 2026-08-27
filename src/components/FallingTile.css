@@ -50,7 +50,7 @@
 /* Apple 3D Glass Note Chip */
 .falling-tile-visual {
   width: 100%;
-  height: calc((var(--ppi) / 25.4) * 7.5px);
+  height: calc((var(--ppi) / 25.4) * 7px);
   background: linear-gradient(180deg, rgba(165, 180, 252, 0.95) 0%, var(--tile-bg) 60%, #4338ca 100%);
   border-radius: calc((var(--ppi) / 25.4) * 1.5px);
   position: relative;
@@ -59,7 +59,7 @@
   align-items: center;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8),
               inset 0 -1px 0 rgba(0, 0, 0, 0.4),
-              0 4px 10px rgba(0, 0, 0, 0.45),
+              0 3px 8px rgba(0, 0, 0, 0.4),
               0 0 12px var(--tile-glow);
 }
 
@@ -81,29 +81,29 @@
   opacity: 0.6;
 }
 
-/* Timeline locked to duration={2300ms} */
+/* Timeline mathematically locked to duration={2300ms} prop inside React */
 @keyframes fall-down-through {
   0% {
     transform: translate3d(0, -100%, 0);
     opacity: 0;
   }
-  4% {
+  5% {
     opacity: 1;
   }
   
-  /* t=2000ms: Impact threshold (+22px overshoot) */
+  /* t=2000ms: Exactly 86.95% of 2300ms — reaches impact threshold (+22px overshoot) */
   86.95% {
     transform: translate3d(0, calc((var(--ppi) / 25.4) * 22px), 0);
     opacity: 1;
   }
   
-  /* t=2299ms: Glide under metal tines */
+  /* t=2299ms: Glide deeply under the metal key seamlessly */
   99.9% {
     transform: translate3d(0, calc((var(--ppi) / 25.4) * 82px), 0);
     opacity: 1;
   }
   
-  /* t=2300ms: Despawn */
+  /* t=2300ms: Despawn safely */
   100% {
     transform: translate3d(0, calc((var(--ppi) / 25.4) * 82px), 0);
     opacity: 0; 
