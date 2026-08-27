@@ -101,18 +101,18 @@
   }
 }
 
-/* Traditional Crimson Tinted Keys (C, A, B, G, A) */
+/* Traditional Harmonious Warm Rosewood/Ruby Tinted Keys (C, A, B, G, A) */
 .kalimba-key[data-note="C4"],
 .kalimba-key[data-note="A4"],
 .kalimba-key[data-note="B4"],
 .kalimba-key[data-note="G5"],
 .kalimba-key[data-note="A5"] {
-  background: linear-gradient(180deg, #ff8a93 0%, #e04850 45%, #b82b33 90%, #941e24 100%);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5),
-              inset 0 1px 0 rgba(255, 255, 255, 0.8),
-              inset 1px 0 0 rgba(255, 255, 255, 0.3),
-              inset -1px 0 0 rgba(0, 0, 0, 0.3),
-              inset 0 -2px 4px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(180deg, #df9b9e 0%, #c4686e 40%, #9e444a 85%, #7a2b30 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45),
+              inset 0 1px 0 rgba(255, 255, 255, 0.6),
+              inset 1px 0 0 rgba(255, 255, 255, 0.25),
+              inset -1px 0 0 rgba(0, 0, 0, 0.25),
+              inset 0 -2px 4px rgba(0, 0, 0, 0.35);
 }
 
 .kalimba-key[data-note="C4"]:active,
@@ -125,7 +125,7 @@
 .kalimba-key[data-note="G5"].active,
 .kalimba-key[data-note="A5"]:active,
 .kalimba-key[data-note="A5"].active {
-  background: #ff5e68 !important;
+  background: #d8757c !important;
 }
 
 .kalimba-key[data-note="C4"] .kalimba-key-glow,
@@ -133,7 +133,7 @@
 .kalimba-key[data-note="B4"] .kalimba-key-glow,
 .kalimba-key[data-note="G5"] .kalimba-key-glow,
 .kalimba-key[data-note="A5"] .kalimba-key-glow {
-  background: #ff5e68 !important;
+  background: #d8757c !important;
 }
 
 /* Metal Bridge & Pressure Bar */
