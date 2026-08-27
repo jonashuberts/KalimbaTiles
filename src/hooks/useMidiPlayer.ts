@@ -264,7 +264,7 @@ export function useMidiPlayer() {
         if (instrumentRef.current) instrumentRef.current.stop();
         setTimeout(() => {
           playerRef.current.play();
-        }, 1000);
+        }, 100);
       }
       setIsPlaying(true);
     }

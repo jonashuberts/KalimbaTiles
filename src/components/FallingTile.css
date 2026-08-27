@@ -84,31 +84,25 @@
   opacity: 0.4;
 }
 
-/* Timeline mathematically locked to duration={2300ms} prop inside React */
+/* Perfectly linear constant-velocity timeline: exactly reaches the bottom impact line at 2000ms (86.9565% of 2300ms) */
 @keyframes fall-down-through {
   0% {
     transform: translate3d(0, -100%, 0);
     opacity: 0;
   }
-  5% {
+  3% {
     opacity: 1;
   }
-  
-  /* t=2000ms: Exactly 86.95% of 2300ms — reaches impact threshold (+22px overshoot) */
-  86.95% {
-    transform: translate3d(0, calc((var(--ppi) / 25.4) * 22px), 0);
+  86.9565% {
+    transform: translate3d(0, 0%, 0);
     opacity: 1;
   }
-  
-  /* t=2299ms: Glide deeply under the metal key seamlessly */
   99.9% {
-    transform: translate3d(0, calc((var(--ppi) / 25.4) * 82px), 0);
+    transform: translate3d(0, 15%, 0);
     opacity: 1;
   }
-  
-  /* t=2300ms: Despawn safely */
   100% {
-    transform: translate3d(0, calc((var(--ppi) / 25.4) * 82px), 0);
+    transform: translate3d(0, 15%, 0);
     opacity: 0; 
   }
 }
