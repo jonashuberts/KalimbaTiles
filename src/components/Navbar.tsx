@@ -107,7 +107,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => setShowNumbers(!showNumbers)}
             title="Toggle Numbers"
           >
-            <Settings size={20} />
+            <Settings size={16} />
             <span className="toggle-text">123</span>
           </button>
         </div>
@@ -116,7 +116,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         {!isTuningMode && (
           <>
             <label className="file-upload-btn">
-              <FileMusic size={18} />
+              <FileMusic size={16} />
               <span>MIDI</span>
               <input 
                 type="file" 
@@ -155,10 +155,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onClick={onPlay} 
                   title={isPlaying ? "Pause" : "Play"}
                 >
-                  {isPlaying ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="none" />}
+                  {isPlaying ? <Pause size={16} fill="currentColor" /> : <Play size={16} fill="none" />}
                 </button>
                 <button className="btn-icon" onClick={onStop} disabled={!isReady} title="Stop">
-                  <Square size={18} />
+                  <Square size={15} />
                 </button>
               </div>
             </>
@@ -170,7 +170,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={toggleTuningMode}
               title="Tuner"
             >
-              <Mic size={20} />
+              <Mic size={16} />
               <span className="toggle-text">Tune</span>
             </button>
           </div>
