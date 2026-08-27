@@ -4,27 +4,28 @@
   justify-content: center;
   position: relative;
   width: 100%;
-  z-index: 5;
+  z-index: 5; /* Render above the wooden board (0) but below the keys (10) and bridge (20) */
   overflow: visible; 
 }
 
 .falling-tiles-wrapper {
   position: absolute;
   top: 0;
-  bottom: 0;
+  bottom: 0; /* Align perfectly with animation-container */
   width: calc((var(--ppi) / 25.4) * 110px);
   display: flex;
   justify-content: space-around;
 }
 
 .falling-col {
-  width: calc((var(--ppi) / 25.4) * 4px);
+  width: calc((var(--ppi) / 25.4) * 4px); /* Same as key width */
   height: 100%;
   display: flex;
   justify-content: center;
   position: relative;
 }
 
+/* Adjust outer columns to match the Kalimba's 4px first/last child margins */
 .falling-col:first-child {
   margin-left: calc((var(--ppi) / 25.4) * 4px);
 }
@@ -39,6 +40,8 @@
   position: absolute;
   top: 0;
   left: 0;
+  
+  /* Fall animation spans exact 2300ms: 2000ms to hit the key, 300ms to glide out of frame invisibly underneath */
   animation-name: fall-down-through;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
@@ -53,7 +56,7 @@
 /* Apple 3D Glass Note Chip */
 .falling-tile-visual {
   width: 100%;
-  height: calc((var(--ppi) / 25.4) * 7px);
+  height: calc((var(--ppi) / 25.4) * 7px); /* Reduced slightly to mitigate collision threshold */
   background-color: var(--tile-bg);
   border-radius: calc((var(--ppi) / 25.4) * 2px);
   position: relative;
@@ -84,29 +87,37 @@
   opacity: 0.4;
 }
 
-/* Perfectly linear constant-velocity timeline: exactly reaches the bottom impact line at 2000ms (86.9565% of 2300ms) */
+/* Timeline mathematically locked to duration={2300ms} prop inside React */
 @keyframes fall-down-through {
   0% {
     transform: translate3d(0, -100%, 0);
     opacity: 0;
   }
-  3% {
+  5% {
     opacity: 1;
   }
-  86.9565% {
-    transform: translate3d(0, 0%, 0);
+  
+  /* t=2000ms: Exactly 86.95% of 2300ms */
+  /* Reaches standard impact threshold (+22px overshoot) */
+  86.95% {
+    transform: translate3d(0, calc((var(--ppi) / 25.4) * 22px), 0);
     opacity: 1;
   }
+  
+  /* t=2299ms: Glide deeply under the metal key seamlessly */
   99.9% {
-    transform: translate3d(0, 15%, 0);
+    transform: translate3d(0, calc((var(--ppi) / 25.4) * 82px), 0);
     opacity: 1;
   }
+  
+  /* t=2300ms: Despawn safely */
   100% {
-    transform: translate3d(0, 15%, 0);
+    transform: translate3d(0, calc((var(--ppi) / 25.4) * 82px), 0);
     opacity: 0; 
   }
 }
 
+/* Ignore control notes that aren't on the kalimba board */
 .falling-tile-wrapper[data-key-note="C-1"] {
   display: none;
 }

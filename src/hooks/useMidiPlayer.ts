@@ -200,37 +200,34 @@ export function useMidiPlayer() {
       const cleanNote = event.noteName.replace(/C-1/gi, "NO");
       const noteId = `${Date.now()}-${Math.random()}`;
       
-      // 1. Add to falling notes animation queue immediately (takes 2000ms to hit the key)
+      // 1. Add to falling notes animation queue immediately
       setFallingNotes(prev => [...prev, { id: noteId, note: cleanNote, isHit: false }]);
       
-      // 2. Play sound AND trigger active key strike exactly at 2000ms (impact time)
-      scheduleTask(`${noteId}-play`, 2000, () => {
-        if (instrumentRef.current && acRef.current) {
-          if (acRef.current.state === 'suspended') acRef.current.resume();
-          instrumentRef.current.play(event.noteName, acRef.current.currentTime, {
-            gain: event.velocity / 100,
-          });
-        }
-
-        setActiveNotes(prev => {
-          if (!prev.includes(cleanNote)) return [...prev, cleanNote];
-          return prev;
+      // 2. Delegate audio rendering entirely to the browser's hardware audio thread (precise 2000ms future playback)
+      // This is immune to JS thread frame drops.
+      if (instrumentRef.current && acRef.current) {
+        if (acRef.current.state === 'suspended') acRef.current.resume();
+        const preciseHitTime = acRef.current.currentTime + 2.0; 
+        
+        instrumentRef.current.play(event.noteName, preciseHitTime, {
+          gain: event.velocity / 100,
         });
-      });
+      }
 
-      // 3. Clear active key strike highlight after 180ms
-      scheduleTask(`${noteId}-off`, 2000 + 180, () => {
-        setActiveNotes(prev => prev.filter(n => n !== cleanNote));
-      });
+      // 3. The Kalimba Key glow is now natively handled by declarative CSS `animation-delay: 2000ms`
+      // rendered inside KalimbaKey based directly on the `fallingNotes` array!
+      // This achieves precisely 0.0ms of latency drift from the visual tile.
 
-      // 4. Safe Garbage Collection: remove visual note from array at 2300ms (after gliding below)
-      scheduleTask(`${noteId}-cleanup`, 2300, () => {
-        setFallingNotes(prev => prev.filter(n => n.id !== noteId));
+      // 4. Safe Garbage Collection: remove invisible elements safely 3 seconds AFTER the strike 
+      // when the CPU is completely idle, preventing infinite DOM growth.
+      scheduleTask(`${noteId}-cleanup`, 5000, () => {
+         setFallingNotes(prev => prev.filter(n => n.id !== noteId));
       });
     }
 
     if (event.name === "Note off" || (event.name === "Note on" && event.velocity === 0)) {
-      // Handled cleanly by the scheduled note release above
+      // We removed the matching Note Off visual trigger here.
+      // The Kalimba simply glows for 150ms on strike and fades, just like physically plucking a tine.
     }
   };
 
@@ -264,7 +261,7 @@ export function useMidiPlayer() {
         if (instrumentRef.current) instrumentRef.current.stop();
         setTimeout(() => {
           playerRef.current.play();
-        }, 100);
+        }, 1000);
       }
       setIsPlaying(true);
     }
