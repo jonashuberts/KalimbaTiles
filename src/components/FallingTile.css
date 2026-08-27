@@ -45,40 +45,43 @@
   animation-timing-function: linear;
   display: flex;
   align-items: flex-end;
+  will-change: transform;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 /* Apple 3D Glass Note Chip */
 .falling-tile-visual {
   width: 100%;
   height: calc((var(--ppi) / 25.4) * 7px);
-  background: linear-gradient(180deg, rgba(165, 180, 252, 0.95) 0%, var(--tile-bg) 60%, #4338ca 100%);
-  border-radius: calc((var(--ppi) / 25.4) * 1.5px);
+  background-color: var(--tile-bg);
+  border-radius: calc((var(--ppi) / 25.4) * 2px);
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8),
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6),
               inset 0 -1px 0 rgba(0, 0, 0, 0.4),
-              0 3px 8px rgba(0, 0, 0, 0.4),
-              0 0 12px var(--tile-glow);
+              0 2px 5px rgba(0, 0, 0, 0.4),
+              0 0 10px var(--tile-glow);
 }
 
 .half-note-marker {
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: calc((var(--ppi) / 25.4) * 4.5px);
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1;
   position: absolute;
   z-index: 2;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 .tile-glow {
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.4);
+  background: white;
   border-radius: inherit;
-  opacity: 0.6;
+  opacity: 0.4;
 }
 
 /* Timeline mathematically locked to duration={2300ms} prop inside React */
