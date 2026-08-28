@@ -225,8 +225,6 @@ export const Layout: React.FC = () => {
         {/* Falling Note Animation Layer */}
         {!isTuningMode && (
           <div className="animation-container">
-            {/* Full-Width Precision Hit-Line / Trigger Zone */}
-            <div className={`hit-line ${activeNotes.length > 0 ? 'hit-line-active' : ''}`} />
             <div className="falling-tiles-wrapper">
                {KALIMBA_KEYS.map((keyData: { note: string; label: string; octave: string }) => {
                  const activeTilesForThisKey = fallingNotes.filter(n => {
