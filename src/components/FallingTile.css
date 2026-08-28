@@ -88,10 +88,10 @@
 }
 
 /* 
- * 100% Constant Uniform Velocity Trajectory (Zero Acceleration, Zero Jerk):
+ * 100% Constant Uniform Velocity Trajectory:
  * - 0% (0ms): Note spawns cleanly at top of runway
  * - 4% to 94%: Smooth linear descent
- * - 100% (2000ms): Bottom of note hits the physical metal bridge (+42mm) precisely as the sound plays, diving under the bridge
+ * - 100% (2000ms): Bottom of note strikes right onto the center of the key and label (+28mm) precisely as sound plays
  */
 @keyframes fall-down {
   0% {
@@ -105,7 +105,7 @@
     opacity: 1;
   }
   100% {
-    transform: translate3d(0, calc((var(--ppi) / 25.4) * 42px), 0);
+    transform: translate3d(0, calc((var(--ppi) / 25.4) * 28px), 0);
     opacity: 0;
   }
 }
