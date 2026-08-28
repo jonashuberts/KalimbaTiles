@@ -41,7 +41,7 @@
   top: 0;
   left: 0;
   
-  /* Fall animation spans exact 2300ms: 2000ms to hit the bridge, 300ms to glide smoothly beneath */
+  /* Fall animation spans exact 2300ms: 2000ms to hit the key top, 300ms to glide into the key */
   animation-name: fall-down-through;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
@@ -56,7 +56,7 @@
 /* Apple 3D Glass Note Chip */
 .falling-tile-visual {
   width: 100%;
-  height: calc((var(--ppi) / 25.4) * 7px); /* Reduced slightly to mitigate collision threshold */
+  height: calc((var(--ppi) / 25.4) * 7px);
   background-color: var(--tile-bg);
   border-radius: calc((var(--ppi) / 25.4) * 2px);
   position: relative;
@@ -88,10 +88,10 @@
 }
 
 /* 
- * Mathematically proven 100% constant uniform-velocity trajectory:
- * - t=0ms (0%): Note emerges at top of runway
- * - t=2000ms (86.9565%): Bottom of note contacts bridge at 42mm (20mm board margin + 22mm top-pad)
- * - t=2300ms (100%): Continues at exact same velocity (15% + 48.3mm) and despawns
+ * 100% Constant Uniform-Velocity Trajectory:
+ * - 0% (0ms): Emerges at top of runway
+ * - 86.9565% (2000ms): Bottom of note contacts the top edge of the key (+22mm) at exact moment of audio strike
+ * - 100% (2300ms): Glides smoothly into the key at identical constant velocity (15% + 25.3mm)
  */
 @keyframes fall-down-through {
   0% {
@@ -102,21 +102,21 @@
     opacity: 1;
   }
   
-  /* t=2000ms: Exactly 86.9565% of 2300ms -> Reaches exact metal bridge baseline at +42mm */
+  /* t=2000ms: Exactly 86.9565% of 2300ms -> Reaches exact key top baseline (+22mm) */
   86.9565% {
-    transform: translate3d(0, calc((var(--ppi) / 25.4) * 42px), 0);
+    transform: translate3d(0, calc((var(--ppi) / 25.4) * 22px), 0);
     opacity: 1;
   }
   
-  /* t=2299ms: Glide under the metal keys at exact constant uniform velocity */
+  /* t=2299ms: Glide into the key at exact constant uniform velocity */
   99.9% {
-    transform: translate3d(0, calc(15% + ((var(--ppi) / 25.4) * 48.3px)), 0);
+    transform: translate3d(0, calc(15% + ((var(--ppi) / 25.4) * 25.3px)), 0);
     opacity: 1;
   }
   
   /* t=2300ms: Despawn safely */
   100% {
-    transform: translate3d(0, calc(15% + ((var(--ppi) / 25.4) * 48.3px)), 0);
+    transform: translate3d(0, calc(15% + ((var(--ppi) / 25.4) * 25.3px)), 0);
     opacity: 0; 
   }
 }
