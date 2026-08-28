@@ -3,12 +3,12 @@ import './FallingTile.css';
 
 interface FallingTileProps {
   note: string;
-  duration?: number; // 2300ms: 2000ms to hit key, 300ms to glide and fade behind the metal tine
+  duration?: number; // Exactly 2000ms to match hardware audio clock 1-to-1
   isPlaying: boolean;
   isHalfNote?: boolean;
 }
 
-export const FallingTile = React.memo(({ note, duration = 2300, isPlaying, isHalfNote }: FallingTileProps) => {
+export const FallingTile = React.memo(({ note, duration = 2000, isPlaying, isHalfNote }: FallingTileProps) => {
   return (
     <div 
       className="falling-tile-wrapper" 

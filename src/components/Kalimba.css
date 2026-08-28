@@ -4,8 +4,6 @@
   align-items: center;
   width: 100%;
   padding-bottom: 2rem;
-  position: relative;
-  z-index: 10; /* Ensures Kalimba keys layer in front of falling notes */
 }
 
 /* Apple-style Physical Wooden Resonator Board */
@@ -23,7 +21,7 @@
               0 0 0 1px rgba(255, 255, 255, 0.08),
               inset 0 1px 2px rgba(255, 255, 255, 0.15),
               inset 0 -8px 20px rgba(0, 0, 0, 0.6);
-  z-index: 1; /* Wood sits behind falling notes (5) and tines (10) */
+  z-index: 1; /* Wood sits BEHIND falling notes (5) */
 }
 
 /* Brushed Steel Physical Tine (Key) */
@@ -38,7 +36,7 @@
               inset 1px 0 0 rgba(255, 255, 255, 0.4),
               inset -1px 0 0 rgba(0, 0, 0, 0.2),
               inset 0 -2px 4px rgba(0, 0, 0, 0.25);
-  z-index: 10; /* Tines render above falling notes (5) */
+  z-index: 10; /* Tines render IN FRONT of falling notes (5) */
   position: relative;
   cursor: pointer;
   transition: transform 0.12s ease-out, background 0.18s ease-out, box-shadow 0.18s ease-out;
@@ -57,7 +55,7 @@
   background: linear-gradient(180deg, #ffffff 0%, #f4f0e8 35%, #ddd8ce 85%, #c2bbb0 100%);
 }
 
-/* Smooth Tactile Depression & Cyan Glow on Hit / Active */
+/* Smooth Tactile Depression & Glow on Hit */
 .kalimba-key:active, .kalimba-key.active {
   background: var(--kalimba-key-active) !important;
   box-shadow: 0 0 16px var(--text-accent-glow), 0 2px 4px rgba(0, 0, 0, 0.6) !important;
@@ -111,7 +109,7 @@
   border-radius: calc((var(--ppi) / 25.4) * 1px);
   height: calc((var(--ppi) / 25.4) * 3px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.6);
-  z-index: 20; /* Bridge renders on top */
+  z-index: 20; /* Bridge renders IN FRONT of everything */
 }
 
 .bottom-pad {

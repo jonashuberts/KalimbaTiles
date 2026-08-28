@@ -4,7 +4,7 @@
   justify-content: center;
   position: relative;
   width: 100%;
-  z-index: 5; /* Render BEHIND the metal keys (10) so notes dive underneath */
+  z-index: 5; /* Renders above wood (1) but below keys (10) and bridge (20) */
   overflow: visible; 
 }
 
@@ -41,8 +41,8 @@
   top: 0;
   left: 0;
   
-  /* Fall animation spans 2300ms: 2000ms to hit the key, 300ms to glide and fade BEHIND the key */
-  animation-name: fall-down-through;
+  /* Fall animation spans exact 2000ms at perfectly uniform linear velocity */
+  animation-name: fall-down;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-timing-function: linear;
@@ -88,13 +88,12 @@
 }
 
 /* 
- * 100% Constant Linear Descent & Under-Key Fade:
+ * 100% Constant Uniform Linear Descent (2000ms):
  * - 0% (0ms): Note spawns cleanly at top of runway
- * - 86.9565% (2000ms): Bottom of note contacts the key (+28mm) precisely as the sound plays
- * - 99.9% (2299ms): Glides smoothly BEHIND the metal key (+82mm) and fades out
- * - 100% (2300ms): Complete fade out
+ * - 4% to 92%: Smooth descent above wood
+ * - 100% (2000ms): Note hits key (+28mm) and dives under the metal key as sound plays
  */
-@keyframes fall-down-through {
+@keyframes fall-down {
   0% {
     transform: translate3d(0, -100%, 0);
     opacity: 0;
@@ -102,16 +101,11 @@
   4% {
     opacity: 1;
   }
-  86.9565% {
-    transform: translate3d(0, calc((var(--ppi) / 25.4) * 28px), 0);
+  92% {
     opacity: 1;
   }
-  99.9% {
-    transform: translate3d(0, calc((var(--ppi) / 25.4) * 82px), 0);
-    opacity: 0.05;
-  }
   100% {
-    transform: translate3d(0, calc((var(--ppi) / 25.4) * 82px), 0);
+    transform: translate3d(0, calc((var(--ppi) / 25.4) * 28px), 0);
     opacity: 0;
   }
 }
