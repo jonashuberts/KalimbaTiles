@@ -226,6 +226,8 @@ export const Layout: React.FC = () => {
         {!isTuningMode && (
           <div className="animation-container">
             <div className="falling-tiles-wrapper">
+               {/* Precision Hit-Line / Trigger Zone */}
+               <div className={`hit-line ${activeNotes.length > 0 ? 'hit-line-active' : ''}`} />
                {KALIMBA_KEYS.map((keyData: { note: string; label: string; octave: string }) => {
                  const activeTilesForThisKey = fallingNotes.filter(n => {
                    const parsed = parseNote(n.note);
