@@ -157,7 +157,6 @@ export const Layout: React.FC = () => {
 
   const handlePlayClick = () => {
     if (!isReady) {
-      play(); 
       fetch('/sample.mid')
         .then(res => {
            if (!res.ok) throw new Error("Could not fetch sample.mid");
@@ -166,7 +165,7 @@ export const Layout: React.FC = () => {
         .then(buffer => {
           try {
             initPlayer(buffer);
-            setTimeout(() => play(), 100);
+            play();
           } catch(err: any) {
             console.error("Invalid default MIDI sample:", err);
             pause();

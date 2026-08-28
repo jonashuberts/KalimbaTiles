@@ -242,7 +242,7 @@ export function useMidiPlayer() {
         if (instrumentRef.current) instrumentRef.current.stop();
         playerRef.current.skipToPercent(0);
         setIsPlaying(true);
-        setTimeout(() => { playerRef.current.play(); }, 100);
+        playerRef.current.play();
         return;
       }
 
@@ -253,9 +253,7 @@ export function useMidiPlayer() {
       } else {
         clearTasks();
         if (instrumentRef.current) instrumentRef.current.stop();
-        setTimeout(() => {
-          playerRef.current.play();
-        }, 100);
+        playerRef.current.play();
       }
       setIsPlaying(true);
     }

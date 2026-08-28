@@ -41,8 +41,8 @@
   top: 0;
   left: 0;
   
-  /* Fall animation spans exact 2300ms: 2000ms to hit the key, 300ms to glide and fade underneath */
-  animation-name: fall-down-through;
+  /* Fall animation spans exact 2000ms at perfectly uniform linear velocity */
+  animation-name: fall-down;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-timing-function: linear;
@@ -88,13 +88,12 @@
 }
 
 /* 
- * Mathematical fall-down-through timeline:
- * - 0% (0ms): Emerges at top of runway
- * - 86.9565% (2000ms): Bottom of note contacts the top of the key (+22mm) at exact moment of audio strike
- * - 99.9% (2299ms): Glides deeply under the metal key (+82mm) and smoothly fades out
- * - 100% (2300ms): Despawn
+ * 100% Constant Uniform Velocity Trajectory (Zero Acceleration, Zero Jerk):
+ * - 0% (0ms): Note spawns cleanly at top of runway
+ * - 4% to 94%: Smooth linear descent
+ * - 100% (2000ms): Bottom of note contacts the key top (+22mm) precisely as the sound plays, then fades into the key
  */
-@keyframes fall-down-through {
+@keyframes fall-down {
   0% {
     transform: translate3d(0, -100%, 0);
     opacity: 0;
@@ -102,23 +101,12 @@
   4% {
     opacity: 1;
   }
-  
-  /* t=2000ms (86.9565% of 2300ms): Reaches key top baseline (+22mm) */
-  86.9565% {
-    transform: translate3d(0, calc((var(--ppi) / 25.4) * 22px), 0);
+  95% {
     opacity: 1;
   }
-  
-  /* t=2299ms: Smooth dive under the metal tine with fade out */
-  99.9% {
-    transform: translate3d(0, calc((var(--ppi) / 25.4) * 82px), 0);
-    opacity: 0.05;
-  }
-  
-  /* t=2300ms: Complete fade */
   100% {
-    transform: translate3d(0, calc((var(--ppi) / 25.4) * 82px), 0);
-    opacity: 0; 
+    transform: translate3d(0, calc((var(--ppi) / 25.4) * 22px), 0);
+    opacity: 0;
   }
 }
 
