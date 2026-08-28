@@ -4,7 +4,7 @@
   justify-content: center;
   position: relative;
   width: 100%;
-  z-index: 5; /* Render above the wooden board (0) but below the keys (10) and bridge (20) */
+  z-index: 5; /* Render above the wooden board (1) but below the keys (10) and bridge (20) */
   overflow: visible; 
 }
 
@@ -41,14 +41,14 @@
   top: 0;
   left: 0;
   
-  /* Fall animation spans exact 2300ms: 2000ms to hit the key top, 300ms to glide into the key */
+  /* Fall animation spans exact 2300ms: 2000ms to hit the key, 300ms to glide and fade underneath */
   animation-name: fall-down-through;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-timing-function: linear;
   display: flex;
   align-items: flex-end;
-  will-change: transform;
+  will-change: transform, opacity;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
 }
@@ -88,35 +88,36 @@
 }
 
 /* 
- * 100% Constant Uniform-Velocity Trajectory:
+ * Mathematical fall-down-through timeline:
  * - 0% (0ms): Emerges at top of runway
- * - 86.9565% (2000ms): Bottom of note contacts the top edge of the key (+22mm) at exact moment of audio strike
- * - 100% (2300ms): Glides smoothly into the key at identical constant velocity (15% + 25.3mm)
+ * - 86.9565% (2000ms): Bottom of note contacts the top of the key (+22mm) at exact moment of audio strike
+ * - 99.9% (2299ms): Glides deeply under the metal key (+82mm) and smoothly fades out
+ * - 100% (2300ms): Despawn
  */
 @keyframes fall-down-through {
   0% {
     transform: translate3d(0, -100%, 0);
     opacity: 0;
   }
-  3% {
+  4% {
     opacity: 1;
   }
   
-  /* t=2000ms: Exactly 86.9565% of 2300ms -> Reaches exact key top baseline (+22mm) */
+  /* t=2000ms (86.9565% of 2300ms): Reaches key top baseline (+22mm) */
   86.9565% {
     transform: translate3d(0, calc((var(--ppi) / 25.4) * 22px), 0);
     opacity: 1;
   }
   
-  /* t=2299ms: Glide into the key at exact constant uniform velocity */
+  /* t=2299ms: Smooth dive under the metal tine with fade out */
   99.9% {
-    transform: translate3d(0, calc(15% + ((var(--ppi) / 25.4) * 25.3px)), 0);
-    opacity: 1;
+    transform: translate3d(0, calc((var(--ppi) / 25.4) * 82px), 0);
+    opacity: 0.05;
   }
   
-  /* t=2300ms: Despawn safely */
+  /* t=2300ms: Complete fade */
   100% {
-    transform: translate3d(0, calc(15% + ((var(--ppi) / 25.4) * 25.3px)), 0);
+    transform: translate3d(0, calc((var(--ppi) / 25.4) * 82px), 0);
     opacity: 0; 
   }
 }
