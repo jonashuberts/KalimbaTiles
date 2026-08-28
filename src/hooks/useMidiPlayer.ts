@@ -26,7 +26,6 @@ export function useMidiPlayer() {
   const isIntentionallyPaused = useRef(true);
   const userTempoOverride = useRef<number | null>(null);
   
-  // Track scheduled tasks for pause/resume mechanics
   type PendingTask = {
     id: string;
     startTime: number;
@@ -151,7 +150,7 @@ export function useMidiPlayer() {
         setIsPlaying(false);
         setIsFinished(true);
         setProgress(100);
-      }, 2050);
+      }, 2300);
     });
 
     try {
@@ -181,31 +180,34 @@ export function useMidiPlayer() {
       const cleanNote = event.noteName.replace(/C-1/gi, "NO");
       const noteId = `${Date.now()}-${Math.random()}`;
       
-      // 1. Render falling note immediately (takes precisely 2000ms to reach key top)
+      // 1. Render falling note immediately
       setFallingNotes(prev => [...prev, { id: noteId, note: cleanNote, isHit: false }]);
       
-      // 2. Play audio AND highlight key at the exact moment of physical contact (2000ms)
-      scheduleTask(`${noteId}-play`, 2000, () => {
-        if (instrumentRef.current && acRef.current) {
-          if (acRef.current.state === 'suspended') acRef.current.resume();
-          instrumentRef.current.play(event.noteName, acRef.current.currentTime, {
-            gain: event.velocity / 100,
-          });
-        }
+      // 2. Hardware Audio Clock: Schedule exact 2000ms future playback directly in WebAudio thread
+      if (instrumentRef.current && acRef.current) {
+        if (acRef.current.state === 'suspended') acRef.current.resume();
+        const preciseHitTime = acRef.current.currentTime + 2.0; 
+        
+        instrumentRef.current.play(event.noteName, preciseHitTime, {
+          gain: event.velocity / 100,
+        });
+      }
 
+      // 3. Highlight key at 2000ms strike
+      scheduleTask(`${noteId}-play`, 2000, () => {
         setActiveNotes(prev => {
           if (!prev.includes(cleanNote)) return [...prev, cleanNote];
           return prev;
         });
       });
 
-      // 3. Deactivate key highlight after 200ms acoustic release
+      // 4. Deactivate key highlight after 200ms
       scheduleTask(`${noteId}-off`, 2200, () => {
         setActiveNotes(prev => prev.filter(n => n !== cleanNote));
       });
 
-      // 4. Clean up visual note from state immediately post-strike (2050ms)
-      scheduleTask(`${noteId}-cleanup`, 2050, () => {
+      // 5. Clean up note from state at 2300ms
+      scheduleTask(`${noteId}-cleanup`, 2300, () => {
         setFallingNotes(prev => prev.filter(n => n.id !== noteId));
       });
     }
@@ -227,7 +229,7 @@ export function useMidiPlayer() {
         if (instrumentRef.current) instrumentRef.current.stop();
         playerRef.current.skipToPercent(0);
         setIsPlaying(true);
-        playerRef.current.play();
+        setTimeout(() => { playerRef.current.play(); }, 300);
         return;
       }
 
@@ -238,7 +240,9 @@ export function useMidiPlayer() {
       } else {
         clearTasks();
         if (instrumentRef.current) instrumentRef.current.stop();
-        playerRef.current.play();
+        setTimeout(() => {
+          playerRef.current.play();
+        }, 100);
       }
       setIsPlaying(true);
     }
@@ -250,8 +254,8 @@ export function useMidiPlayer() {
       playerRef.current.pause();
       setIsPlaying(false);
       pauseTasks();
-      if (instrumentRef.current) {
-        instrumentRef.current.stop();
+      if (acRef.current && acRef.current.state === 'running') {
+        acRef.current.suspend(); 
       }
     }
   };
@@ -266,6 +270,9 @@ export function useMidiPlayer() {
       setActiveNotes([]);
       setFallingNotes([]);
       clearTasks();
+      if (acRef.current && acRef.current.state === 'suspended') {
+        acRef.current.resume();
+      }
       if (instrumentRef.current) {
         instrumentRef.current.stop();
       }
