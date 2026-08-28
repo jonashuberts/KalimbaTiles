@@ -7,7 +7,7 @@ import { ArrowUp, ArrowDown, Circle } from 'lucide-react';
 interface KalimbaProps {
   ppi: number;
   activeNotes: string[];
-  fallingNotes: { id: string; note: string }[];
+  fallingNotes?: { id: string; note: string }[];
   isPlaying: boolean;
   onNoteClick: (note: string) => void;
   showNumbers: boolean;
@@ -23,8 +23,6 @@ const KalimbaKey = React.memo(({
   isFirst, 
   isLast, 
   isActive, 
-  fallingNotes,
-  isPlaying,
   showNumbers, 
   onNoteClick,
   tuning,
@@ -37,8 +35,6 @@ const KalimbaKey = React.memo(({
   isFirst: boolean; 
   isLast: boolean; 
   isActive: boolean; 
-  fallingNotes: {id: string; note: string}[];
-  isPlaying: boolean;
   showNumbers: boolean; 
   onNoteClick: (note: string) => void;
   tuning: string;
@@ -64,14 +60,6 @@ const KalimbaKey = React.memo(({
        data-note={keyData.note}
        onClick={() => onNoteClick(getTunedNote(keyData.note, tuning))}
     >
-      {fallingNotes.map((note) => (
-         <div 
-           key={`glow-${note.id}`} 
-           className="kalimba-key-glow"
-           style={{ animationPlayState: isPlaying ? 'running' : 'paused' }}
-         ></div>
-      ))}
-
       {isTuningMode && isTuningActive && status && (
         <div className={`tuning-indicator status-${status}`}>
           {status === 'flat' && <ArrowUp size={20} strokeWidth={3} />}
@@ -90,28 +78,14 @@ const KalimbaKey = React.memo(({
       )}
     </div>
   );
-}, (prev, next) => {
-  if (prev.isActive !== next.isActive) return false;
-  if (prev.showNumbers !== next.showNumbers) return false;
-  if (prev.isPlaying !== next.isPlaying) return false;
-  if (prev.tuning !== next.tuning) return false;
-  if (prev.isTuningMode !== next.isTuningMode) return false;
-  if (prev.isTuningActive !== next.isTuningActive) return false;
-  if (prev.memoryStatus !== next.memoryStatus) return false;
-  if (prev.tuneCents !== next.tuneCents) return false;
-  if (prev.fallingNotes.length !== next.fallingNotes.length) return false;
-  // Deep equality checks for callback function references to brutally prevent stale closures
-  if (prev.onNoteClick !== next.onNoteClick) return false; 
-  return true;
 });
+KalimbaKey.displayName = 'KalimbaKey';
 
 export const Kalimba: React.FC<KalimbaProps> = ({ 
   ppi, 
   activeNotes, 
-  fallingNotes, 
-  isPlaying, 
-  onNoteClick, 
-  showNumbers, 
+  onNoteClick,
+  showNumbers,
   tuning,
   isTuningMode,
   selectedTuningKey,
@@ -133,12 +107,6 @@ export const Kalimba: React.FC<KalimbaProps> = ({
             if (!parsed) return activeNote === keyData.note;
             return `${parsed.letter}${parsed.octave}` === keyData.note;
           });
-          
-          const keyFallingNotes = fallingNotes.filter(n => {
-            const parsed = parseNote(n.note);
-            if (!parsed) return n.note === keyData.note;
-            return `${parsed.letter}${parsed.octave}` === keyData.note;
-          });
 
           const tunedNote = getTunedNote(keyData.note, tuning);
           const isTuningActive = isTuningMode && selectedTuningKey === tunedNote;
@@ -151,8 +119,6 @@ export const Kalimba: React.FC<KalimbaProps> = ({
               isFirst={isFirst}
               isLast={isLast}
               isActive={isActive}
-              fallingNotes={keyFallingNotes}
-              isPlaying={isPlaying}
               showNumbers={showNumbers}
               onNoteClick={onNoteClick}
               tuning={tuning}
