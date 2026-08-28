@@ -214,8 +214,8 @@ export function useMidiPlayer() {
         });
       }
 
-      // 3. Safe Garbage Collection: remove visual note from array safely after it glides and fades
-      scheduleTask(`${noteId}-cleanup`, 4000, () => {
+      // 3. Clean up visual note from state immediately after strike (2050ms)
+      scheduleTask(`${noteId}-cleanup`, 2050, () => {
          setFallingNotes(prev => prev.filter(n => n.id !== noteId));
       });
     }
