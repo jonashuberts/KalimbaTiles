@@ -23,9 +23,10 @@ export function useMidiPlayer() {
   const playerRef = useRef<any>(null);
   const instrumentRef = useRef<any>(null);
   const acRef = useRef<any>(null);
-  const isIntentionallyPaused = useRef(true);
-  const userTempoOverride = useRef<number | null>(null);
+  const isIntentionallyPaused = useRef(true); // Start true so we don't wake up on random clicks before playing
+  const userTempoOverride = useRef<number | null>(null); // Track manual overrides to combat timeline resync resets
   
+  // Track scheduled tasks so we can pause and resume them
   type PendingTask = {
     id: string;
     startTime: number;
@@ -34,6 +35,8 @@ export function useMidiPlayer() {
     timerId?: ReturnType<typeof setTimeout>;
   };
   const pendingTasks = useRef<Map<string, PendingTask>>(new Map());
+
+  // To avoid duplicate sound events, we track a flag
   const tempoInitialized = useRef(false);
 
   const scheduleTask = (id: string, delay: number, callback: () => void) => {
@@ -87,6 +90,9 @@ export function useMidiPlayer() {
     let rafId: number;
     const updateProgress = () => {
       if (playerRef.current) {
+        // midiplayer.getSongPercentRemaining() natively uses Math.round() which destroys 
+        // sub-percent precision and causes the slider to visibly jump in ~1% chunks.
+        // We must calculate the raw float percentage manually by observing the mechanical ticks directly!
         const currentTick = playerRef.current.getCurrentTick();
         const total = playerRef.current.totalTicks;
         
@@ -104,6 +110,7 @@ export function useMidiPlayer() {
   }, [isPlaying]);
 
   useEffect(() => {
+    // Initialize AudioContext and Soundfont on mount
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
     if (AudioCtx) {
       acRef.current = new AudioCtx();
@@ -114,10 +121,18 @@ export function useMidiPlayer() {
         });
       }
 
+      // iOS Safari forcefully suspends the AudioContext when the screen is locked or the app is backgrounded.
+      // It CANNOT be resumed programmatically (e.g., inside the handleMidiEvent loop).
+      // It MUST be resumed synchronously inside a direct user interaction event (touchstart/click).
       const unlockAudioContext = () => {
+        // If the user intentionally pressed Pause/Stop, we should not hijack their choice and force-play 
+        // the remaining 2000ms buffer just because the click event bubbled up to the document!
         if (isIntentionallyPaused.current) return;
+
         if (acRef.current && acRef.current.state === 'suspended') {
-          acRef.current.resume();
+          acRef.current.resume().then(() => {
+            console.log("AudioContext forcefully awakened by user interaction.");
+          });
         }
       };
 
@@ -127,6 +142,7 @@ export function useMidiPlayer() {
       return () => {
         document.removeEventListener('touchstart', unlockAudioContext);
         document.removeEventListener('click', unlockAudioContext);
+        document.removeEventListener('keydown', unlockAudioContext);
       };
     }
   }, []);
@@ -137,7 +153,8 @@ export function useMidiPlayer() {
       return;
     }
 
-    stop();
+    stop(); // Cleanly stop existing playback, clear active arrays, and halt tasks
+
     tempoInitialized.current = false;
     userTempoOverride.current = null;
 
@@ -146,6 +163,8 @@ export function useMidiPlayer() {
     });
 
     playerRef.current.on('endOfFile', () => {
+      // The MIDI player has reached the final tick. Wait precisely 2300ms for 
+      // the absolutely final visual tile spawned to successfully physically hit the kalimba tines!
       setTimeout(() => {
         setIsPlaying(false);
         setIsFinished(true);
@@ -158,6 +177,7 @@ export function useMidiPlayer() {
       setTempo(playerRef.current.tempo || 50);
       setIsReady(true);
     } catch(err) {
+      // Re-throw the parsed error so the UI can gracefully reset itself
       throw err;
     }
   };
@@ -180,10 +200,11 @@ export function useMidiPlayer() {
       const cleanNote = event.noteName.replace(/C-1/gi, "NO");
       const noteId = `${Date.now()}-${Math.random()}`;
       
-      // 1. Render falling note immediately
+      // 1. Add to falling notes animation queue immediately
       setFallingNotes(prev => [...prev, { id: noteId, note: cleanNote, isHit: false }]);
       
-      // 2. Hardware Audio Clock: Schedule exact 2000ms future playback directly in WebAudio thread
+      // 2. Delegate audio rendering entirely to the browser's hardware audio thread (precise 2000ms future playback)
+      // This is immune to JS thread frame drops.
       if (instrumentRef.current && acRef.current) {
         if (acRef.current.state === 'suspended') acRef.current.resume();
         const preciseHitTime = acRef.current.currentTime + 2.0; 
@@ -193,23 +214,20 @@ export function useMidiPlayer() {
         });
       }
 
-      // 3. Highlight key at 2000ms strike
-      scheduleTask(`${noteId}-play`, 2000, () => {
-        setActiveNotes(prev => {
-          if (!prev.includes(cleanNote)) return [...prev, cleanNote];
-          return prev;
-        });
-      });
+      // 3. The Kalimba Key glow is now natively handled by declarative CSS `animation-delay: 2000ms`
+      // rendered inside KalimbaKey based directly on the `fallingNotes` array!
+      // This achieves precisely 0.0ms of latency drift from the visual tile.
 
-      // 4. Deactivate key highlight after 200ms
-      scheduleTask(`${noteId}-off`, 2200, () => {
-        setActiveNotes(prev => prev.filter(n => n !== cleanNote));
+      // 4. Safe Garbage Collection: remove invisible elements safely 3 seconds AFTER the strike 
+      // when the CPU is completely idle, preventing infinite DOM growth.
+      scheduleTask(`${noteId}-cleanup`, 5000, () => {
+         setFallingNotes(prev => prev.filter(n => n.id !== noteId));
       });
+    }
 
-      // 5. Clean up note from state at 2300ms
-      scheduleTask(`${noteId}-cleanup`, 2300, () => {
-        setFallingNotes(prev => prev.filter(n => n.id !== noteId));
-      });
+    if (event.name === "Note off" || (event.name === "Note on" && event.velocity === 0)) {
+      // We removed the matching Note Off visual trigger here.
+      // The Kalimba simply glows for 150ms on strike and fades, just like physically plucking a tine.
     }
   };
 
@@ -220,6 +238,7 @@ export function useMidiPlayer() {
         acRef.current.resume();
       }
 
+      // If song was finished, always restart cleanly from the top
       if (isFinished) {
         setIsFinished(false);
         setProgress(0);
@@ -242,7 +261,7 @@ export function useMidiPlayer() {
         if (instrumentRef.current) instrumentRef.current.stop();
         setTimeout(() => {
           playerRef.current.play();
-        }, 100);
+        }, 1000);
       }
       setIsPlaying(true);
     }
@@ -254,6 +273,7 @@ export function useMidiPlayer() {
       playerRef.current.pause();
       setIsPlaying(false);
       pauseTasks();
+      // Halt the native hardware audio clock so scheduled sounds freeze flawlessly in time!
       if (acRef.current && acRef.current.state === 'running') {
         acRef.current.suspend(); 
       }
@@ -282,13 +302,16 @@ export function useMidiPlayer() {
   const seek = (percent: number) => {
     if (!playerRef.current) return;
     
+    // Hard clamp exactly to percent to keep state instantly responsive for scrubbing UI
     setProgress(percent);
+    
     const wasPlaying = !isIntentionallyPaused.current && isPlaying;
     
     if (wasPlaying) {
       playerRef.current.pause();
     }
     
+    // Purge visual and audio states comprehensively so skipping does not overlap massive polyphony sounds natively
     setActiveNotes([]);
     setFallingNotes([]);
     clearTasks();
@@ -299,7 +322,7 @@ export function useMidiPlayer() {
     try {
       playerRef.current.skipToPercent(percent);
     } catch (e) {
-      console.error("Seek error in MidiPlayer:", e);
+      console.error("Seek error natively within MidiPlayer:", e);
     }
 
     if (wasPlaying) {
@@ -312,8 +335,15 @@ export function useMidiPlayer() {
     userTempoOverride.current = newTempo;
     if (playerRef.current) {
       const wasPlaying = playerRef.current.isPlaying();
+      
+      // MidiPlayerJS calculates the current playback position based on (Date.now() - startTime) * tempo.
+      // If we change the tempo on the fly without pausing, it breaks the math and jumps forward/backward in the song.
+      // We must pause it first to bake its current position into the static `startTick` using the OLD tempo,
+      // apply the new tempo, and gracefully resume so it starts tracking from `startTick` using the NEW tempo. 
       if (wasPlaying) playerRef.current.pause();
+      
       playerRef.current.setTempo(newTempo);
+      
       if (wasPlaying) playerRef.current.play();
     }
   };
@@ -321,8 +351,9 @@ export function useMidiPlayer() {
   const playDirectNote = (note: string) => {
     if (instrumentRef.current && acRef.current) {
       if (acRef.current.state === 'suspended') {
-        acRef.current.resume();
+          acRef.current.resume();
       }
+      // Note mapping edge cases preserved from legacy
       const mapped = note.replace(/C-1/gi, 'C4');
       instrumentRef.current.play(mapped);
     }

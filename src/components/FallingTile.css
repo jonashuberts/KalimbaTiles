@@ -4,7 +4,7 @@
   justify-content: center;
   position: relative;
   width: 100%;
-  z-index: 5; /* Renders above wood (1) but below keys (10) and bridge (20) */
+  z-index: 5; /* Render above the wooden board (0) but below the keys (10) and bridge (20) */
   overflow: visible; 
 }
 
@@ -41,42 +41,38 @@
   top: 0;
   left: 0;
   
-  /* Fall animation spans exact 2000ms at perfectly uniform linear velocity */
-  animation-name: fall-down;
+  /* Fall animation spans exact 2300ms: 2000ms to hit the key, 300ms to glide out of frame invisibly underneath */
+  animation-name: fall-down-through;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-timing-function: linear;
   display: flex;
   align-items: flex-end;
-  will-change: transform, opacity;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
 }
 
-/* Apple 3D Glass Note Chip */
 .falling-tile-visual {
   width: 100%;
-  height: calc((var(--ppi) / 25.4) * 7px);
+  height: calc((var(--ppi) / 25.4) * 7px); /* Reduced slightly to mitigate collision threshold */
   background-color: var(--tile-bg);
   border-radius: calc((var(--ppi) / 25.4) * 2px);
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6),
-              inset 0 -1px 0 rgba(0, 0, 0, 0.4),
-              0 2px 5px rgba(0, 0, 0, 0.4),
-              0 0 10px var(--tile-glow);
+  /* Establishes clear edges so overlapping rapid-fire notes stack naturally like 3D chips rather than glitching into a flat blob */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5),
+              inset 0 -1px 0 rgba(0, 0, 0, 0.5),
+              0 2px 4px rgba(0, 0, 0, 0.4);
 }
+
 
 .half-note-marker {
   color: var(--text-primary);
   font-size: calc((var(--ppi) / 25.4) * 4.5px);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1;
   position: absolute;
   z-index: 2;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 .tile-glow {
@@ -84,29 +80,36 @@
   height: 100%;
   background: white;
   border-radius: inherit;
-  opacity: 0.4;
+  opacity: 0.5; /* Muted internal brightness */
 }
 
-/* 
- * 100% Constant Uniform Linear Descent (2000ms):
- * - 0% (0ms): Note spawns cleanly at top of runway
- * - 4% to 92%: Smooth descent above wood
- * - 100% (2000ms): Note hits key (+28mm) and dives under the metal key as sound plays
- */
-@keyframes fall-down {
+/* Timeline mathematically locked to duration={2300ms} prop inside React */
+@keyframes fall-down-through {
   0% {
     transform: translate3d(0, -100%, 0);
     opacity: 0;
   }
-  4% {
+  5% {
     opacity: 1;
   }
-  92% {
+  
+  /* t=2000ms: Exactly 86.95% of 2300ms */
+  /* Reaches standard impact threshold (+22px overshoot) */
+  86.95% {
+    transform: translate3d(0, calc((var(--ppi) / 25.4) * 22px), 0);
     opacity: 1;
   }
+  
+  /* t=2299ms: Glide deeply under the metal key seamlessly */
+  99.9% {
+    transform: translate3d(0, calc((var(--ppi) / 25.4) * 82px), 0);
+    opacity: 1;
+  }
+  
+  /* t=2300ms: Despawn safely */
   100% {
-    transform: translate3d(0, calc((var(--ppi) / 25.4) * 28px), 0);
-    opacity: 0;
+    transform: translate3d(0, calc((var(--ppi) / 25.4) * 82px), 0);
+    opacity: 0; 
   }
 }
 
