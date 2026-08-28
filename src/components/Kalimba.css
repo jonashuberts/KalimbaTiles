@@ -4,6 +4,8 @@
   align-items: center;
   width: 100%;
   padding-bottom: 2rem;
+  position: relative;
+  z-index: 10; /* Ensures Kalimba keys layer in front of falling notes */
 }
 
 /* Apple-style Physical Wooden Resonator Board */
