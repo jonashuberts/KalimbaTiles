@@ -12,7 +12,7 @@
   margin-top: calc((var(--ppi) / 25.4) * 20px);
   height: calc((var(--ppi) / 25.4) * 70px);
   width: calc((var(--ppi) / 25.4) * 110px);
-  background-color: var(--kalimba-wood);
+  background: radial-gradient(circle at 50% 25%, var(--kalimba-wood-highlight) 0%, var(--kalimba-wood) 55%, var(--kalimba-wood-shadow) 100%);
   border-radius: var(--radius-lg);
   position: relative;
   overflow: visible;
