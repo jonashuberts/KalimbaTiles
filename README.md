@@ -19,7 +19,7 @@
 
 | Playing Mode | Tuner Mode |
 |:---:|:---:|
-| ![Playing Mode](screenshots/main.png?raw=true) | ![Tuning Mode](screenshots/tuning.png?raw=true) |
+| ![Playing Mode](screenshots/main.png?v=2.5.0) | ![Tuning Mode](screenshots/tuning.png?v=2.5.0) |
 
 ---
 
