@@ -60,7 +60,7 @@ const KalimbaKey = React.memo(({
 
   return (
     <div
-       className={`kalimba-key ${isFirst ? 'first-key' : ''} ${isLast ? 'last-key' : ''} ${isActive ? 'active' : ''} ${isTuningActive ? 'tuning-focus' : ''} ${!isTuningActive && isTuningMode && memoryStatus ? `memorized-${memoryStatus}` : ''} ${status ? `tune-${status}` : ''}`}
+       className={`kalimba-key ${isFirst ? 'first-key' : ''} ${isLast ? 'last-key' : ''} ${isActive ? 'active' : ''} ${isTuningActive ? 'tuning-focus' : ''} ${isTuningMode && memoryStatus ? `memorized-${memoryStatus}` : ''} ${status ? `tune-${status}` : ''}`}
        data-note={keyData.note}
        onClick={() => onNoteClick(getTunedNote(keyData.note, tuning))}
     >
