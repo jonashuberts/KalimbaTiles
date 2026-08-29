@@ -47,43 +47,70 @@ async function capture() {
   console.log(`Navigating to ${url} in mobile landscape mode...`);
   await page.goto(url, { waitUntil: 'networkidle0' });
 
-  // 1. Capture Main Playing Screen during a rich chord waterfall
-  console.log('Starting song playback...');
-  await page.evaluate(() => {
-    const playBtn = document.querySelector('.playback-controls button');
-    if (playBtn) playBtn.click();
-  });
+  const screenshotsDir = path.resolve('screenshots');
+  if (!fs.existsSync(screenshotsDir)) {
+    fs.mkdirSync(screenshotsDir, { recursive: true });
+  }
 
-  // Poll for a dense waterfall frame with multiple notes
-  let capturedMain = false;
-  for (let i = 0; i < 20; i++) {
-    await new Promise(r => setTimeout(r, 500));
-    const noteCount = await page.evaluate(() => document.querySelectorAll('.falling-tile-visual').length);
-    if (noteCount >= 3) {
-      const screenshotsDir = path.resolve('screenshots');
-      if (!fs.existsSync(screenshotsDir)) fs.mkdirSync(screenshotsDir, { recursive: true });
-      const mainPath = path.join(screenshotsDir, 'main.png');
-      await page.screenshot({ path: mainPath });
-      console.log(`✓ Captured playing mode screenshot with ${noteCount} active notes: ${mainPath}`);
-      capturedMain = true;
-      break;
+  // 1. Setup exact, beautiful 4-note waterfall constellation matching user reference screenshot
+  await page.evaluate(() => {
+    // Set progress bar to ~10%
+    const progressBar = document.querySelector('.timeline-progress');
+    if (progressBar) {
+      progressBar.style.width = '10%';
     }
-  }
 
-  if (!capturedMain) {
-    const mainPath = path.resolve('screenshots/main.png');
-    await page.screenshot({ path: mainPath });
-    console.log(`✓ Captured playing mode screenshot fallback: ${mainPath}`);
-  }
+    // Set BPM display to 72
+    const bpmDisplay = document.querySelector('.bpm-display');
+    if (bpmDisplay) {
+      bpmDisplay.textContent = '72';
+    }
 
-  // Stop playback before entering tuning
-  await page.evaluate(() => {
-    const stopBtn = document.querySelector('.playback-controls button:nth-child(2)');
-    if (stopBtn) stopBtn.click();
+    const cols = document.querySelectorAll('.falling-col');
+    if (cols.length >= 17) {
+      // Helper to create a falling tile
+      const createTile = (topPx) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'falling-tile-wrapper';
+        wrapper.style.animation = 'none';
+        wrapper.style.transform = `translateY(${topPx}px)`;
+
+        const visual = document.createElement('div');
+        visual.className = 'falling-tile-visual';
+        visual.style.animation = 'none';
+
+        const glow = document.createElement('div');
+        glow.className = 'tile-glow';
+        visual.appendChild(glow);
+
+        wrapper.appendChild(visual);
+        return wrapper;
+      };
+
+      // Clear all columns
+      cols.forEach(c => c.innerHTML = '');
+
+      // Note 1: Col 3 (3.) -> lower-mid (~125px)
+      cols[3].appendChild(createTile(125));
+
+      // Note 2: Col 4 (1.) -> upper (~42px)
+      cols[4].appendChild(createTile(42));
+
+      // Note 3: Col 12 (2.) -> mid (~85px)
+      cols[12].appendChild(createTile(85));
+
+      // Note 4: Col 13 (4.) -> lower (~150px)
+      cols[13].appendChild(createTile(150));
+    }
   });
+
   await new Promise(r => setTimeout(r, 400));
 
-  // 2. Click the Tune button
+  const mainPath = path.join(screenshotsDir, 'main.png');
+  await page.screenshot({ path: mainPath });
+  console.log(`✓ Captured playing mode screenshot: ${mainPath}`);
+
+  // 2. Click the Tune button to enter Tuner mode
   await page.evaluate(() => {
     const buttons = Array.from(document.querySelectorAll('button'));
     const tune = buttons.find(b => b.textContent && b.textContent.includes('Tune'));
@@ -112,7 +139,7 @@ async function capture() {
 
   await new Promise(r => setTimeout(r, 400));
 
-  const tuningPath = path.resolve('screenshots/tuning.png');
+  const tuningPath = path.join(screenshotsDir, 'tuning.png');
   await page.screenshot({ path: tuningPath });
   console.log(`✓ Captured tuning mode screenshot: ${tuningPath}`);
 
