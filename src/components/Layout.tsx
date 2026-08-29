@@ -82,32 +82,23 @@ export const Layout: React.FC = () => {
     }
   };
 
-  // Processing Math
-  let renderTuningCents: number | null = null;
-  if (isTuningMode && selectedTuningKey && pitch) {
-    const exactFrequency = getFrequencyFromNote(selectedTuningKey);
-    if (exactFrequency) {
-      let diff = getCentsOffPitch(pitch, exactFrequency);
-      
-      // Overtone Tolerance: Kalimba metal tines produce extremely heavy harmonic overtones.
-      // Phone microphones using Math Autocorrelation regularly lock onto the 1st or 2nd harmonic (octaves).
+  // Stable Smoothed Cents with Linger Persistence
+  const [smoothedCents, setSmoothedCents] = useState<number | null>(null);
+  const emaCentsRef = React.useRef<number | null>(null);
+  const lingerTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
-      // We physically fold the cent difference modulo 1200 (1 Octave = 1200 cents) to 
-      // extract purely the chromatic tuning offset regardless of the octave detected!
-      diff = diff % 1200;
-      if (diff > 600) diff -= 1200;
-      if (diff < -600) diff += 1200;
-
-      // Relax the tolerance slightly. A kalimba can easily be 3 semitones out of tune on an abused tine.
-      if (Math.abs(diff) < 400) {
-        renderTuningCents = diff;
-      }
-    }
-  }
-
-  // Bind tuning memory updates directly to pitch hardware cycle
   React.useEffect(() => {
-    if (isTuningMode && selectedTuningKey && pitch) {
+    if (!isTuningMode || !selectedTuningKey) {
+      setSmoothedCents(null);
+      emaCentsRef.current = null;
+      if (lingerTimerRef.current) {
+        clearTimeout(lingerTimerRef.current);
+        lingerTimerRef.current = null;
+      }
+      return;
+    }
+
+    if (pitch) {
       const exactFrequency = getFrequencyFromNote(selectedTuningKey);
       if (exactFrequency) {
         let diff = getCentsOffPitch(pitch, exactFrequency);
@@ -116,12 +107,35 @@ export const Layout: React.FC = () => {
         if (diff < -600) diff += 1200;
 
         if (Math.abs(diff) < 400) {
-          const next: 'perfect' | 'sharp' | 'flat' =
-            Math.abs(diff) <= 10 ? 'perfect' : diff > 10 ? 'sharp' : 'flat';
+          // Clear any pending linger decay timer
+          if (lingerTimerRef.current) {
+            clearTimeout(lingerTimerRef.current);
+            lingerTimerRef.current = null;
+          }
+
+          // Exponential Moving Average (EMA) smoothing (alpha = 0.35)
+          const alpha = 0.35;
+          const currentEma = emaCentsRef.current;
+          const nextEma = currentEma === null ? diff : alpha * diff + (1 - alpha) * currentEma;
+          emaCentsRef.current = nextEma;
+          setSmoothedCents(nextEma);
+
+          // Update board persistent memory
+          const nextStatus: 'perfect' | 'sharp' | 'flat' =
+            Math.abs(nextEma) <= 10 ? 'perfect' : nextEma > 10 ? 'sharp' : 'flat';
           setTuningMemory(prev =>
-            prev[selectedTuningKey] === next ? prev : { ...prev, [selectedTuningKey]: next }
+            prev[selectedTuningKey] === nextStatus ? prev : { ...prev, [selectedTuningKey]: nextStatus }
           );
         }
+      }
+    } else {
+      // Acoustic tone has decayed: Keep the indicator visible for 1800ms so user can comfortably read it!
+      if (!lingerTimerRef.current && emaCentsRef.current !== null) {
+        lingerTimerRef.current = setTimeout(() => {
+          setSmoothedCents(null);
+          emaCentsRef.current = null;
+          lingerTimerRef.current = null;
+        }, 1800);
       }
     }
   }, [pitch, selectedTuningKey, isTuningMode]);
@@ -275,7 +289,7 @@ export const Layout: React.FC = () => {
           tuning={tuning}
           isTuningMode={isTuningMode}
           selectedTuningKey={selectedTuningKey}
-          currentTuningCents={renderTuningCents}
+          currentTuningCents={smoothedCents}
           tuningMemory={tuningMemory}
         />
       </main>

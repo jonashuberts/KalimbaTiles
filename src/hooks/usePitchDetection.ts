@@ -11,7 +11,7 @@ function autoCorrelate(buf: Float32Array, sampleRate: number): number {
     rms += val * val;
   }
   rms = Math.sqrt(rms / SIZE);
-  if (rms < 0.002) return -1; // Lowered silence threshold for extremely quiet phone mics capturing acoustic kalimbas
+  if (rms < 0.003) return -1; // Robust silence threshold for acoustic Kalimba tines
 
   let r1 = 0, r2 = SIZE - 1;
   const thres = 0.2;
@@ -80,6 +80,7 @@ export function usePitchDetection() {
       audioContextRef.current.close().catch(() => {});
       audioContextRef.current = null;
     }
+    pitchHistoryRef.current = [];
     setPitch(null);
     setIsListening(false);
     setError(null);
@@ -116,9 +117,10 @@ export function usePitchDetection() {
       analyser.fftSize = 2048;
       analyserRef.current = analyser;
       
+      // Lowpass filter tailored for Kalimba fundamental acoustic spectrum (200Hz - 2200Hz)
       const filter = audioContext.createBiquadFilter();
       filter.type = 'lowpass';
-      filter.frequency.value = 2500;
+      filter.frequency.value = 2200;
       filterRef.current = filter;
 
       const source = audioContext.createMediaStreamSource(stream);
@@ -132,17 +134,23 @@ export function usePitchDetection() {
         analyser.getFloatTimeDomainData(buffer);
         const fundamentalFreq = autoCorrelate(buffer, audioContext.sampleRate);
         
-        if (fundamentalFreq > 50 && fundamentalFreq < 2500) {
+        if (fundamentalFreq > 60 && fundamentalFreq < 2200) {
           const history = pitchHistoryRef.current;
           history.push(fundamentalFreq);
-          if (history.length > 5) history.shift();
+          if (history.length > 8) history.shift(); // 8-frame rolling median filter (~130ms)
           
           const sorted = [...history].sort((a, b) => a - b);
           const median = sorted[Math.floor(sorted.length / 2)];
           
           setPitch(median);
         } else {
-          setPitch(null);
+          // Rapid decay cleanup
+          if (pitchHistoryRef.current.length > 0) {
+            pitchHistoryRef.current.shift();
+          }
+          if (pitchHistoryRef.current.length === 0) {
+            setPitch(null);
+          }
         }
 
         rafIdRef.current = requestAnimationFrame(detect);
