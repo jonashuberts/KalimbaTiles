@@ -162,16 +162,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             </>
           )}
 
-          <div className="control-group tuner-action-group">
-            <button 
-              className={`btn-icon toggle-btn ${isTuningMode ? 'active tune-mode-btn' : ''}`}
-              onClick={toggleTuningMode}
-              title="Tuner"
-            >
-              <Mic size={16} />
-              <span className="toggle-text">Tune</span>
-            </button>
-          </div>
+        <button 
+          className={`toggle-btn ${isTuningMode ? 'active' : 'inactive'}`}
+          onClick={toggleTuningMode}
+          title={isTuningMode ? "Exit Tuner" : "Open Kalimba Tuner"}
+        >
+          <Mic size={15} />
+          <span className="toggle-text">Tune</span>
+        </button>
       </div>
 
       {!isTuningMode && (
