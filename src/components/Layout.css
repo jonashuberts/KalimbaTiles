@@ -43,12 +43,15 @@
 
 /* Apple Dynamic Capsule Error Notification */
 .tuning-error-banner {
-  background: rgba(255, 69, 58, 0.9);
+  background: rgba(255, 69, 58, 0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   color: #ffffff;
-  padding: 0.65rem 1.25rem;
-  text-align: center;
+  padding: 0.65rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
   font-weight: 600;
   font-size: 0.85rem;
   position: absolute;
@@ -56,11 +59,45 @@
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
-  max-width: 420px;
-  border-radius: var(--radius-full);
+  max-width: 440px;
+  border-radius: var(--radius-lg);
   z-index: 9999;
-  box-shadow: 0 12px 28px rgba(255, 69, 58, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0 12px 28px rgba(255, 69, 58, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.35);
   animation: apple-pop-down 0.4s var(--spring-bounce);
+}
+
+.banner-icon {
+  flex-shrink: 0;
+  stroke: #ffffff;
+}
+
+.banner-text {
+  flex: 1;
+  text-align: left;
+  line-height: 1.3;
+}
+
+.banner-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s ease, transform 0.12s var(--spring-snappy);
+}
+
+.banner-close-btn:hover {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.banner-close-btn:active {
+  transform: scale(0.92);
 }
 
 /* Apple Dynamic Island Floating Instruction Pill */

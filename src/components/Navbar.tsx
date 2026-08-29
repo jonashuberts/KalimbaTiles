@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Pause, Square, FileMusic, Settings, Minus, Plus, Mic } from 'lucide-react';
+import { Play, Pause, Square, FileMusic, Minus, Plus, Mic, Hash } from 'lucide-react';
 import { TUNINGS } from '../constants/kalimba';
 import './Navbar.css';
 
@@ -101,16 +101,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        <div className="control-group">
-          <button 
-            className={`btn-icon toggle-btn ${showNumbers ? 'active' : ''}`}
-            onClick={() => setShowNumbers(!showNumbers)}
-            title="Toggle Numbers"
-          >
-            <Settings size={16} />
-            <span className="toggle-text">123</span>
-          </button>
-        </div>
+        <button 
+          className={`toggle-btn ${showNumbers ? 'active' : 'inactive'}`}
+          onClick={() => setShowNumbers(!showNumbers)}
+          title={showNumbers ? "Hide Key Numbers" : "Show Key Numbers"}
+        >
+          <Hash size={15} />
+          <span className="toggle-text">123</span>
+        </button>
 
         {/* Right Side: Tools & Playback */}
         {!isTuningMode && (

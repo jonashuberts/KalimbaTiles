@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState, useRef } from 'react';
 
 // Performs mathematical autocorrelation on streaming audio buffers to detect fundamental frequency
 function autoCorrelate(buf: Float32Array, sampleRate: number): number {
-  let SIZE = buf.length;
+  const SIZE = buf.length;
   let rms = 0;
 
   for (let i = 0; i < SIZE; i++) {
@@ -12,18 +13,21 @@ function autoCorrelate(buf: Float32Array, sampleRate: number): number {
   rms = Math.sqrt(rms / SIZE);
   if (rms < 0.002) return -1; // Lowered silence threshold for extremely quiet phone mics capturing acoustic kalimbas
 
-  let r1 = 0, r2 = SIZE - 1, thres = 0.2;
-  for (let i = 0; i < SIZE / 2; i++)
+  let r1 = 0, r2 = SIZE - 1;
+  const thres = 0.2;
+  for (let i = 0; i < SIZE / 2; i++) {
     if (Math.abs(buf[i]) < thres) { r1 = i; break; }
-  for (let i = 1; i < SIZE / 2; i++)
+  }
+  for (let i = 1; i < SIZE / 2; i++) {
     if (Math.abs(buf[SIZE - i]) < thres) { r2 = SIZE - i; break; }
+  }
 
   buf = buf.slice(r1, r2);
-  SIZE = buf.length;
+  const slicedSize = buf.length;
 
-  const c = new Array(SIZE).fill(0);
-  for (let i = 0; i < SIZE; i++) {
-    for (let j = 0; j < SIZE - i; j++) {
+  const c = new Array(slicedSize).fill(0);
+  for (let i = 0; i < slicedSize; i++) {
+    for (let j = 0; j < slicedSize - i; j++) {
       c[i] = c[i] + buf[j] * buf[j + i];
     }
   }
@@ -32,7 +36,7 @@ function autoCorrelate(buf: Float32Array, sampleRate: number): number {
   while (c[d] > c[d + 1]) d++;
   
   let maxval = -1, maxpos = -1;
-  for (let i = d; i < SIZE; i++) {
+  for (let i = d; i < slicedSize; i++) {
     if (c[i] > maxval) {
       maxval = c[i];
       maxpos = i;
@@ -62,26 +66,41 @@ export function usePitchDetection() {
   const rafIdRef = useRef<number | null>(null);
   const pitchHistoryRef = useRef<number[]>([]);
 
+  const clearError = () => {
+    setError(null);
+  };
+
   const stopListening = () => {
     if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
-    if (mediaStreamRef.current) mediaStreamRef.current.getTracks().forEach(t => t.stop());
+    if (mediaStreamRef.current) {
+      mediaStreamRef.current.getTracks().forEach(t => t.stop());
+      mediaStreamRef.current = null;
+    }
     if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
-      audioContextRef.current.close();
+      audioContextRef.current.close().catch(() => {});
+      audioContextRef.current = null;
     }
     setPitch(null);
     setIsListening(false);
+    setError(null);
   };
 
   const startListening = async () => {
     try {
       setError(null);
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error("Microphone access requires HTTPS or localhost.");
+      }
       
-      // CRITICAL iOS SAFARI FIX: AudioContext must be explicitly instantiated and resumed
-      // SYNCHRONOUSLY within the click handler thread, BEFORE awaiting getUserMedia!
       const AudioContextCtor = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioContextCtor) {
+        throw new Error("Web Audio API is not supported in this browser.");
+      }
+
       const audioContext = new AudioContextCtor();
       if (audioContext.state === 'suspended') {
-          audioContext.resume();
+        await audioContext.resume();
       }
       audioContextRef.current = audioContext;
 
@@ -99,59 +118,54 @@ export function usePitchDetection() {
       
       const filter = audioContext.createBiquadFilter();
       filter.type = 'lowpass';
-      filter.frequency.value = 1400; // Shield overtone noise aggressively while preserving Kalimba physical harmonic base
+      filter.frequency.value = 2500;
       filterRef.current = filter;
 
       const source = audioContext.createMediaStreamSource(stream);
       source.connect(filter);
       filter.connect(analyser);
-      
-      setIsListening(true);
-      
-      const bufferLength = analyser.fftSize;
-      const buffer = new Float32Array(bufferLength);
-      
-      const updatePitch = () => {
-        if (!analyserRef.current || !audioContextRef.current) return;
-        analyserRef.current.getFloatTimeDomainData(buffer);
-        const f = autoCorrelate(buffer, audioContextRef.current.sampleRate);
-        
-        if (f !== -1) {
-          pitchHistoryRef.current.push(f);
-          if (pitchHistoryRef.current.length > 7) {
-            pitchHistoryRef.current.shift();
-          }
 
-          if (pitchHistoryRef.current.length >= 3) {
-            const sorted = [...pitchHistoryRef.current].sort((a, b) => a - b);
-            const median = sorted[Math.floor(sorted.length / 2)];
-            setPitch(median);
-          } else {
-            setPitch(f);
-          }
-        }
+      const buffer = new Float32Array(analyser.fftSize);
+      pitchHistoryRef.current = [];
+
+      const detect = () => {
+        analyser.getFloatTimeDomainData(buffer);
+        const fundamentalFreq = autoCorrelate(buffer, audioContext.sampleRate);
         
-        rafIdRef.current = requestAnimationFrame(updatePitch);
+        if (fundamentalFreq > 50 && fundamentalFreq < 2500) {
+          const history = pitchHistoryRef.current;
+          history.push(fundamentalFreq);
+          if (history.length > 5) history.shift();
+          
+          const sorted = [...history].sort((a, b) => a - b);
+          const median = sorted[Math.floor(sorted.length / 2)];
+          
+          setPitch(median);
+        } else {
+          setPitch(null);
+        }
+
+        rafIdRef.current = requestAnimationFrame(detect);
       };
-      
-      updatePitch();
+
+      setIsListening(true);
+      detect();
+
     } catch (err: any) {
-      console.error("Microphone access failed", err);
-      setError("Microphone access denied or unavailable.");
+      console.warn("Microphone tuning error:", err);
+      const msg = err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError'
+        ? "Microphone access was denied. Please allow mic permissions in browser settings."
+        : (err.message || "Microphone could not be accessed.");
+      setError(msg);
       setIsListening(false);
     }
   };
-
-  useEffect(() => {
-    return () => {
-      stopListening();
-    };
-  }, []);
 
   return {
     pitch,
     isListening,
     error,
+    clearError,
     startListening,
     stopListening
   };

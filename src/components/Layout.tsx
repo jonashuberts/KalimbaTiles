@@ -6,7 +6,7 @@ import { KALIMBA_KEYS } from '../constants/kalimba';
 import { FallingTile } from './FallingTile';
 import { useMidiPlayer } from '../hooks/useMidiPlayer';
 import { usePitchDetection } from '../hooks/usePitchDetection';
-import { Github } from 'lucide-react';
+import { Github, X, AlertCircle } from 'lucide-react';
 import packageJson from '../../package.json';
 import './Layout.css';
 
@@ -30,7 +30,7 @@ export const Layout: React.FC = () => {
   const [tuningMemory, setTuningMemory] = useState<Record<string, 'perfect' | 'sharp' | 'flat'>>({});
 
   // Hook into Hardware Audio
-  const { pitch, error: micError, startListening, stopListening } = usePitchDetection();
+  const { pitch, error: micError, clearError, startListening, stopListening } = usePitchDetection();
 
   // Persist settings to localStorage
   React.useEffect(() => {
@@ -64,8 +64,10 @@ export const Layout: React.FC = () => {
       setIsTuningMode(false);
       setSelectedTuningKey(null);
       stopListening();
+      clearError();
     } else {
       stop(); // Mathematically eradicate playback before entering tuning
+      clearError();
       await startListening();
       setIsTuningMode(true);
     }
@@ -184,9 +186,17 @@ export const Layout: React.FC = () => {
 
   return (
     <div className="layout-container">
-      {micError && (
+      {isTuningMode && micError && (
         <div className="tuning-error-banner">
-          {micError} Ensure microphone permissions are granted.
+          <AlertCircle size={18} className="banner-icon" />
+          <span className="banner-text">{micError}</span>
+          <button 
+            className="banner-close-btn" 
+            onClick={() => clearError()}
+            aria-label="Dismiss error"
+          >
+            <X size={16} />
+          </button>
         </div>
       )}
       
