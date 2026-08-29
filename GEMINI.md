@@ -14,12 +14,21 @@ Always read the current version from `package.json` before deciding what to bump
 
 Every Git tag MUST correspond to a published GitHub Release. Never create a raw Git tag without also creating the GitHub Release.
 
-- When publishing a release version (e.g. `v2.4.1`), tag the commit and immediately publish the GitHub Release via GitHub CLI:
+- When publishing a release version (e.g. `v2.5.0`), tag the commit and immediately publish the GitHub Release via GitHub CLI:
   ```bash
-  git tag v<VERSION>
+  git tag -a v<VERSION> -m "Release v<VERSION>"
   git push origin v<VERSION>
-  gh release create v<VERSION> --title "v<VERSION>: <Short Title>" --notes "<Bullet points of changes>"
+  gh release create v<VERSION> --title "v<VERSION>: <Short Title>" --notes "<Formatted Release Notes>"
   ```
+- **Release Notes Style Invariant**: Always adhere strictly to repository conventions:
+  - Title: `v<VERSION>: <Feature Focus>` (colon-separated, no emojis in title).
+  - Main Heading: `## What's New in KeyKalimba v<MAJOR.MINOR>`
+  - Bullet format: `- **Category / Area:** Concise explanation.` (keep tone clean, professional, and free of emoji spam).
+
+## Documentation & Screenshot Rules
+
+- **README Image Cache-Busting**: GitHub proxies README images via its Camo CDN (`camo.githubusercontent.com`). When updating screenshots in `README.md`, always append a version query parameter (`?v=X.Y.Z`) to force GitHub to bypass its proxy cache and display the updated images immediately.
+- **Automated Screenshot Generation**: Use the built-in `npm run screenshots` script (`scripts/capture-screenshots.mjs`) to generate iPhone Landscape ($844 \times 390\text{px}$ @ $3\times$ Retina) screenshots. It automatically handles Chrome discovery, 9.7s song playback timing, and tuning visual states.
 
 ## Commit Message Rules
 
