@@ -1,50 +1,62 @@
 # Key Kalimba
 
-Welcome to Key Kalimba, your go-to app for **playing and tuning** the kalimba. Whether you're a beginner or an experienced player, this app is meticulously crafted to enhance your Kalimba learning experience.
+**Key Kalimba** is an interactive, web-based 17-key Kalimba trainer and tuner designed for musicians, learners, and hobbyists. Play along with falling notes, load custom MIDI songs, and tune your physical instrument with built-in pitch detection—directly in your browser on desktop, tablet, and mobile.
 
-Recently modernized into a high-performance React/Vite application, Key Kalimba features an Apple-inspired frosted glass design, perfect mathematical audio-visual synchronization, and device-independent physical scaling.
+---
 
-## Features & Usage
+## ✨ Features
 
-1. **Dynamic Physical Scaling**: Optimize your practice by adjusting the visual Scale of the application to match the physical dimensions of any size Kalimba. The on-screen UI will mathematically scale using your browser's persistent storage so the digital keys match the physical width of your real 17-key Kalimba when mounted onto your specific tablet or mobile device.
-2. **Select a File**: Choose your favorite `.mid` song or exercise effortlessly using the built-in file selector.
-3. **Perfect Audio-Visual Sync**: Dive into your Kalimba practice session with falling tiles that strike the keys in perfect, millisecond-accurate rhythm with the audio. Guaranteed zero-latency drift on Apple/iOS hardware between physical strike and key lighting.
-4. **Z-Index Waterfall Physics & 3D Stacking**: Notes slide and despawn gracefully *underneath* the metal Kalimba tines, and feature 3D-beveled glass visual stacking when rapid notes overlap.
-5. **Interactive YouTube-Style Scrubber**: A minimal dynamic loading bar gives you flawless timeline traversal. Skip through dense massive MIDI tracks and it automatically mutes audio loops and cleans the screen without glitching.
-6. **Tempo, Tuning, & Controls**: Adjust the learning speed dynamically, toggle note numbers/dots (`# 123`), choose flat/sharp alternate tunings for the layout, and experience automatic pause/loop functionality effortlessly.
-7. **DSP Chromatic Tuner**: Tap any key in tuning mode to tune your physical Kalimba using your device microphone. Powered by an autocorrelation engine with rolling median noise filtering and exponential moving average (EMA) smoothing for stable readings. Features an 1.8s persistence hold timer and permanent on-board memory so you can comfortably track your full instrument tuning progress at a glance.
+- 🎵 **Falling Notes Visualizer**: Learn songs intuitively with falling note tiles synchronized in real time with high-fidelity acoustic Kalimba audio.
+- 📐 **Physical Instrument Calibration**: Adjust the scale/zoom so the digital tines perfectly match the physical width of your real Kalimba when placed over your screen.
+- 🎼 **Custom MIDI Support**: Import any `.mid` or `.midi` file and practice at your own pace with adjustable tempo and timeline scrubbing.
+- 🎯 **Integrated Kalimba Tuner**: Tune each tine using your device microphone. Real-time pitch tracking guides you with clear visual feedback (in tune, sharp, flat) and tracks your tuning progress across all 17 keys.
+- 🔢 **Customizable Notation**: Toggle numbered musical notation (`1 2 3`) and octave indicators on the tines, and switch between major and alternate tunings (C Major, G Major, F Major, Bb Major, etc.).
+- 📱 **Mobile & PWA Ready**: Optimized for touchscreens and landscape orientation, with offline support for practicing anywhere.
 
-## Screenshots
+---
 
-| Playing Mode | Tuning Mode |
-|---|---|
-| ![Main Interface](screenshots/main.png?raw=true) | ![Tuning Mode](screenshots/tuning.png?raw=true) |
+## 📸 Screenshots
 
-## Local Development
+| Playing Mode | Tuner Mode |
+|:---:|:---:|
+| ![Playing Mode](screenshots/main.png?raw=true) | ![Tuning Mode](screenshots/tuning.png?raw=true) |
 
-Key Kalimba is built with a modern web stack: **React (TypeScript), Vite, and Vanilla CSS**.
+---
 
-To run the application locally:
+## 🛠️ Getting Started
+
+### Prerequisites
+- Node.js 18+ and npm
+
+### Local Development
 ```bash
+# Clone the repository
+git clone https://github.com/jonashuberts/KalimbaTiles.git
+cd KalimbaTiles
+
 # Install dependencies
 npm install
 
-# Start the Vite development server
+# Start development server
 npm run dev
 ```
 
-## Libraries & Attributes
+### Build for Production
+```bash
+npm run build
+```
 
-Key Kalimba harnesses the power of the following libraries:
-- [React](https://react.dev/) & [Vite](https://vitejs.dev/) - For lightning-fast UI rendering and development.
-- [Lucide React](https://lucide.dev/) - Beautiful, consistent iconography.
-- [MidiPlayerJS](https://github.com/grimmdude/MidiPlayerJS): A versatile MIDI player for seamless integration of MIDI files.
-- [soundfont-player](https://github.com/danigb/soundfont-player): Enhance your kalimba sounds with this flexible SoundFont player.
+---
 
-The default `sample.mid` piece included natively in the application is [Kalimba Experiments One](https://musescore.com/user/38202511/scores/6738980), composed by Januaryisashape, licensed under Attribution.
+## 📦 Tech Stack
 
-## License
+- **Framework**: [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- **Build Tool**: [Vite](https://vitejs.dev/) + [PWA Plugin](https://vite-pwa-org.netlify.app/)
+- **Audio Engine**: Web Audio API, [soundfont-player](https://github.com/danigb/soundfont-player), [MidiPlayerJS](https://github.com/grimmdude/MidiPlayerJS)
+- **Icons**: [Lucide React](https://lucide.dev/)
 
-This project is licensed under the [GNU Affero General Public License v3.0](LICENSE) - see the [LICENSE](LICENSE) file for details.
+---
 
-Feel the rhythm, embrace the melody, and let Key Kalimba be your companion on your musical journey!
+## 📄 License
+
+This project is licensed under the [GNU Affero General Public License v3.0](LICENSE).
