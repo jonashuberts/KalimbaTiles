@@ -1,21 +1,21 @@
 # Key Kalimba
 
-**Key Kalimba** is an interactive, web-based 17-key Kalimba trainer and tuner designed for musicians, learners, and hobbyists. Play along with falling notes, load custom MIDI songs, and tune your physical instrument with built-in pitch detection—directly in your browser on desktop, tablet, and mobile.
+**Key Kalimba** is an interactive, web-based 17-key Kalimba trainer and tuner. Play along with falling notes, load custom MIDI songs, and tune your physical instrument with built-in pitch detection—directly in your browser on desktop, tablet, and mobile devices.
 
 ---
 
-## ✨ Features
+## Features
 
-- 🎵 **Falling Notes Visualizer**: Learn songs intuitively with falling note tiles synchronized in real time with high-fidelity acoustic Kalimba audio.
-- 📐 **Physical Instrument Calibration**: Adjust the scale/zoom so the digital tines perfectly match the physical width of your real Kalimba when placed over your screen.
-- 🎼 **Custom MIDI Support**: Import any `.mid` or `.midi` file and practice at your own pace with adjustable tempo and timeline scrubbing.
-- 🎯 **Integrated Kalimba Tuner**: Tune each tine using your device microphone. Real-time pitch tracking guides you with clear visual feedback (in tune, sharp, flat) and tracks your tuning progress across all 17 keys.
-- 🔢 **Customizable Notation**: Toggle numbered musical notation (`1 2 3`) and octave indicators on the tines, and switch between major and alternate tunings (C Major, G Major, F Major, Bb Major, etc.).
-- 📱 **Mobile & PWA Ready**: Optimized for touchscreens and landscape orientation, with offline support for practicing anywhere.
+- **Falling Notes Visualizer**: Learn songs intuitively with falling note tiles synchronized in real time with high-fidelity acoustic Kalimba audio.
+- **Physical Instrument Calibration**: Adjust the scale/zoom so the digital tines perfectly match the physical width of your real Kalimba when placed over your screen.
+- **Custom MIDI Support**: Import any `.mid` or `.midi` file and practice at your own pace with adjustable tempo and timeline scrubbing.
+- **Integrated Kalimba Tuner**: Tune each tine using your device microphone. Real-time pitch tracking guides you with clear visual feedback (in tune, sharp, flat) and tracks your tuning progress across all 17 keys.
+- **Customizable Notation**: Toggle numbered musical notation (`1 2 3`) and octave indicators on the tines, and switch between major and alternate tunings (C Major, G Major, F Major, Bb Major, etc.).
+- **Mobile & PWA Ready**: Optimized for touchscreens and landscape orientation, with offline support for practicing anywhere.
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
 | Playing Mode | Tuner Mode |
 |:---:|:---:|
@@ -23,7 +23,7 @@
 
 ---
 
-## 🛠️ Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js 18+ and npm
@@ -48,7 +48,7 @@ npm run build
 
 ---
 
-## 📦 Tech Stack
+## Tech Stack
 
 - **Framework**: [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
 - **Build Tool**: [Vite](https://vitejs.dev/) + [PWA Plugin](https://vite-pwa-org.netlify.app/)
@@ -57,6 +57,6 @@ npm run build
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the [GNU Affero General Public License v3.0](LICENSE).
