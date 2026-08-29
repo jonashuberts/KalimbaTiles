@@ -52,63 +52,26 @@ async function capture() {
     fs.mkdirSync(screenshotsDir, { recursive: true });
   }
 
-  // 1. Setup exact, beautiful 4-note waterfall constellation matching user reference screenshot
+  // 1. Play live song and capture at t = 9.7s
+  console.log('Starting live song playback...');
   await page.evaluate(() => {
-    // Set progress bar to ~10%
-    const progressBar = document.querySelector('.timeline-progress');
-    if (progressBar) {
-      progressBar.style.width = '10%';
-    }
-
-    // Set BPM display to 72
-    const bpmDisplay = document.querySelector('.bpm-display');
-    if (bpmDisplay) {
-      bpmDisplay.textContent = '72';
-    }
-
-    const cols = document.querySelectorAll('.falling-col');
-    if (cols.length >= 17) {
-      // Helper to create a falling tile
-      const createTile = (topPx) => {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'falling-tile-wrapper';
-        wrapper.style.animation = 'none';
-        wrapper.style.transform = `translateY(${topPx}px)`;
-
-        const visual = document.createElement('div');
-        visual.className = 'falling-tile-visual';
-        visual.style.animation = 'none';
-
-        const glow = document.createElement('div');
-        glow.className = 'tile-glow';
-        visual.appendChild(glow);
-
-        wrapper.appendChild(visual);
-        return wrapper;
-      };
-
-      // Clear all columns
-      cols.forEach(c => c.innerHTML = '');
-
-      // Note 1: Col 3 (3.) -> lower-mid (~125px)
-      cols[3].appendChild(createTile(125));
-
-      // Note 2: Col 4 (1.) -> upper (~42px)
-      cols[4].appendChild(createTile(42));
-
-      // Note 3: Col 12 (2.) -> mid (~85px)
-      cols[12].appendChild(createTile(85));
-
-      // Note 4: Col 13 (4.) -> lower (~150px)
-      cols[13].appendChild(createTile(150));
-    }
+    const playBtn = document.querySelector('.playback-controls button');
+    if (playBtn) playBtn.click();
   });
 
-  await new Promise(r => setTimeout(r, 400));
+  console.log('Capturing playing mode screenshot at t = 9.7s...');
+  await new Promise(r => setTimeout(r, 9700));
 
   const mainPath = path.join(screenshotsDir, 'main.png');
   await page.screenshot({ path: mainPath });
   console.log(`✓ Captured playing mode screenshot: ${mainPath}`);
+
+  // Stop playback before entering tuning
+  await page.evaluate(() => {
+    const stopBtn = document.querySelector('.playback-controls button:nth-child(2)');
+    if (stopBtn) stopBtn.click();
+  });
+  await new Promise(r => setTimeout(r, 400));
 
   // 2. Click the Tune button to enter Tuner mode
   await page.evaluate(() => {
