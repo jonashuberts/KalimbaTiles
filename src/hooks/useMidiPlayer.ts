@@ -172,14 +172,9 @@ export function useMidiPlayer() {
       }, 2300);
     });
 
-    try {
-      playerRef.current.loadArrayBuffer(arrayBuffer);
-      setTempo(playerRef.current.tempo || 50);
-      setIsReady(true);
-    } catch(err) {
-      // Re-throw the parsed error so the UI can gracefully reset itself
-      throw err;
-    }
+    playerRef.current.loadArrayBuffer(arrayBuffer);
+    setTempo(playerRef.current.tempo || 50);
+    setIsReady(true);
   };
 
   const handleMidiEvent = (event: any) => {

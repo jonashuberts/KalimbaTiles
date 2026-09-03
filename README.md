@@ -19,7 +19,7 @@
 
 | Playing Mode | Tuner Mode |
 |:---:|:---:|
-| ![Playing Mode](screenshots/main.png?v=2.5.0) | ![Tuning Mode](screenshots/tuning.png?v=2.5.0) |
+| ![Playing Mode](screenshots/main.png?v=2.6.0) | ![Tuning Mode](screenshots/tuning.png?v=2.6.0) |
 
 ---
 
@@ -31,8 +31,8 @@
 ### Local Development
 ```bash
 # Clone the repository
-git clone https://github.com/jonashuberts/KalimbaTiles.git
-cd KalimbaTiles
+git clone https://github.com/jonashuberts/KeyKalimba.git
+cd KeyKalimba
 
 # Install dependencies
 npm install
@@ -45,6 +45,14 @@ npm run dev
 ```bash
 npm run build
 ```
+
+---
+
+## Kalimba MIDIs & Support
+
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-Download%20Kalimba%20MIDIs-ff5e5b?style=for-the-badge&logo=kofi&logoColor=white)](https://ko-fi.com/keykalimba)
+
+Download ready-to-play Kalimba `.mid` files or support the ongoing open-source development.
 
 ---
 

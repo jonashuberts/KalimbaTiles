@@ -147,9 +147,10 @@ export const Layout: React.FC = () => {
       if (e.target?.result && e.target.result instanceof ArrayBuffer) {
         try {
           initPlayer(e.target.result);
-        } catch(err: any) {
+        } catch(err: unknown) {
+          const message = err instanceof Error ? err.message : String(err);
           console.error("Invalid MIDI file loaded:", err);
-          alert("Error parsing MIDI file: " + err.message);
+          alert("Error parsing MIDI file: " + message);
           pause();
         }
       }
@@ -182,19 +183,25 @@ export const Layout: React.FC = () => {
           try {
             initPlayer(buffer);
             play();
-          } catch(err: any) {
+          } catch(err: unknown) {
+            const message = err instanceof Error ? err.message : String(err);
             console.error("Invalid default MIDI sample:", err);
             pause();
-            alert("Error parsing default sample.mid: " + err.message);
+            alert("Error parsing default sample.mid: " + message);
           }
         })
-        .catch(err => {
+        .catch((err: unknown) => {
+          const message = err instanceof Error ? err.message : String(err);
           console.error("Failed to fetch sample.mid", err);
           pause();
-          alert("Failed to fetch default sample.md: " + err.message);
+          alert("Failed to fetch default sample.mid: " + message);
         });
     } else {
-      isPlaying ? pause() : play();
+      if (isPlaying) {
+        pause();
+      } else {
+        play();
+      }
     }
   };
 
@@ -296,7 +303,7 @@ export const Layout: React.FC = () => {
 
       {/* Global Version Watermark */}
       <a 
-        href="https://github.com/jonashuberts/KalimbaTiles" 
+        href="https://github.com/jonashuberts/KeyKalimba" 
         target="_blank" 
         rel="noopener noreferrer" 
         className="version-watermark"

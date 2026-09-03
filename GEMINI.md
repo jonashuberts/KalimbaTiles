@@ -1,25 +1,16 @@
 # KeyKalimba — Agent Instructions
 
-## Versioning Rules
+## Versioning & Release Rules
 
-The project version is in `package.json`. Follow **Semantic Versioning** (`MAJOR.MINOR.PATCH`).
-
-- **PATCH** (e.g. `2.3.2 → 2.3.3`): Increment automatically for every fix, feature, or improvement.
-- **MINOR** (e.g. `2.3.x → 2.4.0`): Only increment when the user explicitly says "new minor version". Reset PATCH to 0.
-- **MAJOR** (e.g. `2.x → 3.0.0`): Only increment when the user explicitly approves a major release. Reset MINOR and PATCH to 0.
-
-Always read the current version from `package.json` before deciding what to bump. Never skip patch numbers. Never bump MINOR or MAJOR without explicit user instruction.
-
-## Release & Tag Rules (Tag == Release)
-
-Every Git tag MUST correspond to a published GitHub Release. Never create a raw Git tag without also creating the GitHub Release.
-
-- When publishing a release version (e.g. `v2.5.0`), tag the commit and immediately publish the GitHub Release via GitHub CLI:
-  ```bash
-  git tag -a v<VERSION> -m "Release v<VERSION>"
-  git push origin v<VERSION>
-  gh release create v<VERSION> --title "v<VERSION>: <Short Title>" --notes "<Formatted Release Notes>"
-  ```
+- **Routine Work & Commits**: Develop small fixes, UI adjustments, and regular features on feature branches, verify locally, merge to `main`, and push. Do **NOT** create Git tags or GitHub Releases for routine commits.
+- **Milestone Releases (Major / Minor)**: ONLY create Git tags and GitHub Releases when releasing a significant milestone (e.g. `v2.6.0`, `v3.0.0`):
+  - Every Git tag MUST correspond to a published GitHub Release (`Tag == Release`).
+  - When publishing a milestone:
+    ```bash
+    git tag -a v<VERSION> -m "Release v<VERSION>"
+    git push origin v<VERSION>
+    gh release create v<VERSION> --title "v<VERSION>: <Short Title>" --notes "<Formatted Release Notes>"
+    ```
 - **Release Notes Style Invariant**: Always adhere strictly to repository conventions:
   - Title: `v<VERSION>: <Feature Focus>` (colon-separated, no emojis in title).
   - Main Heading: `## What's New in KeyKalimba v<MAJOR.MINOR>`
@@ -50,20 +41,27 @@ fix(tuner): persistent key colors now survive key deselection
 feat(midi): pressing play after song ends restarts from beginning
 style(navbar): unify flex gap — remove phantom padding from nav-section
 docs: add tuning screenshot and feature description to README
-chore: bump patch version to 2.3.3
+chore: bump version to 2.5.0
 ```
 
 Never write vague messages like "update", "fix stuff", or "changes".
 
 ## Workflow — Follow This Every Time
 
-1. Make code changes.
-2. Run `npm run build` — resolve all TypeScript errors before proceeding.
-3. Bump the PATCH version in `package.json`.
-4. `git add -A`
-5. `git commit` with a proper conventional commit message.
-6. `git push origin main`
-7. If creating a release tag, create and push the Git tag and run `gh release create` immediately.
+1. **Feature Branch**: Create and work in a dedicated branch for new features/fixes (`git checkout -b feat/<name>`).
+2. **Local Development & Verification**:
+   - Run `npm run dev` to test locally.
+   - Verify layout responsiveness across desktop and iPhone Landscape ($844 \times 390$) ensuring no element overlaps.
+3. **Build Integrity Check**: Run `npm run build` — resolve all TypeScript and build errors before proceeding.
+4. **User Review & Testing**: Present the local build / screenshots to the user for testing and explicit approval.
+5. **Merge & Push to Main**:
+   - Merge feature branch into `main`.
+   - Delete local feature branch.
+   - Push `main` to origin.
+6. **Milestone Release Tag** (*Only for major/minor version milestones*):
+   - Bump version in `package.json`.
+   - Run `npm run screenshots` if visual changes affect documentation.
+   - Create and push Git tag & GitHub Release via `gh release create`.
 
 Never commit if `npm run build` fails. Never push without committing first.
 

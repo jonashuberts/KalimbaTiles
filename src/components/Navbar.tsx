@@ -1,5 +1,5 @@
-import React from 'react';
-import { Play, Pause, Square, FileMusic, Minus, Plus, Mic, Hash } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Play, Pause, Square, FileMusic, Minus, Plus, Mic, Hash, Upload, Sparkles, ExternalLink, Sliders } from 'lucide-react';
 import { TUNINGS } from '../constants/kalimba';
 import './Navbar.css';
 
@@ -43,11 +43,31 @@ export const Navbar: React.FC<NavbarProps> = ({
   isTuningMode,
   toggleTuningMode
 }) => {
-  const [localTempo, setLocalTempo] = React.useState<string>(tempo.toString());
+  const [localTempo, setLocalTempo] = useState<string>(tempo.toString());
+  const [isMidiMenuOpen, setIsMidiMenuOpen] = useState<boolean>(false);
+  const [isScaleMenuOpen, setIsScaleMenuOpen] = useState<boolean>(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const scaleMenuRef = useRef<HTMLDivElement>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setLocalTempo(tempo.toString());
   }, [tempo]);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setIsMidiMenuOpen(false);
+      }
+      if (scaleMenuRef.current && !scaleMenuRef.current.contains(e.target as Node)) {
+        setIsScaleMenuOpen(false);
+      }
+    };
+    if (isMidiMenuOpen || isScaleMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isMidiMenuOpen, isScaleMenuOpen]);
 
   const commitTempo = () => {
     const parsed = parseInt(localTempo, 10);
@@ -80,25 +100,77 @@ export const Navbar: React.FC<NavbarProps> = ({
           </select>
         </div>
 
-        <div className="scale-selector">
-          <span className="setting-label">Zoom</span>
-          <div className="control-group">
-            <button 
-              className="control-btn" 
-              onClick={() => setPpi(Math.max(50, ppi - 1))}
-              title="Decrease Zoom"
-            >
-              <Minus size={16} />
-            </button>
-            <span className="scale-value">{ppi}</span>
-            <button 
-              className="control-btn" 
-              onClick={() => setPpi(Math.min(250, ppi + 1))}
-              title="Increase Zoom"
-            >
-              <Plus size={16} />
-            </button>
-          </div>
+        {/* Scale / Zoom Popover Menu */}
+        <div className="scale-menu-container" ref={scaleMenuRef}>
+          <button 
+            className={`scale-menu-btn ${isScaleMenuOpen ? 'active' : ''}`}
+            onClick={() => {
+              setIsScaleMenuOpen(!isScaleMenuOpen);
+              setIsMidiMenuOpen(false);
+            }}
+            title="Calibrate Instrument Scale"
+          >
+            <Sliders size={15} />
+            <span className="scale-btn-label">Scale</span>
+            <span className="scale-pill-badge">{ppi}</span>
+          </button>
+
+          {isScaleMenuOpen && (
+            <div className="scale-dropdown-menu">
+              <div className="scale-menu-header">
+                <span className="scale-menu-title">Instrument Scale</span>
+                <span className="scale-menu-val">{ppi} PPI</span>
+              </div>
+
+              <div className="scale-slider-row">
+                <button 
+                  className="scale-stepper-btn" 
+                  onClick={() => setPpi(Math.max(50, ppi - 1))}
+                  title="Decrease"
+                >
+                  <Minus size={15} />
+                </button>
+                <input 
+                  type="range" 
+                  min={50} 
+                  max={250} 
+                  value={ppi} 
+                  onChange={(e) => setPpi(Number(e.target.value))}
+                  className="scale-range-slider"
+                />
+                <button 
+                  className="scale-stepper-btn" 
+                  onClick={() => setPpi(Math.min(250, ppi + 1))}
+                  title="Increase"
+                >
+                  <Plus size={15} />
+                </button>
+              </div>
+
+              <div className="scale-presets-row">
+                <button 
+                  className={`scale-preset-btn ${ppi === 130 ? 'active' : ''}`}
+                  onClick={() => setPpi(130)}
+                >
+                  130
+                </button>
+                <button 
+                  className={`scale-preset-btn ${ppi === 153 ? 'active' : ''}`}
+                  onClick={() => setPpi(153)}
+                >
+                  153 (Default)
+                </button>
+                <button 
+                  className={`scale-preset-btn ${ppi === 175 ? 'active' : ''}`}
+                  onClick={() => setPpi(175)}
+                >
+                  175
+                </button>
+              </div>
+
+              <span className="scale-help-text">Align keys with your physical Kalimba</span>
+            </div>
+          )}
         </div>
 
         <button 
@@ -113,20 +185,62 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Right Side: Tools & Playback */}
         {!isTuningMode && (
           <>
-            <label className="file-upload-btn">
-              <FileMusic size={16} />
-              <span>MIDI</span>
+            <div className="midi-menu-container" ref={menuRef}>
+              <button 
+                className={`midi-menu-btn ${isMidiMenuOpen ? 'active' : ''}`}
+                onClick={() => setIsMidiMenuOpen(!isMidiMenuOpen)}
+                title="MIDI Options & Song Library"
+              >
+                <FileMusic size={16} />
+                <span>MIDI</span>
+              </button>
+
               <input 
+                ref={fileInputRef}
                 type="file" 
                 accept=".mid,.midi,audio/midi,audio/x-midi" 
                 onChange={(e) => {
                   if (e.target.files && e.target.files[0]) {
                     onFileUpload(e.target.files[0]);
+                    setIsMidiMenuOpen(false);
                   }
                 }} 
                 hidden
               />
-            </label>
+
+              {isMidiMenuOpen && (
+                <div className="midi-dropdown-menu">
+                  <button 
+                    className="midi-dropdown-item"
+                    onClick={() => {
+                      fileInputRef.current?.click();
+                      setIsMidiMenuOpen(false);
+                    }}
+                  >
+                    <Upload size={16} />
+                    <div className="dropdown-item-text">
+                      <span className="dropdown-title">Import File</span>
+                      <span className="dropdown-desc">Load local .mid from device</span>
+                    </div>
+                  </button>
+
+                  <a 
+                    href="https://ko-fi.com/keykalimba" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="midi-dropdown-item"
+                    onClick={() => setIsMidiMenuOpen(false)}
+                  >
+                    <Sparkles size={16} className="sparkle-icon" />
+                    <div className="dropdown-item-text">
+                      <span className="dropdown-title">Get Songs (Ko-fi)</span>
+                      <span className="dropdown-desc">Download ready-to-play MIDIs</span>
+                    </div>
+                    <ExternalLink size={13} className="ext-icon" />
+                  </a>
+                </div>
+              )}
+            </div>
 
               <div className="setting-group tempo-group">
                 <span className="setting-label">BPM</span>
